@@ -14,10 +14,13 @@ class _HomePageState extends State<HomePage> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('ยินดีต้อนรับ'),
+        title: Text('ยินดีต้อนรับ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.teal,
         elevation: 5,
-        leading: CircleAvatar(),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircleAvatar(),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
