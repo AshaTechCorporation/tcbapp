@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcbapp/constants.dart';
+import 'package:tcbapp/information/widgets/cardHospital.dart';
 
 class InformationPage extends StatefulWidget {
   const InformationPage({super.key});
@@ -183,52 +184,11 @@ class _InformationPageState extends State<InformationPage> {
                 height: size.height * 0.4,
                 width: size.width * 0.85,
                 child: ListView.builder(
-                  itemCount: 1, // จำนวนรายการใน ListView (สามารถปรับได้ตามจำนวนข้อมูล)
+                  itemCount: items.length, // จำนวนรายการใน ListView (สามารถปรับได้ตามจำนวนข้อมูล)
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: size.height * 0.1,
-                        width: size.width * 0.5,
-                        decoration: BoxDecoration(
-                          color: textColor,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: textColor2.withOpacity(0.2),
-                              spreadRadius: 2,
-                              blurRadius: 8,
-                              offset: Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(width: 10),
-                            Icon(
-                              Icons.phone_android,
-                              size: 30,
-                            ),
-                            SizedBox(width: 10),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'เบอร์โทรศัพท์',
-                                  style: TextStyle(fontSize: 14, color: Colors.black54),
-                                ),
-                                Text(
-                                  '098*******',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                    return CardHospital(
+                      size: size,
+                      hospitalname: items[index],
                     );
                   },
                 ),

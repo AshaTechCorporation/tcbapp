@@ -43,6 +43,7 @@ dependencies:
   json_serializable: ^6.8.0
   json_annotation: ^4.9.0
   dropdown_button2: ^2.3.9
+  dropdown_search: ^5.0.6
 
 dev_dependencies:
   flutter_test:
@@ -87,9 +88,11 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Prompt
+    - family: Sarabun
       fonts:
-        - asset: fonts/Prompt-Regular.ttf
+        - asset: assets/Sarabun-Medium.ttf
+        - asset: assets/Sarabun-Bold.ttf
+          weight: 700
   # fonts:
   #   - family: Schyler
   #     fonts:

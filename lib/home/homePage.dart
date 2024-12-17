@@ -14,6 +14,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: kBackgroundColor3,
       appBar: AppBar(
         shadowColor: Colors.black,
         title: Row(
@@ -131,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    '***** *****',
+                    'ไม่มี',
                     style: TextStyle(color: textColor),
                   ),
                 ],

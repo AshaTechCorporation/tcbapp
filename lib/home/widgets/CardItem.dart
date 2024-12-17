@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcbapp/constants.dart';
 
-class CardItem extends StatelessWidget {
+class CardItem extends StatefulWidget {
   final String date;
   final String hospital;
   final String diagnosis;
@@ -11,6 +11,12 @@ class CardItem extends StatelessWidget {
   CardItem({super.key, required this.date, required this.hospital, required this.diagnosis, required this.size, required this.rectum});
 
   @override
+  State<CardItem> createState() => _CardItemState();
+}
+
+class _CardItemState extends State<CardItem> {
+  bool checktext = false;
+  @override
   Widget build(BuildContext context) {
     return Card(
       color: textColor,
@@ -19,7 +25,7 @@ class CardItem extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(10.0),
         child: SizedBox(
-          width: size.width * 0.90,
+          width: widget.size.width * 0.90,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -41,11 +47,11 @@ class CardItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    hospital,
+                    widget.hospital,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    date,
+                    widget.date,
                     style: TextStyle(fontSize: 16),
                   ),
                 ],
@@ -66,7 +72,7 @@ class CardItem extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    diagnosis,
+                    widget.diagnosis,
                     style: TextStyle(
                       fontSize: 16,
                     ),
@@ -75,7 +81,7 @@ class CardItem extends StatelessWidget {
               ),
               SizedBox(height: 5),
               Text(
-                rectum,
+                widget.rectum,
                 style: TextStyle(
                   fontSize: 16,
                 ),

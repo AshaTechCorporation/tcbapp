@@ -32,4 +32,41 @@ List<Map<String, String>> cardItems = [
     'diagnosis': 'C20: Malignant neoplasm of rectum',
     'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
   },
+  {
+    'date': '09/07/2567',
+    'hospital': 'สถาบันมะเร็งแห่งชาติ',
+    'diagnosis': 'C20: Malignant neoplasm of rectum',
+    'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
+  },
+  {
+    'date': '09/07/2567',
+    'hospital': 'สถาบันมะเร็งแห่งชาติ',
+    'diagnosis': 'C20: Malignant neoplasm of rectum',
+    'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
+  },
+  {
+    'date': '09/07/2567',
+    'hospital': 'สถาบันมะเร็งแห่งชาติ',
+    'diagnosis': 'C20: Malignant neoplasm of rectum',
+    'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
+  },
+  {
+    'date': '09/07/2567',
+    'hospital': 'สถาบันมะเร็งแห่งชาติ',
+    'diagnosis': 'C20: Malignant neoplasm of rectum',
+    'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
+  },
+  {
+    'date': '09/07/2567',
+    'hospital': 'สถาบันมะเร็งแห่งชาติ',
+    'diagnosis': 'C20: Malignant neoplasm of rectum',
+    'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
+  },
+  {
+    'date': '09/07/2567',
+    'hospital': 'สถาบันมะเร็งแห่งชาติ',
+    'diagnosis': 'C20: Malignant neoplasm of rectum',
+    'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
+  },
 ];
+final List<String> items = ['โรงพยาบาล', 'โรงพยาบาลมหาวิทยาลัยนวมินทราธิราช ศูนย์การแพทย์วิภาวดีรังสิต'];

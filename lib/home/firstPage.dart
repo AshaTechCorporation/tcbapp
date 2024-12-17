@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:tcbapp/advice/advicePage.dart';
+import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/history/historyPage.dart';
 import 'package:tcbapp/home/homePage.dart';
 import 'package:tcbapp/information/informationPage.dart';
@@ -54,7 +55,7 @@ class _FirstPageState extends State<FirstPage> {
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: kBackgroundColor,
           boxShadow: [
             BoxShadow(
               blurRadius: 20,
@@ -79,23 +80,28 @@ class _FirstPageState extends State<FirstPage> {
                 tabs: [
                   GButton(
                     icon: Icons.home,
+                    iconColor: Colors.white,
                     text: 'หน้าแรก',
                   ),
                   GButton(
-                    icon: Icons.receipt,
+                    icon: Icons.history,
+                    iconColor: Colors.white,
                     text: 'ประวัติ',
                     margin: EdgeInsets.zero,
                   ),
                   GButton(
-                    icon: Icons.search,
+                    icon: Icons.person_pin_rounded,
+                    iconColor: Colors.white,
                     text: 'ข้อมูลของฉัน',
                   ),
                   GButton(
-                    icon: Icons.mail,
+                    icon: Icons.badge,
+                    iconColor: Colors.white,
                     text: 'คำแนะนำ',
                   ),
                   GButton(
                     icon: Icons.settings,
+                    iconColor: Colors.white,
                     text: 'ตั้งค่า',
                   ),
                 ],

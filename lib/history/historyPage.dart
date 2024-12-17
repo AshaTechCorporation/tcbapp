@@ -1,4 +1,5 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/widgets/CardItem.dart';
@@ -11,9 +12,6 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  final List<String> items = [
-    'โรงพยาบาล',
-  ];
   String? selectedValue;
   @override
   Widget build(BuildContext context) {
@@ -36,63 +34,71 @@ class _HistoryPageState extends State<HistoryPage> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  width: size.width * 0.6,
-                  height: size.height * 0.08,
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton2<String>(
-                      isExpanded: true,
-                      hint: Text(
-                        'เลือกประเภทการใช้งาน',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'IBMPlexSansThai',
-                          color: Theme.of(context).hintColor,
-                        ),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.065,
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                      color: kBackgroundColor2,
+                    ),
+                  ),
+                  padding: EdgeInsets.all(8),
+                  child: DropdownSearch<String>(
+                    selectedItem: selectedValue,
+                    items: items,
+                    itemAsString: (item) => item,
+                    popupProps: PopupProps.menu(
+                      showSearchBox: true,
+                      constraints: BoxConstraints(maxHeight: 450),
+                      fit: FlexFit.loose,
+                      menuProps: MenuProps(
+                        backgroundColor: Colors.white,
                       ),
-                      items: items.map((String item) {
-                        return DropdownMenuItem<String>(
-                          value: item,
-                          child: Text(
-                            item,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'IBMPlexSansThai',
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                      value: selectedValue,
-                      onChanged: (String? va) {
-                        setState(
-                          () {
-                            selectedValue = va;
-                          },
-                        );
-                      },
-                      buttonStyleData: ButtonStyleData(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                        height: size.height * 0.08,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: kBackgroundColor2,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                      dropdownStyleData: DropdownStyleData(
+                      itemBuilder: (context, item, isSelected) => Container(
+                        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: kBackgroundColor2,
-                            width: 2,
+                            color: isSelected ? Colors.blue : Colors.grey,
                           ),
                         ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item,
+                              style: TextStyle(
+                                color: isSelected ? Colors.blue : Colors.black,
+                                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      menuItemStyleData: MenuItemStyleData(
-                        height: size.height * 0.08,
+                    ),
+                    onChanged: (String? va) {
+                      setState(() {
+                        selectedValue = va;
+                      });
+                    },
+                    dropdownDecoratorProps: DropDownDecoratorProps(
+                      baseStyle: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        fontFamily: 'Prompt',
+                      ),
+                      dropdownSearchDecoration: InputDecoration(
+                        hintText: 'เลือกผู้รับบุคลากรภายใน',
+                        hintStyle: TextStyle(
+                          color: Colors.black45,
+                        ),
+                        border: InputBorder.none,
+                        suffixIconColor: Colors.grey,
                       ),
                     ),
                   ),
