@@ -54,7 +54,7 @@ class _OtppageState extends State<Otppage> {
               ),
               Form(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
                       decoration: BoxDecoration(border: Border.all(color: textColor), borderRadius: BorderRadius.circular(8)),
@@ -151,7 +151,7 @@ class _OtppageState extends State<Otppage> {
           ),
         ),
       ),
-      bottomSheet: Container(
+      bottomNavigationBar: Container(
         height: size.height * 0.1,
         width: double.infinity,
         decoration: BoxDecoration(

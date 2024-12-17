@@ -94,7 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 buildInputField(
                   controller: birthDate,
                   icon: Icons.calendar_today,
-                  hint: '07012518',
+                  hint: '000-00-00',
                 ),
                 buildInputField(
                   controller: phone,
