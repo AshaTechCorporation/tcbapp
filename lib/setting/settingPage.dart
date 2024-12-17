@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tcbapp/WidgetHub/dialog/dialogYesNo.dart';
+import 'package:tcbapp/constants.dart';
+import 'package:tcbapp/home/firstPage.dart';
+import 'package:tcbapp/register/registerPage.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -12,22 +16,25 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: kBackgroundColor3,
       appBar: AppBar(
-        title: Text(
-          'การตั้งค่า',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Color(0xFF00CFCF),
-        centerTitle: false,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Icon(Icons.local_hospital, color: Color(0xFF00CFCF)),
+        backgroundColor: kBackgroundColor,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('การตั้งค่า', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Image.asset(
+                  'assets/icons/logo MOPH.png',
+                  scale: 10,
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -57,7 +64,25 @@ class _SettingPageState extends State<SettingPage> {
                 width: double.infinity,
                 height: 48.0,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final ok = await showDialog(
+                        context: context,
+                        builder: (context) => Dialogyesno(
+                              title: 'แจ้งเตือน',
+                              description: 'คุณต้องการออกจากระบบใช่หรือไม่',
+                              pressYes: () {
+                                Navigator.pop(context, true);
+                              },
+                              pressNo: () {
+                                Navigator.pop(context);
+                              },
+                              bottomNameYes: 'ตกลง',
+                              bottomNameNo: 'ยกเลิก',
+                            ));
+                    if (ok == true) {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RegisterPage()));
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF00CFCF),
                     shape: RoundedRectangleBorder(

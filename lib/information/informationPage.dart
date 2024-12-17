@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcbapp/WidgetHub/textfiled/InputTextFormField.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/information/widgets/cardHospital.dart';
 
@@ -21,7 +22,16 @@ class _InformationPageState extends State<InformationPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('ข้อมูลของฉัน', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            CircleAvatar(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Image.asset(
+                  'assets/icons/logo MOPH.png',
+                  scale: 10,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -30,29 +40,29 @@ class _InformationPageState extends State<InformationPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
-                  padding: EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: avatarColor,
-                      width: 3.0,
-                    ),
-                  ),
-                  child: CircleAvatar(
-                    radius: 30,
-                    backgroundColor: textColor,
-                    child: Icon(
-                      Icons.person_outline,
-                      color: avatarColor,
-                      size: 40,
-                    ),
-                  ),
-                ),
+                // Container(
+                //   padding: EdgeInsets.all(2),
+                //   decoration: BoxDecoration(
+                //     shape: BoxShape.circle,
+                //     border: Border.all(
+                //       color: avatarColor,
+                //       width: 3.0,
+                //     ),
+                //   ),
+                //   child: CircleAvatar(
+                //     radius: 30,
+                //     backgroundColor: textColor,
+                //     child: Icon(
+                //       Icons.person_outline,
+                //       color: avatarColor,
+                //       size: 40,
+                //     ),
+                //   ),
+                // ),
                 SizedBox(
-                  width: 10,
+                  width: MediaQuery.of(context).size.width * 0.05,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,6 +177,9 @@ class _InformationPageState extends State<InformationPage> {
               ),
             ],
           ),
+          SizedBox(
+            height: 15,
+          ),
           Column(
             children: [
               Row(
@@ -175,7 +188,7 @@ class _InformationPageState extends State<InformationPage> {
                     width: size.width * 0.1,
                   ),
                   Text(
-                    'รายละเอียดอื่น ๆ',
+                    'โรงพยาบาลที่เคยเข้าการรักษา',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -184,7 +197,7 @@ class _InformationPageState extends State<InformationPage> {
                 height: size.height * 0.4,
                 width: size.width * 0.85,
                 child: ListView.builder(
-                  itemCount: items.length, // จำนวนรายการใน ListView (สามารถปรับได้ตามจำนวนข้อมูล)
+                  itemCount: items.length,
                   itemBuilder: (context, index) {
                     return CardHospital(
                       size: size,

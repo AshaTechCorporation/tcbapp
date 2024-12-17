@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcbapp/advice/widget/cardNews.dart';
 import 'package:tcbapp/constants.dart';
 
 class AdvicePage extends StatefulWidget {
@@ -20,7 +21,16 @@ class _AdvicePageState extends State<AdvicePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('คำแนะนำการปฏิบัติตัว', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            CircleAvatar(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Image.asset(
+                  'assets/icons/logo MOPH.png',
+                  scale: 10,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -29,16 +39,26 @@ class _AdvicePageState extends State<AdvicePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: size.height * 0.02,),
-            Center(
-              child: Card(
-                child: Container(
-                  color: Colors.red,
-                  height: size.height * 0.12,
-                  width: size.width * 0.95,
-                ),
-              ),
+            SizedBox(
+              height: size.height * 0.02,
             ),
+            cardNews.isNotEmpty
+                ? SizedBox(
+                    height: size.height * 0.8,
+                    child: ListView.builder(
+                        // controller: _scrollController,
+                        itemCount: cardNews.length,
+                        itemBuilder: (context, index) {
+                          final items = cardNews[index];
+                          return Cardnews(
+                            size: size,
+                            image: '',
+                            detail: '${items['detail']}',
+                            title: '${items['title']}',
+                          );
+                        }),
+                  )
+                : Center(child: Text('ขนะนี้ไม่มีรายการคำแนะนำ'))
           ],
         ),
       ),

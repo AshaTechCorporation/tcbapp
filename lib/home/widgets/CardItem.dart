@@ -57,12 +57,9 @@ class _CardItemState extends State<CardItem> {
                 ],
               ),
               SizedBox(height: 5),
-              // Text(
-              //   'วันที่วินิจฉัย: $date',
-              //   style: TextStyle(fontSize: 14),
-              // ),
-              SizedBox(height: 5),
               Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'ICD-10',
@@ -71,21 +68,47 @@ class _CardItemState extends State<CardItem> {
                   SizedBox(
                     width: 10,
                   ),
-                  Text(
-                    widget.diagnosis,
-                    style: TextStyle(
-                      fontSize: 16,
+                  Expanded(
+                    child: Text(
+                      widget.diagnosis,
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                      softWrap: checktext,
+                      overflow: checktext ? null : TextOverflow.ellipsis,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        checktext = !checktext;
+                      });
+                    },
+                    child: Icon(
+                      checktext ? Icons.keyboard_arrow_down_outlined : Icons.keyboard_arrow_up_outlined,
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 5),
-              Text(
-                widget.rectum,
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
+              checktext == false
+                  ? Text(
+                      widget.rectum,
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  : Text(
+                      widget.rectum,
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    )
             ],
           ),
         ),

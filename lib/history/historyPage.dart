@@ -2,6 +2,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:tcbapp/constants.dart';
+import 'package:tcbapp/WidgetHub/dialog/dialogYesNo.dart';
+import 'package:tcbapp/WidgetHub/dialog/dialogyes.dart';
 import 'package:tcbapp/home/widgets/CardItem.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -24,22 +26,31 @@ class _HistoryPageState extends State<HistoryPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('ประวัติการรักษา', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            CircleAvatar(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Image.asset(
+                  'assets/icons/logo MOPH.png',
+                  scale: 10,
+                ),
+              ),
+            ),
           ],
         ),
       ),
       body: Column(
         children: [
           Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 28, top: 10, right: 20),
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.065,
                   width: MediaQuery.of(context).size.width * 0.6,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
                     border: Border.all(
                       color: kBackgroundColor2,
                     ),
@@ -72,7 +83,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             Text(
                               item,
                               style: TextStyle(
-                                color: isSelected ? Colors.blue : Colors.black,
+                                color: Colors.black,
                                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                               ),
                             ),
@@ -90,8 +101,8 @@ class _HistoryPageState extends State<HistoryPage> {
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
-                        fontFamily: 'Prompt',
                       ),
+                      textAlign: TextAlign.center,
                       dropdownSearchDecoration: InputDecoration(
                         hintText: 'เลือกผู้รับบุคลากรภายใน',
                         hintStyle: TextStyle(
@@ -104,6 +115,28 @@ class _HistoryPageState extends State<HistoryPage> {
                   ),
                 ),
               ),
+              Stack(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(Icons.arrow_upward_rounded, size: size.height * 0.03, color: kBackgroundColor2),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
           Expanded(

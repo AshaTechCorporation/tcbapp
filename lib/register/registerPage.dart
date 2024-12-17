@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcbapp/home/firstPage.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -19,6 +20,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
+        height: size.height * 1,
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -55,30 +57,28 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 buildInputField(
                   controller: name,
-                  label: 'ชื่อ',
                   icon: Icons.person,
+                  hint: 'ชื่อ',
                 ),
                 buildInputField(
                   controller: surname,
-                  label: 'นามสกุล',
                   icon: Icons.person,
+                  hint: 'นามสกุล',
                 ),
                 buildInputField(
                   controller: idCard,
-                  label: 'เลขบัตรประชาชน',
                   icon: Icons.credit_card,
                   hint: 'เลขบัตรประชาชน 13 หลัก',
                 ),
                 buildInputField(
                   controller: birthDate,
-                  label: 'วันเดือนปีเกิด',
                   icon: Icons.calendar_today,
                   hint: '07012518',
                 ),
                 buildInputField(
                   controller: phone,
-                  label: 'โทรศัพท์ติดต่อ',
                   icon: Icons.phone,
+                  hint: 'เบอร์โทร',
                 ),
                 SizedBox(
                   height: size.height * 0.03,
@@ -86,7 +86,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => FirstPage()));
+                    },
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: Colors.white),
                       shape: RoundedRectangleBorder(
@@ -110,7 +112,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget buildInputField({
     required TextEditingController controller,
-    required String label,
+    // required String label,
     required IconData icon,
     String? hint,
   }) {
@@ -121,7 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
-          labelText: label,
+          // labelText: label,
           hintText: hint ?? '',
           prefixIcon: Icon(icon, color: Colors.grey),
           border: OutlineInputBorder(

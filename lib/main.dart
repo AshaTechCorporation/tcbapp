@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcbapp/home/firstPage.dart';
+import 'package:tcbapp/policy/policyPage.dart';
+import 'package:tcbapp/register/registerPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: FirstPage(),
+      home: Policypage(),
     );
   }
 }

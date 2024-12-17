@@ -21,10 +21,10 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('ยินดีต้อนรับ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            Icon(
-              Icons.notifications,
-              color: Colors.white,
-            )
+            Image.asset(
+              'assets/icons/logo MOPH.png',
+              scale: 10,
+            ),
           ],
         ),
         backgroundColor: kBackgroundColor,
