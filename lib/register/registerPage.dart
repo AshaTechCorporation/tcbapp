@@ -1,5 +1,8 @@
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:tcbapp/home/firstPage.dart';
+import "package:intl/intl.dart";
+import 'package:tcbapp/otp/OtpPage.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -14,6 +17,24 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController idCard = TextEditingController();
   final TextEditingController birthDate = TextEditingController();
   final TextEditingController phone = TextEditingController();
+
+  final DateFormat _dateFormat = DateFormat('yyyy-MM-dd');
+
+  Future<void> _afterselectDate(BuildContext context) async {
+    final selectedDates = await showCalendarDatePicker2Dialog(
+      context: context,
+      config: CalendarDatePicker2WithActionButtonsConfig(),
+      dialogSize: const Size(325, 400),
+      value: [],
+    );
+
+    if (selectedDates != null && selectedDates.isNotEmpty) {
+      // แปลงวันที่เป็น String และใส่ใน TextFormField
+      final selectedDate = selectedDates.first;
+      final formattedDate = _dateFormat.format(selectedDate!);
+      birthDate.text = formattedDate;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +108,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   width: double.infinity,
                   child: OutlinedButton(
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => FirstPage()));
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Otppage()));
                     },
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: Colors.white),
@@ -125,7 +146,13 @@ class _RegisterPageState extends State<RegisterPage> {
           fillColor: Colors.white,
           // labelText: label,
           hintText: hint ?? '',
-          prefixIcon: Icon(icon, color: Colors.grey),
+          prefixIcon: controller == birthDate
+              ? GestureDetector(
+                  onTap: () {
+                    _afterselectDate(context);
+                  },
+                  child: Icon(icon, color: Colors.grey))
+              : Icon(icon, color: Colors.grey),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
             borderSide: BorderSide.none,

@@ -6,6 +6,7 @@ const textColor2 = Colors.black;
 const kBackgroundColor2 = Color(0xff03C4CB);
 const avatarColor = Color(0xff115A44);
 const kBackgroundColor3 = Color(0xffF2FCFB);
+const kBackgroundColor4 = Color(0xff9E9E9E);
 
 List<Map<String, String>> cardItems = [
   {
@@ -89,6 +90,7 @@ List<Map<String, String>> cardNews = [
         'C20: Malignant neoplasm of the rectum, which is a type of colorectal cancer characterized by the uncontrolled and abnormal proliferation of malignant epithelial cells in the rectal mucosa, often leading to invasive growth into adjacent tissues and potential metastasis to regional lymph nodes, the liver, lungs, or other distant organs through hematogenous or lymphatic spread.',
   },
 ];
+String detail = '';
 
 
 // onTap: () async {

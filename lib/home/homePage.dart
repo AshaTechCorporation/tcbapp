@@ -21,17 +21,22 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('ยินดีต้อนรับ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            Image.asset(
-              'assets/icons/logo MOPH.png',
-              scale: 10,
-            ),
+            Icon(
+              Icons.notifications,
+              color: Colors.white,
+            )
           ],
         ),
         backgroundColor: kBackgroundColor,
         elevation: 5,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(),
+          child: CircleAvatar(
+            child: Image.asset(
+              'assets/icons/logo MOPH.png',
+              scale: 10,
+            ),
+          ),
         ),
       ),
       body: Column(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcbapp/constants.dart';
+import 'package:tcbapp/register/registerPage.dart';
 
 class Policypage extends StatefulWidget {
   const Policypage({super.key});
@@ -24,9 +25,14 @@ class _PolicypageState extends State<Policypage> {
           ],
         ),
       ),
-      body: Column(),
+      body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [Text('')],
+          )),
       bottomSheet: Container(
         height: size.height * 0.2,
+        width: double.infinity,
         decoration: BoxDecoration(
           color: textColor,
           boxShadow: [
@@ -60,38 +66,66 @@ class _PolicypageState extends State<Policypage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: textColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: textColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    height: size.height * 0.05,
+                    width: size.width * 0.4,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('ไม่ยอมรับ'),
                       ),
-                    ],
+                    ),
                   ),
-                  height: size.height * 0.05,
-                  width: size.width * 0.1,
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: textColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
+                SizedBox(
+                  width: 10,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (isChecked == true) {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RegisterPage()));
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: isChecked == true ? kBackgroundColor2 : kBackgroundColor4,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    height: size.height * 0.05,
+                    width: size.width * 0.4,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'ยอมรับ',
+                          style: TextStyle(color: textColor),
+                        ),
                       ),
-                    ],
+                    ),
                   ),
-                  height: size.height * 0.05,
-                  width: size.width * 0.1,
-                )
+                ),
               ],
             ),
           )
