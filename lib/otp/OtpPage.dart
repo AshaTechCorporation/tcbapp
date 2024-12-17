@@ -44,7 +44,7 @@ class _OtppageState extends State<Otppage> {
               Row(
                 children: [
                   Text(
-                    'รหัส OTA จะส่งไปที่เบอร์โทร +99****644 ',
+                    'รหัส OTA จะส่งไปที่เบอร์โทร +99****644_ ',
                     style: TextStyle(fontSize: 15, color: textColor, fontWeight: FontWeight.bold),
                   ),
                 ],
