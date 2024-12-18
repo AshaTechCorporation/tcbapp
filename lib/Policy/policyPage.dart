@@ -10,6 +10,10 @@ class Policypage extends StatefulWidget {
 }
 
 class _PolicypageState extends State<Policypage> {
+  String formatMessage(String input) {
+    return input.replaceAllMapped(RegExp(r'(\.)\s+'), (match) => '${match.group(1)}\n\n');
+  }
+
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,12 @@ class _PolicypageState extends State<Policypage> {
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
-            children: [Text('')],
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(formatMessage(message)),
+              )
+            ],
           )),
       bottomNavigationBar: Container(
         height: size.height * 0.2,

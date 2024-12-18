@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:provider/provider.dart';
+import 'package:tcbapp/WidgetHub/dialog/dialogyes.dart';
+import 'package:tcbapp/WidgetHub/dialog/loadingDialog.dart';
 import 'package:tcbapp/WidgetHub/textfiled/InputTextFormField.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/information/widgets/cardHospital.dart';
+import 'package:tcbapp/register/registerPage.dart';
+import 'package:tcbapp/service/ProjectController.dart';
+import 'package:tcbapp/utils/apiException.dart';
 
 class InformationPage extends StatefulWidget {
   const InformationPage({super.key});
@@ -11,6 +18,59 @@ class InformationPage extends StatefulWidget {
 }
 
 class _InformationPageState extends State<InformationPage> {
+  Future getapi() async {
+    try {
+      LoadingDialog.open(context);
+      await context.read<ProjectController>().getPatientHistory();
+      await context.read<ProjectController>().getlisTreatmenthistory();
+      if (!mounted) return;
+      LoadingDialog.close(context);
+    } on ClientException catch (e) {
+      if (!mounted) return;
+      LoadingDialog.close(context);
+      showDialog(
+        context: context,
+        builder: (context) => Dialogyes(
+          title: 'แจ้งเตือน',
+          description: '$e',
+          pressYes: () {
+            Navigator.pop(context, true);
+          },
+          bottomNameYes: 'ตกลง',
+        ),
+      );
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      LoadingDialog.close(context);
+      showDialog(
+        context: context,
+        builder: (context) => Dialogyes(
+          title: 'แจ้งเตือน',
+          description: '$e',
+          pressYes: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return RegisterPage();
+                },
+              ),
+            );
+          },
+          bottomNameYes: 'ตกลง',
+        ),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await getapi();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -35,180 +95,167 @@ class _InformationPageState extends State<InformationPage> {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                // Container(
-                //   padding: EdgeInsets.all(2),
-                //   decoration: BoxDecoration(
-                //     shape: BoxShape.circle,
-                //     border: Border.all(
-                //       color: avatarColor,
-                //       width: 3.0,
-                //     ),
-                //   ),
-                //   child: CircleAvatar(
-                //     radius: 30,
-                //     backgroundColor: textColor,
-                //     child: Icon(
-                //       Icons.person_outline,
-                //       color: avatarColor,
-                //       size: 40,
-                //     ),
-                //   ),
-                // ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.05,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: Consumer<ProjectController>(
+        builder: (context, controller, child) {
+          final patientHistory = controller.patientHistory;
+          final treatmenthistory = controller.treatmentHistorys;
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        SizedBox(width: 15),
-                        Text(
-                          'ชื่อ : ',
-                          style: TextStyle(color: textColor2, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          '***** *****',
-                          style: TextStyle(color: textColor2),
-                        ),
-                      ],
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.05,
                     ),
-                    SizedBox(height: 4),
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(width: 15),
-                        Text(
-                          'เพศ : ',
-                          style: TextStyle(color: textColor2, fontWeight: FontWeight.bold),
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            SizedBox(width: 15),
+                            Text(
+                              'ชื่อ : ',
+                              style: TextStyle(color: textColor2, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              patientHistory?.full_name ?? '',
+                              style: TextStyle(color: textColor2),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'ชาย',
-                          style: TextStyle(color: textColor2),
+                        SizedBox(height: 4),
+                        Row(
+                          children: [
+                            SizedBox(width: 15),
+                            Text(
+                              'เพศ : ',
+                              style: TextStyle(color: textColor2, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              patientHistory?.sex_name ?? '',
+                              style: TextStyle(color: textColor2),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 4),
-                    Row(
-                      children: [
-                        SizedBox(width: 15),
-                        Text(
-                          'เลข ID : ',
-                          style: TextStyle(color: textColor2, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          '3-1021-00144-94-8',
-                          style: TextStyle(color: textColor2),
+                        SizedBox(height: 4),
+                        Row(
+                          children: [
+                            SizedBox(width: 15),
+                            Text(
+                              'เลข ID : ',
+                              style: TextStyle(color: textColor2, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              patientHistory?.cid ?? '',
+                              style: TextStyle(color: textColor2),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Column(
-            children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: size.width * 0.1,
-                  ),
-                  Text(
-                    'รายละเอียดอื่น ๆ',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: size.height * 0.1,
-                  width: size.width * 0.8,
-                  decoration: BoxDecoration(
-                    color: textColor,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: textColor2.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 8,
-                        offset: Offset(0, 4),
+              SizedBox(
+                height: 10,
+              ),
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.1,
+                      ),
+                      Text(
+                        'รายละเอียดอื่น ๆ',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
-                  child: Row(
-                    children: [
-                      SizedBox(width: 10),
-                      Icon(
-                        Icons.phone_android,
-                        size: 30,
-                      ),
-                      SizedBox(width: 10),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'เบอร์โทรศัพท์',
-                            style: TextStyle(fontSize: 14, color: Colors.black54),
-                          ),
-                          Text(
-                            '098*******',
-                            style: TextStyle(
-                              fontSize: 12,
-                            ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: size.height * 0.1,
+                      width: size.width * 0.8,
+                      decoration: BoxDecoration(
+                        color: textColor,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: textColor2.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 8,
+                            offset: Offset(0, 4),
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Column(
-            children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: size.width * 0.1,
-                  ),
-                  Text(
-                    'โรงพยาบาลที่เคยเข้าการรักษา',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      child: Row(
+                        children: [
+                          SizedBox(width: 10),
+                          Icon(
+                            Icons.phone_android,
+                            size: 30,
+                          ),
+                          SizedBox(width: 10),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'เบอร์โทรศัพท์',
+                                style: TextStyle(fontSize: 14, color: Colors.black54),
+                              ),
+                              Text(
+                                patientHistory?.telephone_1 ?? '',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
               SizedBox(
-                height: size.height * 0.4,
-                width: size.width * 0.85,
-                child: ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    return CardHospital(
-                      size: size,
-                      hospitalname: items[index],
-                    );
-                  },
-                ),
+                height: 15,
               ),
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.1,
+                      ),
+                      Text(
+                        'โรงพยาบาลที่เคยเข้าการรักษา',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.4,
+                    width: size.width * 0.85,
+                    child: ListView.builder(
+                      itemCount: treatmenthistory?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        return CardHospital(
+                          size: size,
+                          hospitalname: treatmenthistory?[index].hospital_name,
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              )
             ],
-          )
-        ],
+          );
+        },
       ),
     );
   }

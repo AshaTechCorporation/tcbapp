@@ -1,5 +1,6 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
+import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/firstPage.dart';
 import "package:intl/intl.dart";
 import 'package:tcbapp/otp/OtpPage.dart';
@@ -45,7 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF00CFCF), Color(0xFF00E0D0)],
+            colors: [kBackgroundColor, Color(0xFF00E0D0)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),

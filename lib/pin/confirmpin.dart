@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:tcbapp/constants.dart';
-import 'package:tcbapp/pin/confirmpin.dart';
+import 'package:tcbapp/home/firstPage.dart';
 
-class PinPage extends StatefulWidget {
-  const PinPage({super.key});
+class Confirmpin extends StatefulWidget {
+  Confirmpin({super.key, required this.pin});
 
   @override
-  State<PinPage> createState() => _PinPageState();
+  State<Confirmpin> createState() => _ConfirmpinState();
+  String pin;
 }
 
-class _PinPageState extends State<PinPage> {
+class _ConfirmpinState extends State<Confirmpin> {
   String _pin = "";
   String? _errorMessage;
   final _formKey = GlobalKey<FormState>();
@@ -82,7 +83,7 @@ class _PinPageState extends State<PinPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "สร้างรหัสพิน",
+              "ยืนยันรหัสพินอีกครั้ง",
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -91,10 +92,8 @@ class _PinPageState extends State<PinPage> {
             ),
             SizedBox(height: 20),
             Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                key: _formKey,
+                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                   const Text(
                     "Enter PIN",
                     style: TextStyle(
@@ -123,16 +122,14 @@ class _PinPageState extends State<PinPage> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         setState(() {
-                          _hasError = true;
+                          _hasError = true; // เกิดข้อผิดพลาด
                         });
                         return 'โปรดกรอกรหัสพิน';
                       }
                       return null;
                     },
                   ),
-                ],
-              ),
-            ),
+                ])),
             SizedBox(height: 40),
             if (_errorMessage != null)
               Text(
@@ -146,13 +143,18 @@ class _PinPageState extends State<PinPage> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   if (_pin.isNotEmpty && _pin.length == 4) {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => Confirmpin(
-                          pin: _pin,
-                        ),
-                      ),
-                    );
+                    if (_pin == widget.pin) {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => FirstPage()),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('รหัสพินไม่ตรงกัน')),
+                      );
+                    }
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   SnackBar(content: Text('PIN Entered: $_pin')),
+                    // );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Please enter a valid PIN')),
