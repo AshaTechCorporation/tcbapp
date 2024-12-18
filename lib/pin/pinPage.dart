@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:pinput/pinput.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/pin/confirmpin.dart';
@@ -11,62 +12,32 @@ class PinPage extends StatefulWidget {
 }
 
 class _PinPageState extends State<PinPage> {
+  final _pinController = TextEditingController();
   String _pin = "";
-  String? _errorMessage;
-  final _formKey = GlobalKey<FormState>();
-  bool _hasError = false;
+  List<String> enteredPin = [];
+
+  // ฟังก์ชันตรวจสอบ PIN
+  void _onSubmit() {
+    // print(_pinController.text);
+    if (_pinController.text.length == 4) {
+      // ย้ายไปหน้า Confirm PIN
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => Confirmpin(pin: _pinController.text),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("โปรดกรอก PIN 4 หลัก")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final errorPinTheme = PinTheme(
-      width: 56,
-      height: 56,
-      textStyle: const TextStyle(
-        fontSize: 20,
-        color: Colors.black,
-        fontWeight: FontWeight.w600,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.red),
-      ),
-    );
-
-    // PinTheme ปกติ
-    final defaultPinTheme = PinTheme(
-      width: 56,
-      height: 56,
-      textStyle: const TextStyle(
-        fontSize: 20,
-        color: Colors.black,
-        fontWeight: FontWeight.w600,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.black26),
-      ),
-    );
-
-    // PinTheme เมื่อ Focus
-    final focusedPinTheme = PinTheme(
-      width: 56,
-      height: 56,
-      textStyle: const TextStyle(
-        fontSize: 20,
-        color: Colors.black,
-        fontWeight: FontWeight.w600,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.blueAccent),
-      ),
-    );
-
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         width: double.infinity,
         height: size.height,
@@ -82,102 +53,122 @@ class _PinPageState extends State<PinPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "สร้างรหัสพิน",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+              "กรุณาตั้งรหัส พิน",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             SizedBox(height: 20),
-            Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Enter PIN",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Pinput(
-                    length: 4,
-                    showCursor: true,
-                    onChanged: (value) {
-                      setState(() {
-                        _pin = value;
-                        _hasError = false;
-                      });
-                    },
-                    onCompleted: (pin) {
-                      setState(() {
-                        _pin = pin;
-                      });
-                    },
-                    defaultPinTheme: _hasError ? errorPinTheme : defaultPinTheme,
-                    focusedPinTheme: focusedPinTheme,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        setState(() {
-                          _hasError = true;
-                        });
-                        return 'โปรดกรอกรหัสพิน';
-                      }
-                      return null;
-                    },
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 40),
-            if (_errorMessage != null)
-              Text(
-                _errorMessage!,
-                style: const TextStyle(
-                  color: Colors.red,
-                  fontSize: 16,
+            Pinput(
+              obscureText: true,
+              // obscuringCharacter: '',
+              defaultPinTheme: PinTheme(
+                height: size.height * 0.05,
+                width: size.width * 0.076,
+                textStyle: const TextStyle(fontSize: 30, color: Color(0xff10497A)),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  border: Border.all(color: Colors.white),
                 ),
               ),
-            ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  if (_pin.isNotEmpty && _pin.length == 4) {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => Confirmpin(
-                          pin: _pin,
-                        ),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please enter a valid PIN')),
-                    );
-                  }
-                }
+              controller: _pinController,
+              length: 4,
+              showCursor: false,
+              onChanged: (value) {
+                setState(() {
+                  _pin = value;
+                });
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: textColor,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 15,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text(
-                "ตกลง",
-                style: TextStyle(fontSize: 18, color: textColor2),
-              ),
+              onCompleted: (pin) {
+                setState(() {
+                  _pin = pin;
+                  if (_pinController.text.length == 4) {
+                    _onSubmit();
+                  }
+                });
+              },
+              readOnly: true,
             ),
+
+            SizedBox(height: 40),
+            // Numpad
+            _buildNumpad(),
+
+            const SizedBox(height: 20),
+            // ElevatedButton(
+            //   onPressed: _onSubmit,
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: textColor,
+            //     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(10),
+            //     ),
+            //   ),
+            //   child: Text(
+            //     "ตกลง",
+            //     style: TextStyle(fontSize: 18, color: kBackgroundColor2),
+            //   ),
+            // ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildNumpad() {
+    return Column(
+      children: [
+        _buildNumpadRow(["1", "2", "3"]),
+        _buildNumpadRow(["4", "5", "6"]),
+        _buildNumpadRow(["7", "8", "9"]),
+        _buildNumpadRow(['', "0", "<"]),
+      ],
+    );
+  }
+
+  Widget _buildNumpadRow(List<String> values) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: values.map((value) {
+        return GestureDetector(
+            onTap: () {
+              if (value == "<") {
+                // ลบตัวเลขตัวสุดท้าย
+                if (_pinController.text.isNotEmpty) {
+                  setState(() {
+                    _pinController.text = _pinController.text.substring(0, _pinController.text.length - 1);
+                  });
+                }
+              } else if (value.isNotEmpty) {
+                // เพิ่มตัวเลขในช่อง
+                if (_pinController.text.length < 4) {
+                  setState(() {
+                    _pinController.text += value;
+                  });
+                }
+              }
+            },
+            child: value != ''
+                ? Container(
+                    margin: const EdgeInsets.all(10),
+                    width: 70,
+                    height: 70,
+                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white, border: Border.all()),
+                    child: Center(
+                      child: Text(
+                        value,
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: kBackgroundColor),
+                      ),
+                    ),
+                  )
+                : Container(
+                    margin: const EdgeInsets.all(10),
+                    width: 70,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                  ));
+      }).toList(),
     );
   }
 }
