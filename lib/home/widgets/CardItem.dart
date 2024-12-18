@@ -5,10 +5,16 @@ class CardItem extends StatefulWidget {
   final String date;
   final String hospital;
   final String diagnosis;
-  final String rectum;
+
   final Size size;
 
-  CardItem({super.key, required this.date, required this.hospital, required this.diagnosis, required this.size, required this.rectum});
+  CardItem({
+    super.key,
+    required this.date,
+    required this.hospital,
+    required this.diagnosis,
+    required this.size,
+  });
 
   @override
   State<CardItem> createState() => _CardItemState();
@@ -94,21 +100,6 @@ class _CardItemState extends State<CardItem> {
                 ],
               ),
               SizedBox(height: 5),
-              checktext == false
-                  ? Text(
-                      widget.rectum,
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
-                    )
-                  : Text(
-                      widget.rectum,
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    )
             ],
           ),
         ),

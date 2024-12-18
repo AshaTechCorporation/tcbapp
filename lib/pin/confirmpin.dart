@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pinput/pinput.dart';
+import 'package:tcbapp/WidgetHub/dialog/dialogYesNo.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/firstPage.dart';
 import 'package:tcbapp/pin/confirmpin.dart';
+import 'package:tcbapp/pin/pinPage.dart';
 
 class Confirmpin extends StatefulWidget {
   Confirmpin({super.key, required this.pin});
@@ -59,10 +61,11 @@ class _ConfirmpinState extends State<Confirmpin> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "ยืนยันรหัสพินอีกครั้ง",
+              "ยืนยันรหัส Pin อีกครั้ง",
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             SizedBox(height: 20),
+
             Pinput(
               obscureText: true,
               // obscuringCharacter: '',
@@ -94,7 +97,32 @@ class _ConfirmpinState extends State<Confirmpin> {
               },
               readOnly: true,
             ),
-
+            SizedBox(height: 10),
+            GestureDetector(
+              onTap: () async {
+                final ok = await showDialog(
+                    context: context,
+                    builder: (context) => Dialogyesno(
+                          title: 'แจ้งเตือน',
+                          description: 'คุณต้องการเปลี่ยนรหัสพินใช่หรือไม่',
+                          pressYes: () {
+                            Navigator.pop(context, true);
+                          },
+                          pressNo: () {
+                            Navigator.pop(context);
+                          },
+                          bottomNameYes: 'ตกลง',
+                          bottomNameNo: 'ยกเลิก',
+                        ));
+                if (ok == true) {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PinPage()));
+                }
+              },
+              child: Text(
+                "ลืมรหัส Pin",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+            ),
             SizedBox(height: 40),
             // Numpad
             _buildNumpad(),

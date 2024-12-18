@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tcbapp/WidgetHub/dialog/dialogYesNo.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/firstPage.dart';
+import 'package:tcbapp/pin/pinPage.dart';
 import 'package:tcbapp/register/registerPage.dart';
 
 class SettingPage extends StatefulWidget {
@@ -45,7 +46,25 @@ class _SettingPageState extends State<SettingPage> {
             ListTile(
               title: Text('เปลี่ยนรหัส PIN'),
               trailing: Icon(Icons.arrow_forward_ios),
-              onTap: () {},
+              onTap: () async {
+                final ok = await showDialog(
+                    context: context,
+                    builder: (context) => Dialogyesno(
+                          title: 'แจ้งเตือน',
+                          description: 'คุณต้องการเปลี่ยนรหัสพินใช่หรือไม่',
+                          pressYes: () {
+                            Navigator.pop(context, true);
+                          },
+                          pressNo: () {
+                            Navigator.pop(context);
+                          },
+                          bottomNameYes: 'ตกลง',
+                          bottomNameNo: 'ยกเลิก',
+                        ));
+                if (ok == true) {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PinPage()));
+                }
+              },
             ),
             Divider(),
             Padding(

@@ -1,5 +1,6 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/firstPage.dart';
 import "package:intl/intl.dart";
@@ -37,6 +38,8 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -53,78 +56,114 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         child: SafeArea(
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-                Text(
-                  'ลงทะเบียน',
-                  style: TextStyle(
-                    fontSize: 26.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: size.height * 0.02,
                   ),
-                ),
-                SizedBox(
-                  height: size.height * 0.01,
-                ),
-                Text(
-                  'กรุณาระบุข้อมูลเบื้องต้นเพื่อลงทะเบียนเข้าใช้ระบบ',
-                  style: TextStyle(color: Colors.white70),
-                ),
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-                buildInputField(
-                  controller: name,
-                  icon: Icons.person,
-                  hint: 'ชื่อ',
-                ),
-                buildInputField(
-                  controller: surname,
-                  icon: Icons.person,
-                  hint: 'นามสกุล',
-                ),
-                buildInputField(
-                  controller: idCard,
-                  icon: Icons.credit_card,
-                  hint: 'เลขบัตรประชาชน 13 หลัก',
-                ),
-                buildInputField(
-                  controller: birthDate,
-                  icon: Icons.calendar_today,
-                  hint: '000-00-00',
-                ),
-                buildInputField(
-                  controller: phone,
-                  icon: Icons.phone,
-                  hint: 'เบอร์โทร',
-                ),
-                SizedBox(
-                  height: size.height * 0.03,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Otppage()));
+                  Text(
+                    'ลงทะเบียน',
+                    style: TextStyle(
+                      fontSize: 26.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  Text(
+                    'กรุณาระบุข้อมูลเบื้องต้นเพื่อลงทะเบียนเข้าใช้ระบบ',
+                    style: TextStyle(color: Colors.white70),
+                  ),
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
+                  buildInputField(
+                    controller: name,
+                    icon: Icons.person,
+                    hint: 'ชื่อ',
+                    validator: (value) {
+                      if (value?.isEmpty ?? true) {
+                        return 'กรุณากรอกชื่อ';
+                      }
+                      return null;
                     },
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: Colors.white),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  buildInputField(
+                    controller: surname,
+                    icon: Icons.person,
+                    hint: 'นามสกุล',
+                    validator: (value) {
+                      if (value?.isEmpty ?? true) {
+                        return 'กรุณากรอกนามสกุล';
+                      }
+                      return null;
+                    },
+                  ),
+                  buildInputField(
+                    controller: idCard,
+                    icon: Icons.credit_card,
+                    hint: 'เลขบัตรประชาชน 13 หลัก',
+                    validator: (value) {
+                      if (value?.isEmpty ?? true) {
+                        return 'กรุณากรอกเลขบัตรประชาชน 13 หลัก';
+                      }
+                      return null;
+                    },
+                  ),
+                  buildInputField(
+                    controller: birthDate,
+                    icon: Icons.calendar_today,
+                    hint: 'วว-ดด-ปปปป',
+                    validator: (value) {
+                      if (value?.isEmpty ?? true) {
+                        return 'กรุณากรอกวันเดือนปี';
+                      }
+                      return null;
+                    },
+                  ),
+                  buildInputField(
+                    controller: phone,
+                    icon: Icons.phone,
+                    hint: 'เบอร์โทร',
+                    validator: (value) {
+                      if (value?.isEmpty ?? true) {
+                        return 'กรุณากรอกเบอร์โทร';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.phone,
+                  ),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Otppage()));
+                        }
+                      },
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: Colors.white),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 16.0),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                    ),
-                    child: Text(
-                      'ลงทะเบียน/รับรหัส OTP',
-                      style: TextStyle(color: Colors.white, fontSize: 16.0),
+                      child: Text(
+                        'ลงทะเบียน/รับรหัส OTP',
+                        style: TextStyle(color: Colors.white, fontSize: 16.0),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -137,10 +176,12 @@ class _RegisterPageState extends State<RegisterPage> {
     // required String label,
     required IconData icon,
     String? hint,
+    String? Function(String?)? validator,
+    TextInputType? keyboardType,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
           filled: true,
@@ -159,7 +200,19 @@ class _RegisterPageState extends State<RegisterPage> {
             borderSide: BorderSide.none,
           ),
         ),
+        keyboardType: keyboardType,
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+          LengthLimitingTextInputFormatter(13),
+        ],
+        validator: validator,
       ),
     );
   }
 }
+//  (value) {
+//           if (value?.isEmpty ?? true) {
+//             return 'กรุณากรอกจำนวนรายการ';
+//           }
+//           return null;
+//         },

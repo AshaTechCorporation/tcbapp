@@ -53,7 +53,7 @@ class _PinPageState extends State<PinPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "กรุณาตั้งรหัส พิน",
+              "กรุณาตั้งรหัส Pin",
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             SizedBox(height: 20),
@@ -139,7 +139,6 @@ class _PinPageState extends State<PinPage> {
                   });
                 }
               } else if (value.isNotEmpty) {
-                // เพิ่มตัวเลขในช่อง
                 if (_pinController.text.length < 4) {
                   setState(() {
                     _pinController.text += value;

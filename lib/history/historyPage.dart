@@ -234,7 +234,6 @@ class _HistoryPageState extends State<HistoryPage> {
                         hospital: medicalHistorys[index].hospital_name ?? '',
                         diagnosis: medicalHistorys[index].icd10_text ?? '',
                         size: size,
-                        rectum: item['rectum'] ?? '',
                       ),
                     );
                   },

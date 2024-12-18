@@ -237,7 +237,6 @@ class _HomePageState extends State<HomePage> {
                         hospital: medicalHistorys[index].hospital_name ?? '',
                         diagnosis: medicalHistorys[index].icd10_text ?? '',
                         size: size,
-                        rectum: item['rectum'] ?? '',
                       ),
                     );
                   },
