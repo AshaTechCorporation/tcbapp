@@ -58,6 +58,7 @@ class _DetailnewState extends State<Detailnew> {
                         "${widget.image}",
                         height: size.height * 0.12,
                         width: size.width * 0.25,
+                        fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Image.asset(
                               'assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'); // แสดงภาพสำรอง
