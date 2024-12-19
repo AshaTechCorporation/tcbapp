@@ -5,6 +5,7 @@ import 'package:tcbapp/WidgetHub/dialog/dialogyes.dart';
 import 'package:tcbapp/WidgetHub/dialog/loadingDialog.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/widgets/CardItem.dart';
+import 'package:tcbapp/notifications/notificationsPage.dart';
 import 'package:tcbapp/register/registerPage.dart';
 import 'package:tcbapp/service/ProjectController.dart';
 import 'package:tcbapp/utils/apiException.dart';
@@ -88,9 +89,14 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('ยินดีต้อนรับ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            Icon(
-              Icons.notifications,
-              color: Colors.white,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationsPage()));
+              },
+              child: Icon(
+                Icons.notifications,
+                color: Colors.white,
+              ),
             )
           ],
         ),
@@ -172,25 +178,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                      // Container(
-                      //   padding: EdgeInsets.all(2),
-                      //   decoration: BoxDecoration(
-                      //     shape: BoxShape.circle,
-                      //     border: Border.all(
-                      //       color: avatarColor,
-                      //       width: 3.0,
-                      //     ),
-                      //   ),
-                      //   child: CircleAvatar(
-                      //     radius: 30,
-                      //     backgroundColor: textColor,
-                      //     child: Icon(
-                      //       Icons.person_outline,
-                      //       color: avatarColor,
-                      //       size: 40,
-                      //     ),
-                      //   ),
-                      // )
                     ],
                   ),
                 ),

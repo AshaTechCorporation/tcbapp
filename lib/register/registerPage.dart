@@ -25,7 +25,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> _afterselectDate(BuildContext context) async {
     final config = CalendarDatePicker2WithActionButtonsConfig(
       calendarType: CalendarDatePicker2Type.single,
-      selectedDayHighlightColor: Colors.blue,
+      selectedDayHighlightColor: kBackgroundColor,
       dayTextStylePredicate: ({required DateTime date}) {
         return TextStyle(
           fontSize: 14,
