@@ -63,6 +63,13 @@ class _InformationPageState extends State<InformationPage> {
     }
   }
 
+  String formatNationalID(String id) {
+    if (id.length < 3) {
+      return id;
+    }
+    return "${id.substring(0, 3)}******";
+  }
+
   @override
   void initState() {
     super.initState();
@@ -149,7 +156,9 @@ class _InformationPageState extends State<InformationPage> {
                               style: TextStyle(color: textColor2, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              patientHistory?.cid ?? '',
+                              formatNationalID(
+                                patientHistory?.cid ?? '',
+                              ),
                               style: TextStyle(color: textColor2),
                             ),
                           ],
@@ -162,66 +171,66 @@ class _InformationPageState extends State<InformationPage> {
               SizedBox(
                 height: 10,
               ),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: size.width * 0.1,
-                      ),
-                      Text(
-                        'รายละเอียดอื่น ๆ',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: size.height * 0.1,
-                      width: size.width * 0.8,
-                      decoration: BoxDecoration(
-                        color: textColor,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: textColor2.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 8,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          SizedBox(width: 10),
-                          Icon(
-                            Icons.phone_android,
-                            size: 30,
-                          ),
-                          SizedBox(width: 10),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'เบอร์โทรศัพท์',
-                                style: TextStyle(fontSize: 14, color: Colors.black54),
-                              ),
-                              Text(
-                                patientHistory?.telephone_1 ?? '',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Column(
+              //   children: [
+              //     Row(
+              //       children: [
+              //         SizedBox(
+              //           width: size.width * 0.1,
+              //         ),
+              //         Text(
+              //           'รายละเอียดอื่น ๆ',
+              //           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              //         ),
+              //       ],
+              //     ),
+              //     Padding(
+              //       padding: const EdgeInsets.all(8.0),
+              //       child: Container(
+              //         height: size.height * 0.1,
+              //         width: size.width * 0.8,
+              //         decoration: BoxDecoration(
+              //           color: textColor,
+              //           borderRadius: BorderRadius.circular(12),
+              //           boxShadow: [
+              //             BoxShadow(
+              //               color: textColor2.withOpacity(0.2),
+              //               spreadRadius: 2,
+              //               blurRadius: 8,
+              //               offset: Offset(0, 4),
+              //             ),
+              //           ],
+              //         ),
+              //         child: Row(
+              //           children: [
+              //             SizedBox(width: 10),
+              //             Icon(
+              //               Icons.phone_android,
+              //               size: 30,
+              //             ),
+              //             SizedBox(width: 10),
+              //             Column(
+              //               mainAxisAlignment: MainAxisAlignment.center,
+              //               crossAxisAlignment: CrossAxisAlignment.start,
+              //               children: [
+              //                 Text(
+              //                   'เบอร์โทรศัพท์',
+              //                   style: TextStyle(fontSize: 14, color: Colors.black54),
+              //                 ),
+              //                 Text(
+              //                   patientHistory?.telephone_1 ?? '',
+              //                   style: TextStyle(
+              //                     fontSize: 12,
+              //                   ),
+              //                 ),
+              //               ],
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 height: 15,
               ),

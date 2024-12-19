@@ -115,7 +115,10 @@ class _ConfirmpinState extends State<Confirmpin> {
                           bottomNameNo: 'ยกเลิก',
                         ));
                 if (ok == true) {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PinPage()));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => PinPage(
+                            check: false,
+                          )));
                 }
               },
               child: Text(

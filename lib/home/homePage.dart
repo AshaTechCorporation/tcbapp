@@ -70,6 +70,13 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  String formatNationalID(String id) {
+    if (id.length < 3) {
+      return id;
+    }
+    return "${id.substring(0, 3)}******";
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -156,32 +163,34 @@ class _HomePageState extends State<HomePage> {
                                 style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                patientHistory?.cid ?? '-',
+                                formatNationalID(
+                                  patientHistory?.cid ?? '-',
+                                ),
                                 style: TextStyle(color: textColor),
                               ),
                             ],
                           ),
                         ],
                       ),
-                      Container(
-                        padding: EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: avatarColor,
-                            width: 3.0,
-                          ),
-                        ),
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: textColor,
-                          child: Icon(
-                            Icons.person_outline,
-                            color: avatarColor,
-                            size: 40,
-                          ),
-                        ),
-                      )
+                      // Container(
+                      //   padding: EdgeInsets.all(2),
+                      //   decoration: BoxDecoration(
+                      //     shape: BoxShape.circle,
+                      //     border: Border.all(
+                      //       color: avatarColor,
+                      //       width: 3.0,
+                      //     ),
+                      //   ),
+                      //   child: CircleAvatar(
+                      //     radius: 30,
+                      //     backgroundColor: textColor,
+                      //     child: Icon(
+                      //       Icons.person_outline,
+                      //       color: avatarColor,
+                      //       size: 40,
+                      //     ),
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
@@ -237,6 +246,7 @@ class _HomePageState extends State<HomePage> {
                         hospital: medicalHistorys[index].hospital_name ?? '',
                         diagnosis: medicalHistorys[index].icd10_text ?? '',
                         size: size,
+                        medicalHistorys: medicalHistorys[index].treatments,
                       ),
                     );
                   },

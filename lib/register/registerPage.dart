@@ -20,23 +20,80 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController birthDate = TextEditingController();
   final TextEditingController phone = TextEditingController();
 
-  final DateFormat _dateFormat = DateFormat('yyyy-MM-dd');
+  // final DateFormat _dateFormat = DateFormat('dd-MM-yyyy');
 
   Future<void> _afterselectDate(BuildContext context) async {
+    final config = CalendarDatePicker2WithActionButtonsConfig(
+      calendarType: CalendarDatePicker2Type.single,
+      selectedDayHighlightColor: Colors.blue,
+      dayTextStylePredicate: ({required DateTime date}) {
+        return TextStyle(
+          fontSize: 14,
+          color: Colors.black,
+          fontWeight: FontWeight.normal,
+        );
+      },
+      yearBuilder: ({required int year, TextStyle? textStyle, bool? isDisabled, bool? isSelected, bool? isCurrentYear, BoxDecoration? decoration}) {
+        final buddhistYear = year + 543; // แปลงปี ค.ศ. เป็น พ.ศ.
+        return Center(
+          child: Text(
+            '$buddhistYear',
+            style: textStyle,
+          ),
+        );
+      },
+      // ปรับแต่งข้อความสำหรับตัวเลือกเดือน/ปี
+      modePickerTextHandler: ({required DateTime monthDate}) {
+        final buddhistYear = monthDate.year + 543; // แปลงปี ค.ศ. เป็น พ.ศ.
+        final monthNames = [
+          "มกราคม",
+          "กุมภาพันธ์",
+          "มีนาคม",
+          "เมษายน",
+          "พฤษภาคม",
+          "มิถุนายน",
+          "กรกฎาคม",
+          "สิงหาคม",
+          "กันยายน",
+          "ตุลาคม",
+          "พฤศจิกายน",
+          "ธันวาคม"
+        ];
+        final monthName = monthNames[monthDate.month - 1];
+        return "$monthName พ.ศ. $buddhistYear";
+      },
+    );
+
     final selectedDates = await showCalendarDatePicker2Dialog(
+      dialogBackgroundColor: Colors.white,
       context: context,
-      config: CalendarDatePicker2WithActionButtonsConfig(),
+      config: config,
       dialogSize: const Size(325, 400),
       value: [],
     );
 
     if (selectedDates != null && selectedDates.isNotEmpty) {
-      // แปลงวันที่เป็น String และใส่ใน TextFormField
       final selectedDate = selectedDates.first;
-      final formattedDate = _dateFormat.format(selectedDate!);
+      final formattedDate = _convertToBuddhistEra(selectedDate ?? DateTime.now());
       birthDate.text = formattedDate;
     }
   }
+
+  // String _convertToBuddhistEra(DateTime date) {
+  //   final buddhistYear = date.year + 543;
+  //   return '${date.day}/${date.month}/$buddhistYear'; // รูปแบบ: วัน/เดือน/ปีพ.ศ.
+  // }
+
+  String _convertToBuddhistEra(DateTime date) {
+    final buddhistYear = date.year + 543;
+    return '${date.day}-${date.month}-${buddhistYear}';
+  }
+
+  // String _convertToBuddhistEra(DateTime date) {
+  //   final buddhistYear = date.year + 543;
+  //   final formattedDate = DateFormat('yyyy-dd-MM').format(date);
+  //   return formattedDate.replaceFirst(date.year.toString(), buddhistYear.toString());
+  // }
 
   final _formKey = GlobalKey<FormState>();
 
@@ -90,7 +147,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (value?.isEmpty ?? true) {
                         return 'กรุณากรอกชื่อ';
                       }
-                      return null;
                     },
                   ),
                   buildInputField(
@@ -101,24 +157,24 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (value?.isEmpty ?? true) {
                         return 'กรุณากรอกนามสกุล';
                       }
-                      return null;
                     },
                   ),
                   buildInputField(
                     controller: idCard,
                     icon: Icons.credit_card,
                     hint: 'เลขบัตรประชาชน 13 หลัก',
+                    keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
                         return 'กรุณากรอกเลขบัตรประชาชน 13 หลัก';
                       }
-                      return null;
                     },
                   ),
                   buildInputField(
                     controller: birthDate,
                     icon: Icons.calendar_today,
-                    hint: 'วว-ดด-ปปปป',
+                    hint: 'ปปปป-ดด-วว',
+                    keyboardType: TextInputType.datetime,
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
                         return 'กรุณากรอกวันเดือนปี';
@@ -134,14 +190,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (value?.isEmpty ?? true) {
                         return 'กรุณากรอกเบอร์โทร';
                       }
-                      return null;
                     },
                     keyboardType: TextInputType.phone,
                   ),
                   SizedBox(
                     height: size.height * 0.03,
                   ),
-                  SizedBox(
+                  Container(
+                    color: kBackgroundColor,
                     width: double.infinity,
                     child: OutlinedButton(
                       onPressed: () {
@@ -186,7 +242,6 @@ class _RegisterPageState extends State<RegisterPage> {
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
-          // labelText: label,
           hintText: hint ?? '',
           prefixIcon: controller == birthDate
               ? GestureDetector(
@@ -201,18 +256,80 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
         keyboardType: keyboardType,
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly,
-          LengthLimitingTextInputFormatter(13),
-        ],
         validator: validator,
+        inputFormatters: controller == idCard
+            ? [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(13),
+                IdCardFormatter(),
+              ]
+            : controller == birthDate
+                ? [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9/]')),
+                    LengthLimitingTextInputFormatter(10),
+                    DateFormatter(),
+                  ]
+                : controller == phone
+                    ? [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(10),
+                        PhoneNumberFormatter(),
+                      ]
+                    : [],
       ),
     );
   }
 }
-//  (value) {
-//           if (value?.isEmpty ?? true) {
-//             return 'กรุณากรอกจำนวนรายการ';
-//           }
-//           return null;
-//         },
+
+class IdCardFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    String text = newValue.text.replaceAll(RegExp(r'\D'), '');
+    if (text.length > 13) text = text.substring(0, 13);
+    return TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
+  }
+}
+
+class DateFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    String text = newValue.text.replaceAll(RegExp(r'\D'), '');
+    String formatted = '';
+    for (int i = 0; i < text.length; i++) {
+      if (i == 4 || i == 6) formatted += '-';
+      formatted += text[i];
+    }
+    if (formatted.length > 10) formatted = formatted.substring(0, 10);
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: formatted.length),
+    );
+  }
+}
+
+class PhoneNumberFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    String text = newValue.text.replaceAll(RegExp(r'\D'), ''); // ลบตัวที่ไม่ใช่ตัวเลข
+    String formatted = '';
+
+    for (int i = 0; i < text.length; i++) {
+      if (i == 3) {
+        formatted += '-';
+      } else if (i == 6) {
+        formatted += '-';
+      }
+      formatted += text[i];
+    }
+
+    if (formatted.length > 13) formatted = formatted.substring(0, 13);
+
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: formatted.length),
+    );
+  }
+}

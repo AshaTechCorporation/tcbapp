@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pinput/pinput.dart';
+import 'package:tcbapp/WidgetHub/dialog/dialogYesNo.dart';
 import 'package:tcbapp/constants.dart';
+import 'package:tcbapp/home/firstPage.dart';
 import 'package:tcbapp/pin/confirmpin.dart';
 
 class PinPage extends StatefulWidget {
-  const PinPage({super.key});
+  PinPage({super.key, required this.check});
 
   @override
   State<PinPage> createState() => _PinPageState();
+  bool check;
 }
 
 class _PinPageState extends State<PinPage> {
@@ -87,6 +90,40 @@ class _PinPageState extends State<PinPage> {
                 });
               },
               readOnly: true,
+            ),
+            SizedBox(height: 40),
+
+            Visibility(
+              visible: !widget.check == false,
+              child: GestureDetector(
+                onTap: () async {
+                  final ok = await showDialog(
+                      context: context,
+                      builder: (context) => Dialogyesno(
+                            title: 'แจ้งเตือน',
+                            description: 'คุณต้องการยกเลิกการตั้ง รหัส Pin หรือไม่',
+                            pressYes: () {
+                              Navigator.pop(context, true);
+                            },
+                            pressNo: () {
+                              Navigator.pop(context);
+                            },
+                            bottomNameYes: 'ตกลง',
+                            bottomNameNo: 'ยกเลิก',
+                          ));
+                  if (ok == true) {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => FirstPage(),
+                      ),
+                    );
+                  }
+                },
+                child: Text(
+                  "ยกเลิกการตั้งรหัส Pin ",
+                  style: TextStyle(fontSize: 18, color: textColor),
+                ),
+              ),
             ),
 
             SizedBox(height: 40),

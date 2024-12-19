@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/firstPage.dart';
 import 'package:tcbapp/pin/pinPage.dart';
@@ -20,7 +21,10 @@ class _OtppageState extends State<Otppage> {
       // ถ้าข้อมูลครบถ้วน
       String otpCode = _otpControllers.map((controller) => controller.text).join();
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => PinPage()),
+        MaterialPageRoute(
+            builder: (context) => PinPage(
+                  check: false,
+                )),
       );
     } else {
       print("กรุณากรอก OTP ให้ครบ");
@@ -57,7 +61,7 @@ class _OtppageState extends State<Otppage> {
               ),
               SizedBox(height: 8),
               Text(
-                'รหัส OTP จะส่งไปที่เบอร์โทร +99****644_',
+                'รหัส OTP จะส่งไปที่เบอร์โทร +99****644',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.white,
@@ -172,6 +176,7 @@ class _OtppageState extends State<Otppage> {
                   onPressed: () {},
                   child: Text(
                     'ส่งใหม่',
+                    style: TextStyle(color: kBackgroundColor),
                   ),
                 ),
               ),
@@ -192,7 +197,7 @@ class _OtppageState extends State<Otppage> {
                 ),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: kBackgroundColor2,
+                    backgroundColor: kBackgroundColor,
                     // side: BorderSide(color: textColor),
                     padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
                     shape: RoundedRectangleBorder(

@@ -12,6 +12,9 @@ MedicalHistory _$MedicalHistoryFromJson(Map<String, dynamic> json) =>
       json['diagnosis_date'] as String?,
       json['icd10_text'] as String?,
       json['hospital_code'] as String?,
+      (json['treatments'] as List<dynamic>?)
+          ?.map((e) => Treatments.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$MedicalHistoryToJson(MedicalHistory instance) =>
@@ -20,4 +23,5 @@ Map<String, dynamic> _$MedicalHistoryToJson(MedicalHistory instance) =>
       'diagnosis_date': instance.diagnosis_date,
       'icd10_text': instance.icd10_text,
       'hospital_code': instance.hospital_code,
+      'treatments': instance.treatments,
     };

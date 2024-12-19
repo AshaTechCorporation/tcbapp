@@ -9,6 +9,7 @@ import 'package:tcbapp/WidgetHub/dialog/dialogYesNo.dart';
 import 'package:tcbapp/WidgetHub/dialog/dialogyes.dart';
 import 'package:tcbapp/home/widgets/CardItem.dart';
 import 'package:tcbapp/model/medicalHistory.dart';
+import 'package:tcbapp/model/visitedHospitals.dart';
 import 'package:tcbapp/register/registerPage.dart';
 import 'package:tcbapp/service/ProjectController.dart';
 import 'package:tcbapp/utils/apiException.dart';
@@ -21,7 +22,7 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  MedicalHistory? selectedValue;
+  VisitedHospitals? selectedValue;
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -125,11 +126,11 @@ class _HistoryPageState extends State<HistoryPage> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(
-                          color: kBackgroundColor2,
+                          color: kBackgroundColor,
                         ),
                       ),
                       padding: EdgeInsets.all(8),
-                      child: DropdownSearch<MedicalHistory>(
+                      child: DropdownSearch<VisitedHospitals>(
                         selectedItem: selectedValue,
                         items: treatmenthistory!,
                         itemAsString: (item) => item.hospital_name ?? '',
@@ -164,7 +165,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             ),
                           ),
                         ),
-                        onChanged: (MedicalHistory? va) {
+                        onChanged: (VisitedHospitals? va) {
                           setState(() {
                             selectedValue = va;
                           });
@@ -190,11 +191,9 @@ class _HistoryPageState extends State<HistoryPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      _scrollController.animateTo(
-                        0, // เลื่อนไปที่ตำแหน่งเริ่มต้น
-                        duration: Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
+                      setState(() {
+                        cardItems = cardItems.reversed.toList();
+                      });
                     },
                     child: Stack(
                       children: [
@@ -213,7 +212,7 @@ class _HistoryPageState extends State<HistoryPage> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Icon(Icons.arrow_upward_rounded, size: size.height * 0.03, color: kBackgroundColor2),
+                            child: Icon(Icons.arrow_upward_rounded, size: size.height * 0.03, color: kBackgroundColor),
                           ),
                         ),
                       ],
@@ -224,16 +223,17 @@ class _HistoryPageState extends State<HistoryPage> {
               Expanded(
                 child: ListView.builder(
                   controller: _scrollController,
-                  itemCount: medicalHistorys!.length,
+                  itemCount: medicalHistorys?.length ?? 0,
                   itemBuilder: (context, index) {
-                    final item = cardItems[index];
+                    final item = medicalHistorys?[index];
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                       child: CardItem(
-                        date: medicalHistorys[index].diagnosis_date ?? '-',
-                        hospital: medicalHistorys[index].hospital_name ?? '',
-                        diagnosis: medicalHistorys[index].icd10_text ?? '',
+                        date: item?.diagnosis_date ?? '-',
+                        hospital: item?.hospital_name ?? '',
+                        diagnosis: item?.icd10_text ?? '',
                         size: size,
+                        medicalHistorys: medicalHistorys?[index].treatments,
                       ),
                     );
                   },

@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:tcbapp/constants.dart';
+import 'package:tcbapp/model/medicalHistory.dart';
+import 'package:tcbapp/model/treatments.dart';
 
 class CardItem extends StatefulWidget {
   final String date;
   final String hospital;
   final String diagnosis;
+  final List<Treatments>? medicalHistorys;
 
   final Size size;
 
-  CardItem({
-    super.key,
-    required this.date,
-    required this.hospital,
-    required this.diagnosis,
-    required this.size,
-  });
+  CardItem({super.key, required this.date, required this.hospital, required this.diagnosis, required this.size, required this.medicalHistorys});
 
   @override
   State<CardItem> createState() => _CardItemState();
@@ -35,6 +32,13 @@ class _CardItemState extends State<CardItem> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                'วันที่ให้บริการล่าสุด',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 5,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -99,7 +103,27 @@ class _CardItemState extends State<CardItem> {
                   ),
                 ],
               ),
-              SizedBox(height: 5),
+              Text(
+                'วิธีการรักษา',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  children: List.generate(
+                    widget.medicalHistorys?.length ?? 0,
+                    (index) => Row(
+                      children: [
+                        Text('${widget.medicalHistorys?[index].icd10_code}'),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text('${widget.medicalHistorys?[index].treatment_code}'),
+                      ],
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),

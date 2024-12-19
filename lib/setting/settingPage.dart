@@ -48,21 +48,28 @@ class _SettingPageState extends State<SettingPage> {
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () async {
                 final ok = await showDialog(
-                    context: context,
-                    builder: (context) => Dialogyesno(
-                          title: 'แจ้งเตือน',
-                          description: 'คุณต้องการเปลี่ยนรหัสพินใช่หรือไม่',
-                          pressYes: () {
-                            Navigator.pop(context, true);
-                          },
-                          pressNo: () {
-                            Navigator.pop(context);
-                          },
-                          bottomNameYes: 'ตกลง',
-                          bottomNameNo: 'ยกเลิก',
-                        ));
+                  context: context,
+                  builder: (context) => Dialogyesno(
+                    title: 'แจ้งเตือน',
+                    description: 'คุณต้องการเปลี่ยนรหัส Pin ใช่หรือไม่',
+                    pressYes: () {
+                      Navigator.pop(context, true);
+                    },
+                    pressNo: () {
+                      Navigator.pop(context);
+                    },
+                    bottomNameYes: 'ตกลง',
+                    bottomNameNo: 'ยกเลิก',
+                  ),
+                );
                 if (ok == true) {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PinPage()));
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => PinPage(
+                        check: true,
+                      ),
+                    ),
+                  );
                 }
               },
             ),
@@ -103,7 +110,7 @@ class _SettingPageState extends State<SettingPage> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF00CFCF),
+                    backgroundColor: kBackgroundColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),

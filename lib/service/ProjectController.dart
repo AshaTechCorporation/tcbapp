@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tcbapp/model/medicalHistory.dart';
 import 'package:tcbapp/model/patientHistory.dart';
+import 'package:tcbapp/model/visitedHospitals.dart';
 import 'package:tcbapp/service/ProjectService.dart';
 
 class ProjectController extends ChangeNotifier {
@@ -12,8 +13,8 @@ class ProjectController extends ChangeNotifier {
 
   PatientHistory? patientHistory;
 
-  List<MedicalHistory>? treatmentHistorys = [];
-  MedicalHistory? treatmentHistory;
+  List<VisitedHospitals>? treatmentHistorys = [];
+  VisitedHospitals? treatmentHistory;
 
   getMedicalHistorys() async {
     medicalHistorys?.clear();

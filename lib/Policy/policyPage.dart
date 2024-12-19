@@ -21,7 +21,7 @@ class _PolicypageState extends State<Policypage> {
     return Scaffold(
       backgroundColor: textColor,
       appBar: AppBar(
-        backgroundColor: kBackgroundColor2,
+        backgroundColor: kBackgroundColor,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -30,17 +30,18 @@ class _PolicypageState extends State<Policypage> {
         ),
       ),
       body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(formatMessage(message)),
-              )
-            ],
-          )),
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(formatMessage(message)),
+            )
+          ],
+        ),
+      ),
       bottomNavigationBar: Container(
-        height: size.height * 0.2,
+        height: size.height * 0.15,
         decoration: BoxDecoration(
           color: textColor,
           boxShadow: [
@@ -56,7 +57,7 @@ class _PolicypageState extends State<Policypage> {
           Row(
             children: [
               Checkbox(
-                activeColor: kBackgroundColor2,
+                activeColor: kBackgroundColor,
                 value: isChecked,
                 onChanged: (value) {
                   setState(() {
@@ -109,7 +110,7 @@ class _PolicypageState extends State<Policypage> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    color: isChecked == true ? kBackgroundColor2 : kBackgroundColor4,
+                    color: isChecked == true ? kBackgroundColor : kBackgroundColor4,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.2),
