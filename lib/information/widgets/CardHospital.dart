@@ -27,8 +27,8 @@ class _CardHospitalState extends State<CardHospital> {
             BoxShadow(
               color: textColor2.withOpacity(0.2),
               spreadRadius: 2,
-              blurRadius: 8,
-              offset: Offset(0, 4),
+              blurRadius: 5,
+              offset: Offset(0, 2),
             ),
           ],
         ),
