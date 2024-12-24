@@ -84,6 +84,7 @@ class _InformationPageState extends State<InformationPage> {
     return Scaffold(
       backgroundColor: kBackgroundColor3,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: kBackgroundColor,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -16,6 +16,7 @@ class _AdvicePageState extends State<AdvicePage> {
     return Scaffold(
       backgroundColor: kBackgroundColor3,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: kBackgroundColor,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

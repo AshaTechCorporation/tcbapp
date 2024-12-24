@@ -91,6 +91,7 @@ class _HistoryPageState extends State<HistoryPage> {
     return Scaffold(
       backgroundColor: kBackgroundColor3,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: kBackgroundColor,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

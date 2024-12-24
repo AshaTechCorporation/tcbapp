@@ -21,7 +21,7 @@ class _ConfirmpinState extends State<Confirmpin> {
   List<String> enteredPin = [];
 
   void _onSubmit() {
-    if (_pinController.text.length == 4) {
+    if (_pinController.text.length == 6) {
       if (_pinController.text == widget.pin) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -80,7 +80,7 @@ class _ConfirmpinState extends State<Confirmpin> {
                 ),
               ),
               controller: _pinController,
-              length: 4,
+              length: 6,
               showCursor: false,
               onChanged: (value) {
                 setState(() {
@@ -90,7 +90,7 @@ class _ConfirmpinState extends State<Confirmpin> {
               onCompleted: (pin) {
                 setState(() {
                   _pin = pin;
-                  if (_pinController.text.length == 4) {
+                  if (_pinController.text.length == 6) {
                     _onSubmit();
                   }
                 });
@@ -177,7 +177,7 @@ class _ConfirmpinState extends State<Confirmpin> {
                 }
               } else if (value.isNotEmpty) {
                 // เพิ่มตัวเลขในช่อง
-                if (_pinController.text.length < 4) {
+                if (_pinController.text.length < 6) {
                   setState(() {
                     _pinController.text += value;
                   });

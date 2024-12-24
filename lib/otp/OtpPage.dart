@@ -45,13 +45,24 @@ class _OtppageState extends State<Otppage> {
         await RegisterService.verifyOTP(
             otpCode, widget.refno, widget.fname, widget.lname, widget.cid, widget.date, widget.phone, widget.device_no, widget.notify_token);
         LoadingDialog.close(context);
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-                builder: (context) => PinPage(
-                      check: false,
-                    )),
-            (route) => true);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return PinPage(
+                check: false,
+              );
+            },
+          ),
+        );
+        // Navigator.pushAndRemoveUntil(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) => PinPage(
+        //             check: false,
+        //           )),
+        //   (route) => true,
+        // );
       } on Exception catch (e) {
         if (!mounted) return;
         LoadingDialog.close(context);
@@ -104,6 +115,14 @@ class _OtppageState extends State<Otppage> {
               SizedBox(height: 8),
               Text(
                 'รหัส OTP จะส่งไปที่เบอร์โทร ${formatPhoneNumber(widget.phone)}',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                'Refno(${widget.refno})',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.white,

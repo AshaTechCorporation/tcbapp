@@ -22,7 +22,7 @@ class _PinPageState extends State<PinPage> {
   // ฟังก์ชันตรวจสอบ PIN
   void _onSubmit() {
     // print(_pinController.text);
-    if (_pinController.text.length == 4) {
+    if (_pinController.text.length == 6) {
       // ย้ายไปหน้า Confirm PIN
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
@@ -74,7 +74,7 @@ class _PinPageState extends State<PinPage> {
                 ),
               ),
               controller: _pinController,
-              length: 4,
+              length: 6,
               showCursor: false,
               onChanged: (value) {
                 setState(() {
@@ -84,7 +84,7 @@ class _PinPageState extends State<PinPage> {
               onCompleted: (pin) {
                 setState(() {
                   _pin = pin;
-                  if (_pinController.text.length == 4) {
+                  if (_pinController.text.length == 6) {
                     _onSubmit();
                   }
                 });
@@ -176,7 +176,7 @@ class _PinPageState extends State<PinPage> {
                   });
                 }
               } else if (value.isNotEmpty) {
-                if (_pinController.text.length < 4) {
+                if (_pinController.text.length < 6) {
                   setState(() {
                     _pinController.text += value;
                   });
