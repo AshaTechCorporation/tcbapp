@@ -128,7 +128,7 @@ class _InformationPageState extends State<InformationPage> {
                               style: TextStyle(color: textColor2, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              patientHistory?.full_name ?? '',
+                              patientHistory?.full_name ?? '-',
                               style: TextStyle(color: textColor2),
                             ),
                           ],
@@ -142,7 +142,7 @@ class _InformationPageState extends State<InformationPage> {
                               style: TextStyle(color: textColor2, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              patientHistory?.sex_name ?? '',
+                              patientHistory?.sex_name ?? '-',
                               style: TextStyle(color: textColor2),
                             ),
                           ],
@@ -157,7 +157,7 @@ class _InformationPageState extends State<InformationPage> {
                             ),
                             Text(
                               formatNationalID(
-                                patientHistory?.cid ?? '',
+                                patientHistory?.cid ?? '-',
                               ),
                               style: TextStyle(color: textColor2),
                             ),
@@ -234,34 +234,39 @@ class _InformationPageState extends State<InformationPage> {
               SizedBox(
                 height: 15,
               ),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: size.width * 0.1,
-                      ),
-                      Text(
-                        'โรงพยาบาลที่เคยเข้าการรักษา',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: size.height * 0.4,
-                    width: size.width * 0.85,
-                    child: ListView.builder(
-                      itemCount: treatmenthistory?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        return CardHospital(
-                          size: size,
-                          hospitalname: treatmenthistory?[index].hospital_name,
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              )
+              treatmenthistory!.isNotEmpty
+                  ? Column(
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: size.width * 0.1,
+                            ),
+                            Text(
+                              'โรงพยาบาลที่เคยเข้าการรักษา',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: size.height * 0.4,
+                          width: size.width * 0.85,
+                          child: ListView.builder(
+                            itemCount: treatmenthistory?.length ?? 0,
+                            itemBuilder: (context, index) {
+                              return CardHospital(
+                                size: size,
+                                hospitalname: treatmenthistory?[index].hospital_name,
+                              );
+                            },
+                          ),
+                        )
+                      ],
+                    )
+                  : Text(
+                      'ไม่มีโรงพยาบาลที่เข้ารับการรักษา',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black45),
+                    )
             ],
           );
         },

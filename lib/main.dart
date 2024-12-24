@@ -1,7 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:tcbapp/firebase_options.dart';
 import 'package:tcbapp/home/firstPage.dart';
 import 'package:tcbapp/home/homePage.dart';
 import 'package:tcbapp/policy/policyPage.dart';
@@ -10,6 +13,13 @@ import 'package:tcbapp/service/ProjectController.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  OneSignal.initialize('bf2534c7-5047-4ffb-924f-e614cae776f0');
+  OneSignal.Notifications.requestPermission(true);
   runApp(MyApp());
 }
 

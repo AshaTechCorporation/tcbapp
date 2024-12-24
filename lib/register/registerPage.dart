@@ -1,10 +1,20 @@
+import 'dart:developer';
+import 'dart:io';
+import 'dart:math';
+
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tcbapp/WidgetHub/dialog/dialogyes.dart';
+import 'package:tcbapp/WidgetHub/dialog/loadingDialog.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/firstPage.dart';
 import "package:intl/intl.dart";
 import 'package:tcbapp/otp/OtpPage.dart';
+import 'package:tcbapp/register/registerService.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -22,47 +32,72 @@ class _RegisterPageState extends State<RegisterPage> {
 
   // final DateFormat _dateFormat = DateFormat('dd-MM-yyyy');
 
+  String device_no = '';
+  String dateSentApi = '';
+  String notify_token = '';
+
+  void getdeviceId() async {
+    final deviceInfo = DeviceInfoPlugin();
+
+    if (Platform.isAndroid) {
+      // ดึงข้อมูล Android ID
+      final androidInfo = await deviceInfo.androidInfo;
+      device_no = androidInfo.id;
+    } else if (Platform.isIOS) {
+      // ดึงข้อมูล Identifier for Vendor (iOS)
+      final iosInfo = await deviceInfo.iosInfo;
+      // print('iOS Identifier: ${iosInfo.identifierForVendor}');
+    }
+  }
+
+  void getToken() async {
+    var playerId = OneSignal.User.pushSubscription.id;
+    inspect(playerId);
+    notify_token = playerId!;
+  }
+
   Future<void> _afterselectDate(BuildContext context) async {
     final config = CalendarDatePicker2WithActionButtonsConfig(
-      calendarType: CalendarDatePicker2Type.single,
-      selectedDayHighlightColor: kBackgroundColor,
-      dayTextStylePredicate: ({required DateTime date}) {
-        return TextStyle(
-          fontSize: 14,
-          color: Colors.black,
-          fontWeight: FontWeight.normal,
-        );
-      },
-      yearBuilder: ({required int year, TextStyle? textStyle, bool? isDisabled, bool? isSelected, bool? isCurrentYear, BoxDecoration? decoration}) {
-        final buddhistYear = year + 543; // แปลงปี ค.ศ. เป็น พ.ศ.
-        return Center(
-          child: Text(
-            '$buddhistYear',
-            style: textStyle,
-          ),
-        );
-      },
-      // ปรับแต่งข้อความสำหรับตัวเลือกเดือน/ปี
-      modePickerTextHandler: ({required DateTime monthDate}) {
-        final buddhistYear = monthDate.year + 543; // แปลงปี ค.ศ. เป็น พ.ศ.
-        final monthNames = [
-          "มกราคม",
-          "กุมภาพันธ์",
-          "มีนาคม",
-          "เมษายน",
-          "พฤษภาคม",
-          "มิถุนายน",
-          "กรกฎาคม",
-          "สิงหาคม",
-          "กันยายน",
-          "ตุลาคม",
-          "พฤศจิกายน",
-          "ธันวาคม"
-        ];
-        final monthName = monthNames[monthDate.month - 1];
-        return "$monthName พ.ศ. $buddhistYear";
-      },
-    );
+        calendarType: CalendarDatePicker2Type.single,
+        selectedDayHighlightColor: kBackgroundColor,
+        dayTextStylePredicate: ({required DateTime date}) {
+          return TextStyle(
+            fontSize: 14,
+            color: Colors.black,
+            fontWeight: FontWeight.normal,
+          );
+        },
+        yearBuilder: ({required int year, TextStyle? textStyle, bool? isDisabled, bool? isSelected, bool? isCurrentYear, BoxDecoration? decoration}) {
+          final buddhistYear = year + 543; // แปลงปี ค.ศ. เป็น พ.ศ.
+          return Center(
+            child: Text(
+              '$buddhistYear',
+              style: textStyle,
+            ),
+          );
+        },
+        // ปรับแต่งข้อความสำหรับตัวเลือกเดือน/ปี
+        modePickerTextHandler: ({required DateTime monthDate}) {
+          final buddhistYear = monthDate.year + 543; // แปลงปี ค.ศ. เป็น พ.ศ.
+          final monthNames = [
+            "มกราคม",
+            "กุมภาพันธ์",
+            "มีนาคม",
+            "เมษายน",
+            "พฤษภาคม",
+            "มิถุนายน",
+            "กรกฎาคม",
+            "สิงหาคม",
+            "กันยายน",
+            "ตุลาคม",
+            "พฤศจิกายน",
+            "ธันวาคม"
+          ];
+          final monthName = monthNames[monthDate.month - 1];
+          return "$monthName พ.ศ. $buddhistYear";
+        },
+        firstDate: DateTime(1959),
+        lastDate: DateTime.now());
 
     final selectedDates = await showCalendarDatePicker2Dialog(
       dialogBackgroundColor: Colors.white,
@@ -75,7 +110,9 @@ class _RegisterPageState extends State<RegisterPage> {
     if (selectedDates != null && selectedDates.isNotEmpty) {
       final selectedDate = selectedDates.first;
       final formattedDate = _convertToBuddhistEra(selectedDate ?? DateTime.now());
+      final formatttedDateapi = _convertToapi(selectedDate ?? DateTime.now());
       birthDate.text = formattedDate;
+      dateSentApi = formatttedDateapi;
     }
   }
 
@@ -86,7 +123,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String _convertToBuddhistEra(DateTime date) {
     final buddhistYear = date.year + 543;
-    return '${date.day}-${date.month}-${buddhistYear}';
+    final day = date.day.toString().padLeft(2, '0'); // เติม 0 ให้เป็นเลข 2 หลัก
+    final month = date.month.toString().padLeft(2, '0'); // เติม 0 ให้เป็นเลข 2 หลัก
+    return '$day-$month-$buddhistYear';
+  }
+
+  String _convertToapi(DateTime date) {
+    final day = date.day.toString().padLeft(2, '0'); // เติม 0 ให้เป็นเลข 2 หลัก
+    final month = date.month.toString().padLeft(2, '0'); // เติม 0 ให้เป็นเลข 2 หลัก
+    return '${date.year}-$month-$day';
   }
 
   // String _convertToBuddhistEra(DateTime date) {
@@ -96,6 +141,12 @@ class _RegisterPageState extends State<RegisterPage> {
   // }
 
   final _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    super.initState();
+    getdeviceId();
+    getToken();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +224,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   buildInputField(
                     controller: birthDate,
                     icon: Icons.calendar_today,
-                    hint: 'ปปปป-ดด-วว',
+                    hint: 'วว-ดด-ปปปป',
                     keyboardType: TextInputType.datetime,
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
@@ -200,9 +251,48 @@ class _RegisterPageState extends State<RegisterPage> {
                     color: kBackgroundColor,
                     width: double.infinity,
                     child: OutlinedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Otppage()));
+                          try {
+                            LoadingDialog.open(context);
+                            final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+                            final SharedPreferences prefs = await _prefs;
+                            await prefs.setString('domain', publicUrl);
+                            final refno = await RegisterService.register(name.text, surname.text, idCard.text, dateSentApi, phone.text, device_no);
+                            print(refno['data']);
+                            if (!mounted) return;
+                            LoadingDialog.close(context);
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Otppage(
+                                        fname: name.text,
+                                        lname: surname.text,
+                                        cid: idCard.text,
+                                        date: dateSentApi,
+                                        phone: phone.text,
+                                        device_no: device_no,
+                                        notify_token: notify_token,
+                                        refno: refno['data'],
+                                      )),
+                              (route) => true,
+                            );
+                          } on Exception catch (e) {
+                            if (!mounted) return;
+                            LoadingDialog.close(context);
+                            showDialog(
+                              context: context,
+                              builder: (context) => Dialogyes(
+                                title: 'แจ้งเตือน',
+                                description: '$e',
+                                pressYes: () {
+                                  Navigator.pop(context);
+                                },
+                                bottomNameYes: 'ตกลง',
+                              ),
+                            );
+                          }
+                          // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Otppage()));
                         }
                       },
                       style: OutlinedButton.styleFrom(
@@ -284,11 +374,29 @@ class _RegisterPageState extends State<RegisterPage> {
 class IdCardFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    // เอาตัวอักษรที่ไม่ใช่ตัวเลขออก
     String text = newValue.text.replaceAll(RegExp(r'\D'), '');
+
+    // จำกัดความยาวสูงสุด 13 ตัวอักษร
     if (text.length > 13) text = text.substring(0, 13);
+
+    // ฟอร์แมตให้อยู่ในรูปแบบ 1-0000-00001-99-9
+    String formattedText = '';
+    if (text.isNotEmpty) {
+      final buffer = StringBuffer();
+      for (int i = 0; i < text.length; i++) {
+        buffer.write(text[i]);
+        // เพิ่ม '-' ตามตำแหน่งที่กำหนด
+        if (i == 0 || i == 4 || i == 9 || i == 11) {
+          if (i != text.length - 1) buffer.write('-');
+        }
+      }
+      formattedText = buffer.toString();
+    }
+
     return TextEditingValue(
-      text: text,
-      selection: TextSelection.collapsed(offset: text.length),
+      text: formattedText,
+      selection: TextSelection.collapsed(offset: formattedText.length), // เลื่อนตำแหน่งเคอร์เซอร์ไปท้ายสุด
     );
   }
 }
@@ -299,7 +407,7 @@ class DateFormatter extends TextInputFormatter {
     String text = newValue.text.replaceAll(RegExp(r'\D'), '');
     String formatted = '';
     for (int i = 0; i < text.length; i++) {
-      if (i == 4 || i == 6) formatted += '-';
+      if (i == 2 || i == 4) formatted += '-';
       formatted += text[i];
     }
     if (formatted.length > 10) formatted = formatted.substring(0, 10);
@@ -313,23 +421,13 @@ class DateFormatter extends TextInputFormatter {
 class PhoneNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    String text = newValue.text.replaceAll(RegExp(r'\D'), ''); // ลบตัวที่ไม่ใช่ตัวเลข
-    String formatted = '';
+    String text = newValue.text.replaceAll(RegExp(r'\D'), '');
 
-    for (int i = 0; i < text.length; i++) {
-      if (i == 3) {
-        formatted += '-';
-      } else if (i == 6) {
-        formatted += '-';
-      }
-      formatted += text[i];
-    }
-
-    if (formatted.length > 13) formatted = formatted.substring(0, 13);
+    if (text.length > 10) text = text.substring(0, 10);
 
     return TextEditingValue(
-      text: formatted,
-      selection: TextSelection.collapsed(offset: formatted.length),
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
     );
   }
 }

@@ -1,31 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_launcher_icons/xml_templates.dart';
+import 'package:tcbapp/WidgetHub/dialog/dialogyes.dart';
+import 'package:tcbapp/WidgetHub/dialog/loadingDialog.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/firstPage.dart';
 import 'package:tcbapp/pin/pinPage.dart';
+import 'package:tcbapp/register/registerService.dart';
 
 class Otppage extends StatefulWidget {
-  const Otppage({super.key});
+  Otppage({
+    super.key,
+    required this.fname,
+    required this.lname,
+    required this.cid,
+    required this.date,
+    required this.phone,
+    required this.device_no,
+    required this.notify_token,
+    required this.refno,
+  });
 
   @override
   State<Otppage> createState() => _OtppageState();
+  String fname;
+  String lname;
+  String cid;
+  String date;
+  String phone;
+  String device_no;
+  String notify_token;
+  String refno;
 }
 
 class _OtppageState extends State<Otppage> {
   final _formKey = GlobalKey<FormState>();
-  final List<TextEditingController> _otpControllers = List.generate(4, (_) => TextEditingController());
+  final List<TextEditingController> _otpControllers = List.generate(6, (_) => TextEditingController());
 
-  void _validateAndSubmit() {
+  void _validateAndSubmit() async {
     if (_formKey.currentState!.validate()) {
+      try {
+        LoadingDialog.open(context);
+        String otpCode = _otpControllers.map((controller) => controller.text).join();
+        await RegisterService.verifyOTP(
+            otpCode, widget.refno, widget.fname, widget.lname, widget.cid, widget.date, widget.phone, widget.device_no, widget.notify_token);
+        LoadingDialog.close(context);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PinPage(
+                      check: false,
+                    )),
+            (route) => true);
+      } on Exception catch (e) {
+        if (!mounted) return;
+        LoadingDialog.close(context);
+        showDialog(
+          context: context,
+          builder: (context) => Dialogyes(
+            title: 'แจ้งเตือน',
+            description: '$e',
+            pressYes: () {
+              Navigator.pop(context);
+            },
+            bottomNameYes: 'ตกลง',
+          ),
+        );
+      }
       // ถ้าข้อมูลครบถ้วน
-      String otpCode = _otpControllers.map((controller) => controller.text).join();
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-            builder: (context) => PinPage(
-                  check: false,
-                )),
-      );
     } else {
       print("กรุณากรอก OTP ให้ครบ");
     }
@@ -61,7 +103,7 @@ class _OtppageState extends State<Otppage> {
               ),
               SizedBox(height: 8),
               Text(
-                'รหัส OTP จะส่งไปที่เบอร์โทร +99****644',
+                'รหัส OTP จะส่งไปที่เบอร์โทร ${formatPhoneNumber(widget.phone)}',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.white,
@@ -74,11 +116,11 @@ class _OtppageState extends State<Otppage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: List.generate(
-                    4,
+                    6,
                     (index) {
                       return SizedBox(
                         height: size.height * 0.1,
-                        width: size.height * 0.08,
+                        width: size.height * 0.05,
                         child: TextFormField(
                           controller: _otpControllers[index],
                           style: TextStyle(
@@ -120,8 +162,10 @@ class _OtppageState extends State<Otppage> {
                             return null;
                           },
                           onChanged: (value) {
-                            if (value.length == 1 && index < 3) {
+                            if (value.length == 1 && index < 5) {
                               FocusScope.of(context).nextFocus();
+                            } else if (value.isEmpty && index > 0) {
+                              FocusScope.of(context).previousFocus();
                             }
                           },
                         ),
@@ -217,4 +261,14 @@ class _OtppageState extends State<Otppage> {
       ),
     );
   }
+}
+
+String formatPhoneNumber(String phone) {
+  if (phone.length >= 7) {
+    String prefix = '***';
+    //  phone.substring(0, 3); // +99
+    String suffix = phone.substring(phone.length - 3);
+    return '+99$prefix****$suffix';
+  }
+  return phone;
 }

@@ -15,7 +15,7 @@ class ProjectService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     var headers = {'Authorization': 'Bearer $token', 'Content-Type': 'application/json'};
-    final url = Uri.https(publicUrl, '/api/app/cancer', {'cid': '1000000005999'});
+    final url = Uri.https(publicUrl, '/api/app/cancer', {'cid': '1-0000-01986-99-9'});
     final response = await http.get(url, headers: headers);
     if (response.statusCode == 200 || response.statusCode == 201) {
       final data = convert.jsonDecode(response.body);
@@ -35,7 +35,7 @@ class ProjectService {
     final response = await http.get(url, headers: headers);
     if (response.statusCode == 200 || response.statusCode == 201) {
       final data = convert.jsonDecode(response.body);
-      return PatientHistory.fromJson(data['data']);
+      return PatientHistory.fromJson(data);
     } else {
       final data = convert.jsonDecode(response.body);
       throw ApiException(data['message']);

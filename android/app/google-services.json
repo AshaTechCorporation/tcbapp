@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "252002021046",
+    "project_id": "tcbapp-b4581",
+    "storage_bucket": "tcbapp-b4581.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252002021046:android:42e11018ea30bb7f458017",
+        "android_client_info": {
+          "package_name": "com.example.tcbapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4B03bUbq41PThHydd81GK_bbMYatw1lo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

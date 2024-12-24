@@ -43,7 +43,7 @@ class _DialogyesState extends State<Dialogyes> {
               onTap: widget.pressYes,
               child: Text(
                 widget.bottomNameYes,
-                style: TextStyle(fontSize: 18, color: kBackgroundColor2),
+                style: TextStyle(fontSize: 18, color: kBackgroundColor),
               ),
             ),
           ],
