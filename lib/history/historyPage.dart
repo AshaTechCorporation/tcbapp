@@ -2,7 +2,9 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcbapp/WidgetHub/dialog/loadingDialog.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/WidgetHub/dialog/dialogYesNo.dart';
@@ -15,15 +17,20 @@ import 'package:tcbapp/service/ProjectController.dart';
 import 'package:tcbapp/utils/apiException.dart';
 
 class HistoryPage extends StatefulWidget {
-  const HistoryPage({super.key});
+  HistoryPage({
+    super.key,
+  });
 
   @override
   State<HistoryPage> createState() => _HistoryPageState();
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   VisitedHospitals? selectedValue;
   final ScrollController _scrollController = ScrollController();
+
+  String cid = '';
 
   @override
   void dispose() {
@@ -36,15 +43,49 @@ class _HistoryPageState extends State<HistoryPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await getPrefs();
       await getapi();
     });
+  }
+
+  getPrefs() async {
+    final SharedPreferences prefs = await _prefs;
+    final cids = prefs.getString('cid');
+    setState(() {
+      cid = cids ?? '';
+    });
+  }
+
+  Future<String> formatDiagnosisDate(int index) async {
+    final medicalHistorys = context.read<ProjectController>().medicalHistorys;
+
+    try {
+      // ตรวจสอบว่าค่า diagnosis_date มีหรือไม่
+      final diagnosisDate = medicalHistorys?[index].diagnosis_date;
+
+      if (diagnosisDate == null) {
+        return "ไม่มีข้อมูลวันที่";
+      }
+
+      // แปลง String เป็น DateTime
+      DateTime dateTime = DateTime.parse(diagnosisDate);
+
+      // เพิ่มค่าปีเป็นปี พ.ศ.
+      int buddhistYear = dateTime.year + 543;
+
+      // แปลงวันที่เป็นรูปแบบ "วัน เดือน ปี พ.ศ."
+      String formattedDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
+      return formattedDate;
+    } catch (e) {
+      return "รูปแบบวันที่ไม่ถูกต้อง";
+    }
   }
 
   Future getapi() async {
     try {
       LoadingDialog.open(context);
-      await context.read<ProjectController>().getMedicalHistorys();
-      await context.read<ProjectController>().getlisTreatmenthistory();
+      await context.read<ProjectController>().getMedicalHistorys(cid);
+      await context.read<ProjectController>().getlisTreatmenthistory(cid);
       if (!mounted) return;
       LoadingDialog.close(context);
     } on ClientException catch (e) {
@@ -227,14 +268,27 @@ class _HistoryPageState extends State<HistoryPage> {
                   itemCount: medicalHistorys?.length ?? 0,
                   itemBuilder: (context, index) {
                     final item = medicalHistorys?[index];
+
+                    // ตรวจสอบและแปลง diagnosis_date เป็นวันเดือนปีแบบ พ.ศ.
+                    String formattedDate = '-';
+                    if (item?.diagnosis_date != null) {
+                      try {
+                        DateTime dateTime = DateTime.parse(item!.diagnosis_date!);
+                        int buddhistYear = dateTime.year + 543;
+                        formattedDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
+                      } catch (e) {
+                        formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
+                      }
+                    }
+
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                       child: CardItem(
-                        date: item?.diagnosis_date ?? '-',
+                        date: formattedDate, // ใช้วันที่ที่แปลงแล้ว
                         hospital: item?.hospital_name ?? '',
                         diagnosis: item?.icd10_text ?? '',
                         size: size,
-                        medicalHistorys: medicalHistorys?[index].treatments,
+                        medicalHistorys: item?.treatments,
                       ),
                     );
                   },

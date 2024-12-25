@@ -51,6 +51,7 @@ class _OtppageState extends State<Otppage> {
             builder: (context) {
               return PinPage(
                 check: false,
+                cid: widget.cid,
               );
             },
           ),
@@ -86,20 +87,22 @@ class _OtppageState extends State<Otppage> {
 
   @override
   Widget build(BuildContext context) {
+    double buttonSize = MediaQuery.of(context).size.width * 0.15;
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: size.height,
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xff10497A), Color(0xFF00E0D0)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+    return Container(
+      width: double.infinity,
+      height: size.height * 1,
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xff10497A), Color(0xFF00E0D0)],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
         ),
-        child: SafeArea(
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -197,85 +200,75 @@ class _OtppageState extends State<Otppage> {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, -2),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              height: size.height * 0.07,
-              width: size.width * 0.4,
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    side: BorderSide(color: textColor),
-                    padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
+        bottomNavigationBar: Container(
+          margin: EdgeInsets.all(8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                height: size.height * 0.07,
+                width: size.width * 0.4,
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
                   ),
-                  onPressed: () {},
-                  child: Text(
-                    'ส่งใหม่',
-                    style: TextStyle(color: kBackgroundColor),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      side: BorderSide(color: textColor),
+                      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      'ส่งใหม่',
+                      style: TextStyle(color: kBackgroundColor),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: size.height * 0.07,
-              width: size.width * 0.4,
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: kBackgroundColor,
-                    // side: BorderSide(color: textColor),
-                    padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
+              SizedBox(
+                height: size.height * 0.07,
+                width: size.width * 0.4,
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
                   ),
-                  onPressed: _validateAndSubmit,
-                  child: Text(
-                    'ตกลง',
-                    style: TextStyle(color: textColor),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kBackgroundColor,
+                      // side: BorderSide(color: textColor),
+                      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    onPressed: _validateAndSubmit,
+                    child: Text(
+                      'ตกลง',
+                      style: TextStyle(color: textColor),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcbapp/WidgetHub/dialog/dialogyes.dart';
 import 'package:tcbapp/WidgetHub/dialog/loadingDialog.dart';
 import 'package:tcbapp/WidgetHub/textfiled/InputTextFormField.dart';
@@ -11,18 +12,32 @@ import 'package:tcbapp/service/ProjectController.dart';
 import 'package:tcbapp/utils/apiException.dart';
 
 class InformationPage extends StatefulWidget {
-  const InformationPage({super.key});
+  InformationPage({
+    super.key,
+  });
 
   @override
   State<InformationPage> createState() => _InformationPageState();
 }
 
 class _InformationPageState extends State<InformationPage> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  String cid = '';
+
+  getPrefs() async {
+    final SharedPreferences prefs = await _prefs;
+    final cids = prefs.getString('cid');
+    setState(() {
+      cid = cids ?? '';
+    });
+  }
+
   Future getapi() async {
     try {
       LoadingDialog.open(context);
-      await context.read<ProjectController>().getPatientHistory();
-      await context.read<ProjectController>().getlisTreatmenthistory();
+      await context.read<ProjectController>().getPatientHistory(cid);
+      await context.read<ProjectController>().getlisTreatmenthistory(cid);
       if (!mounted) return;
       LoadingDialog.close(context);
     } on ClientException catch (e) {
@@ -67,13 +82,14 @@ class _InformationPageState extends State<InformationPage> {
     if (id.length < 3) {
       return id;
     }
-    return "${id.substring(0, 3)}******";
+    return "${id.substring(0, 4)}******";
   }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await getPrefs();
       await getapi();
     });
   }

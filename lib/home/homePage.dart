@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcbapp/WidgetHub/dialog/dialogyes.dart';
 import 'package:tcbapp/WidgetHub/dialog/loadingDialog.dart';
 import 'package:tcbapp/constants.dart';
@@ -11,26 +13,40 @@ import 'package:tcbapp/service/ProjectController.dart';
 import 'package:tcbapp/utils/apiException.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  HomePage({
+    super.key,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await getPrefs();
       await getapi();
+    });
+  }
+
+  String cid = '';
+  getPrefs() async {
+    final SharedPreferences prefs = await _prefs;
+    final cids = prefs.getString('cid');
+    setState(() {
+      cid = cids ?? '';
     });
   }
 
   Future getapi() async {
     try {
       LoadingDialog.open(context);
-      await context.read<ProjectController>().getPatientHistory();
-      await context.read<ProjectController>().getMedicalHistorys();
+      await context.read<ProjectController>().getMedicalHistorys(cid);
+      await context.read<ProjectController>().getlisTreatmenthistory(cid);
       if (!mounted) return;
       LoadingDialog.close(context);
     } on ClientException catch (e) {
@@ -75,7 +91,7 @@ class _HomePageState extends State<HomePage> {
     if (id.length < 3) {
       return id;
     }
-    return "${id.substring(0, 3)}******";
+    return "${id.substring(0, 4)}******";
   }
 
   @override
@@ -223,17 +239,31 @@ class _HomePageState extends State<HomePage> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: medicalHistorys!.length,
+                  controller: _scrollController,
+                  itemCount: medicalHistorys?.length ?? 0,
                   itemBuilder: (context, index) {
-                    final item = cardItems[index];
+                    final item = medicalHistorys?[index];
+
+                    // ตรวจสอบและแปลง diagnosis_date เป็นวันเดือนปีแบบ พ.ศ.
+                    String formattedDate = '-';
+                    if (item?.diagnosis_date != null) {
+                      try {
+                        DateTime dateTime = DateTime.parse(item!.diagnosis_date!);
+                        int buddhistYear = dateTime.year + 543;
+                        formattedDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
+                      } catch (e) {
+                        formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
+                      }
+                    }
+
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                       child: CardItem(
-                        date: medicalHistorys[index].diagnosis_date ?? '-',
-                        hospital: medicalHistorys[index].hospital_name ?? '',
-                        diagnosis: medicalHistorys[index].icd10_text ?? '',
+                        date: formattedDate, // ใช้วันที่ที่แปลงแล้ว
+                        hospital: item?.hospital_name ?? '',
+                        diagnosis: item?.icd10_text ?? '',
                         size: size,
-                        medicalHistorys: medicalHistorys[index].treatments,
+                        medicalHistorys: item?.treatments,
                       ),
                     );
                   },

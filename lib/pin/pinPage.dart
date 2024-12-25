@@ -7,17 +7,19 @@ import 'package:tcbapp/home/firstPage.dart';
 import 'package:tcbapp/pin/confirmpin.dart';
 
 class PinPage extends StatefulWidget {
-  PinPage({super.key, required this.check});
+  PinPage({super.key, required this.check, this.cid});
 
   @override
   State<PinPage> createState() => _PinPageState();
-  bool check;
+  bool check = false;
+  String? cid;
 }
 
 class _PinPageState extends State<PinPage> {
   final _pinController = TextEditingController();
   String _pin = "";
   List<String> enteredPin = [];
+  double buttonSize = 0.0;
 
   // ฟังก์ชันตรวจสอบ PIN
   void _onSubmit() {
@@ -26,7 +28,7 @@ class _PinPageState extends State<PinPage> {
       // ย้ายไปหน้า Confirm PIN
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => Confirmpin(pin: _pinController.text),
+          builder: (context) => Confirmpin(pin: _pinController.text, cid: widget.cid),
         ),
       );
     } else {
@@ -38,14 +40,16 @@ class _PinPageState extends State<PinPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
         width: double.infinity,
         height: size.height,
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Color(0xff10497A), Color(0xFF00E0D0)],
             begin: Alignment.topCenter,
@@ -55,18 +59,30 @@ class _PinPageState extends State<PinPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            // ข้อความบอกให้ผู้ใช้ตั้งรหัส Pin
+            const Text(
               "กรุณาตั้งรหัส Pin",
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
+
+            // Pinput Widget
             Pinput(
               obscureText: true,
-              // obscuringCharacter: '',
+              obscuringCharacter: '•', // กำหนดสัญลักษณ์สำหรับปิดบัง
               defaultPinTheme: PinTheme(
-                height: size.height * 0.05,
-                width: size.width * 0.076,
-                textStyle: const TextStyle(fontSize: 30, color: Color(0xff10497A)),
+                height: MediaQuery.of(context).size.width > 600
+                    ? size.height * 0.04 // ขนาดสำหรับ iPad
+                    : size.height * 0.05, // ขนาดสำหรับโทรศัพท์
+                width: MediaQuery.of(context).size.width > 600
+                    ? size.width * 0.05 // ขนาดสำหรับ iPad
+                    : size.width * 0.076, // ขนาดสำหรับโทรศัพท์
+                textStyle: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width > 600
+                      ? 40 // ขนาดฟอนต์สำหรับ iPad
+                      : 30, // ขนาดฟอนต์สำหรับโทรศัพท์
+                  color: Color(0xff10497A),
+                ),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.white,
@@ -76,6 +92,7 @@ class _PinPageState extends State<PinPage> {
               controller: _pinController,
               length: 6,
               showCursor: false,
+              readOnly: true, // ทำให้ Pinput ไม่สามารถพิมพ์ได้โดยตรง
               onChanged: (value) {
                 setState(() {
                   _pin = value;
@@ -89,62 +106,50 @@ class _PinPageState extends State<PinPage> {
                   }
                 });
               },
-              readOnly: true,
-            ),
-            SizedBox(height: 40),
-
-            Visibility(
-              visible: !widget.check == false,
-              child: GestureDetector(
-                onTap: () async {
-                  final ok = await showDialog(
-                      context: context,
-                      builder: (context) => Dialogyesno(
-                            title: 'แจ้งเตือน',
-                            description: 'คุณต้องการยกเลิกการตั้ง รหัส Pin หรือไม่',
-                            pressYes: () {
-                              Navigator.pop(context, true);
-                            },
-                            pressNo: () {
-                              Navigator.pop(context);
-                            },
-                            bottomNameYes: 'ตกลง',
-                            bottomNameNo: 'ยกเลิก',
-                          ));
-                  if (ok == true) {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => FirstPage(),
-                      ),
-                    );
-                  }
-                },
-                child: Text(
-                  "ยกเลิกการตั้งรหัส Pin ",
-                  style: TextStyle(fontSize: 18, color: textColor),
-                ),
-              ),
             ),
 
             SizedBox(height: 40),
-            // Numpad
+
+            // ตัวเลือกให้ยกเลิกการตั้งรหัส Pin
+            widget.check != false
+                ? GestureDetector(
+                    onTap: () async {
+                      final ok = await showDialog(
+                        context: context,
+                        builder: (context) => Dialogyesno(
+                          title: 'แจ้งเตือน',
+                          description: 'คุณต้องการยกเลิกการตั้ง รหัส Pin หรือไม่',
+                          pressYes: () {
+                            Navigator.pop(context, true);
+                          },
+                          pressNo: () {
+                            Navigator.pop(context);
+                          },
+                          bottomNameYes: 'ตกลง',
+                          bottomNameNo: 'ยกเลิก',
+                        ),
+                      );
+                      if (ok == true) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => FirstPage(),
+                          ),
+                        );
+                      }
+                    },
+                    child: Text(
+                      "ยกเลิกการตั้งรหัส Pin ",
+                      style: TextStyle(fontSize: 18, color: textColor),
+                    ),
+                  )
+                : SizedBox.shrink(),
+
+            SizedBox(height: 40),
+
+            // Numpad Widget
             _buildNumpad(),
 
-            const SizedBox(height: 20),
-            // ElevatedButton(
-            //   onPressed: _onSubmit,
-            //   style: ElevatedButton.styleFrom(
-            //     backgroundColor: textColor,
-            //     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-            //     shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(10),
-            //     ),
-            //   ),
-            //   child: Text(
-            //     "ตกลง",
-            //     style: TextStyle(fontSize: 18, color: kBackgroundColor2),
-            //   ),
-            // ),
+            SizedBox(height: 20),
           ],
         ),
       ),
@@ -152,59 +157,77 @@ class _PinPageState extends State<PinPage> {
   }
 
   Widget _buildNumpad() {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // กำหนดขนาดปุ่มตามความกว้างหน้าจอ
+    double buttonSize = screenWidth > 600
+        ? screenWidth * 0.1 // ขนาดสำหรับ iPad (จอใหญ่กว่า 600px)
+        : screenWidth * 0.18; // ขนาดสำหรับโทรศัพท์
+
+    double spacing = MediaQuery.of(context).size.height * 0.02; // ระยะห่างระหว่างแถว
+
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center, // จัดกึ่งกลางแป้นตัวเลขในหน้าจอ
       children: [
-        _buildNumpadRow(["1", "2", "3"]),
-        _buildNumpadRow(["4", "5", "6"]),
-        _buildNumpadRow(["7", "8", "9"]),
-        _buildNumpadRow(['', "0", "<"]),
+        _buildNumpadRow(["1", "2", "3"], buttonSize),
+        SizedBox(height: spacing),
+        _buildNumpadRow(["4", "5", "6"], buttonSize),
+        SizedBox(height: spacing),
+        _buildNumpadRow(["7", "8", "9"], buttonSize),
+        SizedBox(height: spacing),
+        _buildNumpadRow(['', "0", "<"], buttonSize),
       ],
     );
   }
 
-  Widget _buildNumpadRow(List<String> values) {
+  Widget _buildNumpadRow(List<String> values, double buttonSize) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: values.map((value) {
         return GestureDetector(
-            onTap: () {
-              if (value == "<") {
-                // ลบตัวเลขตัวสุดท้าย
-                if (_pinController.text.isNotEmpty) {
-                  setState(() {
-                    _pinController.text = _pinController.text.substring(0, _pinController.text.length - 1);
-                  });
-                }
-              } else if (value.isNotEmpty) {
-                if (_pinController.text.length < 6) {
-                  setState(() {
-                    _pinController.text += value;
-                  });
-                }
-              }
-            },
-            child: value != ''
-                ? Container(
-                    margin: const EdgeInsets.all(10),
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white, border: Border.all()),
-                    child: Center(
-                      child: Text(
-                        value,
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: kBackgroundColor),
+          onTap: () => _handleNumpadTap(value),
+          child: Container(
+            margin: const EdgeInsets.all(8), // ขอบรอบปุ่ม
+            width: buttonSize,
+            height: buttonSize,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: value.isEmpty ? Colors.transparent : Colors.white,
+              border: value.isNotEmpty ? Border.all(color: Colors.grey) : null,
+            ),
+            child: Center(
+              child: value.isNotEmpty
+                  ? Text(
+                      value,
+                      style: TextStyle(
+                        fontSize: buttonSize * 0.4, // ปรับขนาดฟอนต์สัมพันธ์กับปุ่ม
+                        fontWeight: FontWeight.bold,
+                        color: value == "<" ? Colors.red : Colors.black,
                       ),
-                    ),
-                  )
-                : Container(
-                    margin: const EdgeInsets.all(10),
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                  ));
+                    )
+                  : null,
+            ),
+          ),
+        );
       }).toList(),
     );
+  }
+
+  void _handleNumpadTap(String value) {
+    if (value == "<") {
+      // ลบตัวเลขตัวสุดท้าย
+      if (_pinController.text.isNotEmpty) {
+        setState(() {
+          _pinController.text = _pinController.text.substring(0, _pinController.text.length - 1);
+        });
+      }
+    } else if (value.isNotEmpty) {
+      // เพิ่มตัวเลข
+      if (_pinController.text.length < 6) {
+        setState(() {
+          _pinController.text += value;
+        });
+      }
+    }
   }
 }

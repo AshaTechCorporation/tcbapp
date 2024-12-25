@@ -43,7 +43,7 @@ class _CardItemState extends State<CardItem> {
                     width: 10,
                   ),
                   Text(
-                    '2024-10-13',
+                    '16 มิถุนายน 2558',
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                 ],

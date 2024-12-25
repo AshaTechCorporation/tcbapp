@@ -138,7 +138,8 @@ String message = '''
 
 ''';
 
-
+double width(BuildContext context) => MediaQuery.of(context).size.width;
+double height(BuildContext context) => MediaQuery.of(context).size.height;
 
 // onTap: () async {
 //                 await showDialog(

@@ -16,23 +16,23 @@ class ProjectController extends ChangeNotifier {
   List<VisitedHospitals>? treatmentHistorys = [];
   VisitedHospitals? treatmentHistory;
 
-  getMedicalHistorys() async {
+  getMedicalHistorys(String cid) async {
     medicalHistorys?.clear();
-    medicalHistorys = await ProjectService.getlistMedicalHistory();
+    medicalHistorys = await ProjectService.getlistMedicalHistory(cid: cid);
 
     notifyListeners();
   }
 
-  getPatientHistory() async {
+  getPatientHistory(String cid) async {
     patientHistory = null;
-    patientHistory = await ProjectService.getPatientHistory();
+    patientHistory = await ProjectService.getPatientHistory(cid: cid);
 
     notifyListeners();
   }
 
-  getlisTreatmenthistory() async {
+  getlisTreatmenthistory(String cid) async {
     treatmentHistorys?.clear();
-    treatmentHistorys = await ProjectService.getlisTreatmenthistory();
+    treatmentHistorys = await ProjectService.getlisTreatmenthistory(cid: cid);
 
     notifyListeners();
   }

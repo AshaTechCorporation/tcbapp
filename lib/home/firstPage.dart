@@ -8,14 +8,16 @@ import 'package:tcbapp/information/informationPage.dart';
 import 'package:tcbapp/setting/settingPage.dart';
 
 class FirstPage extends StatefulWidget {
-  const FirstPage({super.key});
+  FirstPage({super.key, this.cid});
 
+  String? cid;
   @override
   State<FirstPage> createState() => _FirstPageState();
 }
 
 class _FirstPageState extends State<FirstPage> {
   int selectedIndex = 0;
+  String cid = '';
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentPage = HomePage();
 
