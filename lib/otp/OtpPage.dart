@@ -175,11 +175,11 @@ class _OtppageState extends State<Otppage> {
                               borderSide: BorderSide(color: Colors.red, width: 2),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            errorStyle: TextStyle(height: 0), // ซ่อนข้อความ error
+                            errorStyle: TextStyle(height: 0),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return ''; // ส่งค่ากลับเพื่อแสดง errorBorder
+                              return '';
                             }
                             return null;
                           },
@@ -228,7 +228,28 @@ class _OtppageState extends State<Otppage> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      try {
+                        LoadingDialog.open(context);
+                        final refno =
+                            await RegisterService.register(widget.fname, widget.lname, widget.cid, widget.date, widget.phone, widget.device_no);
+                        LoadingDialog.close(context);
+                      } on Exception catch (e) {
+                        if (!mounted) return;
+                        LoadingDialog.close(context);
+                        showDialog(
+                          context: context,
+                          builder: (context) => Dialogyes(
+                            title: 'แจ้งเตือน',
+                            description: '$e',
+                            pressYes: () {
+                              Navigator.pop(context);
+                            },
+                            bottomNameYes: 'ตกลง',
+                          ),
+                        );
+                      }
+                    },
                     child: Text(
                       'ส่งใหม่',
                       style: TextStyle(color: kBackgroundColor),

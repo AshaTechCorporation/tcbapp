@@ -145,8 +145,7 @@ class _InformationPageState extends State<InformationPage> {
                               style: TextStyle(color: textColor2, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              // patientHistory?.full_name ?? '-',
-                              '',
+                              patientHistory?.full_name ?? '-',
                               style: TextStyle(color: textColor2),
                             ),
                           ],
@@ -160,8 +159,7 @@ class _InformationPageState extends State<InformationPage> {
                               style: TextStyle(color: textColor2, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              // patientHistory?.sex_name ?? '-',
-                              '',
+                              patientHistory?.sex_name ?? '-',
                               style: TextStyle(color: textColor2),
                             ),
                           ],
@@ -175,10 +173,9 @@ class _InformationPageState extends State<InformationPage> {
                               style: TextStyle(color: textColor2, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              // formatNationalID(
-                              //   patientHistory?.cid ?? '-',
-                              // ),
-                              '',
+                              formatNationalID(
+                                patientHistory?.cid ?? '-',
+                              ),
                               style: TextStyle(color: textColor2),
                             ),
                           ],

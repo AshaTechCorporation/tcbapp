@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   String cid = '';
   getPrefs() async {
     final SharedPreferences prefs = await _prefs;
-    await prefs.setString('cid', '1-0000-00001-99-9');
+    // await prefs.setString('cid', '1-0000-00001-99-9');
     final cids = prefs.getString('cid');
     setState(() {
       cid = cids ?? '';
@@ -164,8 +164,7 @@ class _HomePageState extends State<HomePage> {
                                 style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                // patientHistory?.full_name ?? '-',
-                                '',
+                                patientHistory?.full_name ?? '-',
                                 style: TextStyle(color: textColor),
                               ),
                             ],
@@ -179,8 +178,7 @@ class _HomePageState extends State<HomePage> {
                                 style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                // patientHistory?.sex_name ?? '-',
-                                '',
+                                patientHistory?.sex_name ?? '-',
                                 style: TextStyle(color: textColor),
                               ),
                             ],
@@ -194,11 +192,9 @@ class _HomePageState extends State<HomePage> {
                                 style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                // formatNationalID(
-                                //   patientHistory?.cid ?? '-',
-                                // ),
-
-                                '',
+                                formatNationalID(
+                                  patientHistory?.cid ?? '-',
+                                ),
                                 style: TextStyle(color: textColor),
                               ),
                             ],

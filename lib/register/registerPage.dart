@@ -335,7 +335,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
                   final SharedPreferences prefs = await _prefs;
                   await prefs.setString('domain', publicUrl);
-                  await prefs.setString('cid', '1-0000-00001-99-9');
+                  await prefs.setString('cid', idCard.text);
                   final refno = await RegisterService.register(name.text, surname.text, idCard.text, dateSentApi, phone.text, device_no);
                   // print(refno['data']);
                   if (!mounted) return;
@@ -400,65 +400,74 @@ class _RegisterPageState extends State<RegisterPage> {
     required bool status,
   }) {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: TextFormField(
-          readOnly: status,
-          controller: controller,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Colors.white,
-            hintText: hint ?? '',
-            prefixIcon: controller == birthDate
-                ? GestureDetector(
-                    onTap: () {
-                      _afterselectDate(context);
-                    },
-                    child: Icon(icon, color: Colors.grey))
-                : Icon(icon, color: Colors.grey),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide.none,
-            ),
-            errorStyle: TextStyle(
-              color: Color.fromARGB(255, 255, 0, 0),
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              shadows: [
-                Shadow(
-                  offset: Offset(0, 0),
-                  blurRadius: 20,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                ),
-                Shadow(
-                  offset: Offset(0, 0),
-                  blurRadius: 20,
-                  color: Color.fromARGB(149, 255, 255, 255),
-                ),
-              ],
-            ),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextFormField(
+        readOnly: status,
+        controller: controller,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          hintText: hint ?? '',
+          prefixIcon: controller == birthDate
+              ? GestureDetector(
+                  onTap: () {
+                    _afterselectDate(context);
+                  },
+                  child: Icon(icon, color: Colors.grey))
+              : Icon(icon, color: Colors.grey),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide.none,
           ),
-          keyboardType: keyboardType,
-          validator: validator,
-          inputFormatters: controller == idCard
-              ? [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(13),
-                  IdCardFormatter(),
-                ]
-              : controller == birthDate
-                  ? [
-                      FilteringTextInputFormatter.allow(RegExp(r'[0-9/]')),
-                      LengthLimitingTextInputFormatter(10),
-                      DateFormatter(),
-                    ]
-                  : controller == phone
-                      ? [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(10),
-                          PhoneNumberFormatter(),
-                        ]
-                      : [],
-        ));
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red, width: 2),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red, width: 2),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          errorStyle: TextStyle(
+            color: Color.fromARGB(255, 255, 0, 0),
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            shadows: [
+              Shadow(
+                offset: Offset(0, 0),
+                blurRadius: 20,
+                color: Color.fromARGB(255, 255, 255, 255),
+              ),
+              Shadow(
+                offset: Offset(0, 0),
+                blurRadius: 20,
+                color: Color.fromARGB(149, 255, 255, 255),
+              ),
+            ],
+          ),
+        ),
+        keyboardType: keyboardType,
+        validator: validator,
+        inputFormatters: controller == idCard
+            ? [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(13),
+                IdCardFormatter(),
+              ]
+            : controller == birthDate
+                ? [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9/]')),
+                    LengthLimitingTextInputFormatter(10),
+                    DateFormatter(),
+                  ]
+                : controller == phone
+                    ? [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(10),
+                        PhoneNumberFormatter(),
+                      ]
+                    : [],
+      ),
+    );
   }
 }
 
