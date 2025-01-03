@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         locale: Locale('th', 'TH'),
-        home: FirstPage(),
+        home: Policypage(),
       ),
     );
   }
