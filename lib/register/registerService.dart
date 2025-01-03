@@ -17,14 +17,17 @@ class RegisterService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final domain = prefs.getString('domain');
     final url = Uri.https(domain!, '/api/login_mobile_app');
-    final response = await http.post(url, body: {
-      'fname': fname,
-      'lname': lname,
-      'cid': cid,
-      'date': date,
-      'phone': phone,
-      'device_no': device_no,
-    });
+    final response = await http.post(
+      url,
+      body: {
+        'fname': fname,
+        'lname': lname,
+        'cid': cid,
+        'date': date,
+        'phone': phone,
+        'device_no': device_no,
+      },
+    );
     if (response.statusCode == 200) {
       final data = convert.jsonDecode(response.body);
       return data['data'];

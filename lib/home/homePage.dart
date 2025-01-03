@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
@@ -36,6 +38,7 @@ class _HomePageState extends State<HomePage> {
   String cid = '';
   getPrefs() async {
     final SharedPreferences prefs = await _prefs;
+    await prefs.setString('cid', '1-0000-00001-99-9');
     final cids = prefs.getString('cid');
     setState(() {
       cid = cids ?? '';
@@ -45,8 +48,12 @@ class _HomePageState extends State<HomePage> {
   Future getapi() async {
     try {
       LoadingDialog.open(context);
+      // await context.read<ProjectController>().getlisTreatmenthistory(cid);
       await context.read<ProjectController>().getMedicalHistorys(cid);
-      await context.read<ProjectController>().getlisTreatmenthistory(cid);
+      print('/api/app/cancer');
+      await context.read<ProjectController>().getPatientHistory(cid);
+      print('/api/app/partient');
+
       if (!mounted) return;
       LoadingDialog.close(context);
     } on ClientException catch (e) {
@@ -157,7 +164,8 @@ class _HomePageState extends State<HomePage> {
                                 style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                patientHistory?.full_name ?? '-',
+                                // patientHistory?.full_name ?? '-',
+                                '',
                                 style: TextStyle(color: textColor),
                               ),
                             ],
@@ -171,7 +179,8 @@ class _HomePageState extends State<HomePage> {
                                 style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                patientHistory?.sex_name ?? '-',
+                                // patientHistory?.sex_name ?? '-',
+                                '',
                                 style: TextStyle(color: textColor),
                               ),
                             ],
@@ -185,9 +194,11 @@ class _HomePageState extends State<HomePage> {
                                 style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                formatNationalID(
-                                  patientHistory?.cid ?? '-',
-                                ),
+                                // formatNationalID(
+                                //   patientHistory?.cid ?? '-',
+                                // ),
+
+                                '',
                                 style: TextStyle(color: textColor),
                               ),
                             ],
@@ -246,11 +257,21 @@ class _HomePageState extends State<HomePage> {
 
                     // ตรวจสอบและแปลง diagnosis_date เป็นวันเดือนปีแบบ พ.ศ.
                     String formattedDate = '-';
+                    String formattedLastEntranceDate = '';
                     if (item?.diagnosis_date != null) {
                       try {
                         DateTime dateTime = DateTime.parse(item!.diagnosis_date!);
                         int buddhistYear = dateTime.year + 543;
                         formattedDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
+                      } catch (e) {
+                        formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
+                      }
+                    }
+                    if (item?.last_entrance_date != null) {
+                      try {
+                        DateTime dateTime = DateTime.parse(item!.last_entrance_date!);
+                        int buddhistYear = dateTime.year + 543;
+                        formattedLastEntranceDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
                       } catch (e) {
                         formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
                       }
@@ -263,7 +284,7 @@ class _HomePageState extends State<HomePage> {
                         hospital: item?.hospital_name ?? '',
                         diagnosis: item?.icd10_text ?? '',
                         size: size,
-                        medicalHistorys: item?.treatments,
+                        medicalHistorys: item?.treatments, last_entrance_date: formattedLastEntranceDate ?? '',
                       ),
                     );
                   },

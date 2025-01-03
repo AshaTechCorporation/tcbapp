@@ -163,7 +163,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   Padding(
                     padding: const EdgeInsets.only(left: 28, top: 10, right: 20),
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.065,
+                      height: MediaQuery.of(context).size.height * 0.06,
                       width: MediaQuery.of(context).size.width * 0.6,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -171,7 +171,7 @@ class _HistoryPageState extends State<HistoryPage> {
                           color: kBackgroundColor,
                         ),
                       ),
-                      padding: EdgeInsets.all(8),
+                      // padding: EdgeInsets.all(8),
                       child: DropdownSearch<VisitedHospitals>(
                         selectedItem: selectedValue,
                         items: treatmenthistory!,
@@ -271,11 +271,22 @@ class _HistoryPageState extends State<HistoryPage> {
 
                     // ตรวจสอบและแปลง diagnosis_date เป็นวันเดือนปีแบบ พ.ศ.
                     String formattedDate = '-';
+                    String formattedLastEntranceDate = '';
                     if (item?.diagnosis_date != null) {
                       try {
                         DateTime dateTime = DateTime.parse(item!.diagnosis_date!);
                         int buddhistYear = dateTime.year + 543;
-                        formattedDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
+                        formattedDate = '${DateFormat("dd MMMM").format(dateTime)} $buddhistYear';
+                        print(formattedDate);
+                      } catch (e) {
+                        formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
+                      }
+                    }
+                    if (item?.last_entrance_date != null) {
+                      try {
+                        DateTime dateTime = DateTime.parse(item!.last_entrance_date!);
+                        int buddhistYear = dateTime.year + 543;
+                        formattedLastEntranceDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
                       } catch (e) {
                         formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
                       }
@@ -288,7 +299,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         hospital: item?.hospital_name ?? '',
                         diagnosis: item?.icd10_text ?? '',
                         size: size,
-                        medicalHistorys: item?.treatments,
+                        medicalHistorys: item?.treatments, last_entrance_date: formattedLastEntranceDate ?? '',
                       ),
                     );
                   },

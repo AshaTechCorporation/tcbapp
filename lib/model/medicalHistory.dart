@@ -9,6 +9,7 @@ class MedicalHistory {
   String? diagnosis_date;
   String? icd10_text;
   String? hospital_code;
+  String? last_entrance_date;
   List<Treatments>? treatments;
 
   MedicalHistory(
@@ -16,6 +17,7 @@ class MedicalHistory {
     this.diagnosis_date,
     this.icd10_text,
     this.hospital_code,
+    this.last_entrance_date,
     this.treatments,
   );
 

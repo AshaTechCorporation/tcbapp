@@ -7,11 +7,19 @@ class CardItem extends StatefulWidget {
   final String date;
   final String hospital;
   final String diagnosis;
+  final String last_entrance_date;
   final List<Treatments>? medicalHistorys;
 
   final Size size;
 
-  CardItem({super.key, required this.date, required this.hospital, required this.diagnosis, required this.size, required this.medicalHistorys});
+  CardItem(
+      {super.key,
+      required this.date,
+      required this.hospital,
+      required this.diagnosis,
+      required this.size,
+      required this.medicalHistorys,
+      required this.last_entrance_date});
 
   @override
   State<CardItem> createState() => _CardItemState();
@@ -43,7 +51,7 @@ class _CardItemState extends State<CardItem> {
                     width: 10,
                   ),
                   Text(
-                    '16 มิถุนายน 2558',
+                    widget.last_entrance_date,
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                 ],

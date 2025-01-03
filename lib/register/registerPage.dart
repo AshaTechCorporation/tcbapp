@@ -35,17 +35,19 @@ class _RegisterPageState extends State<RegisterPage> {
   String device_no = '';
   String dateSentApi = '';
   String notify_token = '';
+  String ios_id = '';
 
   void getdeviceId() async {
     final deviceInfo = DeviceInfoPlugin();
 
     if (Platform.isAndroid) {
-      // ดึงข้อมูล Android ID
       final androidInfo = await deviceInfo.androidInfo;
       device_no = androidInfo.id;
     } else if (Platform.isIOS) {
       // ดึงข้อมูล Identifier for Vendor (iOS)
       final iosInfo = await deviceInfo.iosInfo;
+      device_no = iosInfo.identifierForVendor ?? '';
+      // ios_id = iosInfo;
       // print('iOS Identifier: ${iosInfo.identifierForVendor}');
     }
   }
@@ -194,12 +196,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   buildInputField(
                     controller: name,
                     icon: Icons.person,
-                    hint: 'ชื่อ',
+                    hint: 'ชื่อ (ไม่ต้องใส่คำนำหน้า เช่น นาย,นาง,นางสาว***)',
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
                         return 'กรุณากรอกชื่อ';
                       }
                     },
+                    status: false,
                   ),
                   buildInputField(
                     controller: surname,
@@ -210,6 +213,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         return 'กรุณากรอกนามสกุล';
                       }
                     },
+                    status: false,
                   ),
                   buildInputField(
                     controller: idCard,
@@ -221,18 +225,20 @@ class _RegisterPageState extends State<RegisterPage> {
                         return 'กรุณากรอกเลขบัตรประชาชน 13 หลัก';
                       }
                     },
+                    status: false,
                   ),
                   buildInputField(
                     controller: birthDate,
                     icon: Icons.calendar_today,
                     hint: 'วว-ดด-ปปปป',
-                    keyboardType: TextInputType.datetime,
+                    keyboardType: TextInputType.none,
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
                         return 'กรุณากรอกวันเดือนปี';
                       }
                       return null;
                     },
+                    status: true,
                   ),
                   buildInputField(
                     controller: phone,
@@ -244,6 +250,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       }
                     },
                     keyboardType: TextInputType.phone,
+                    status: false,
                   ),
                   // SizedBox(height: MediaQuery.of(context).size.height * 0.5),
                   // Container(
@@ -314,8 +321,11 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
         bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: kBackgroundColor,
+          ),
           margin: EdgeInsets.all(8),
-          color: kBackgroundColor,
           width: double.infinity,
           child: OutlinedButton(
             onPressed: () async {
@@ -325,9 +335,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
                   final SharedPreferences prefs = await _prefs;
                   await prefs.setString('domain', publicUrl);
-                  await prefs.setString('cid', idCard.text);
+                  await prefs.setString('cid', '1-0000-00001-99-9');
                   final refno = await RegisterService.register(name.text, surname.text, idCard.text, dateSentApi, phone.text, device_no);
-                  print(refno['data']);
+                  // print(refno['data']);
                   if (!mounted) return;
                   LoadingDialog.close(context);
                   Navigator.pushAndRemoveUntil(
@@ -341,7 +351,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               phone: phone.text,
                               device_no: device_no,
                               notify_token: notify_token,
-                              refno: refno['data'],
+                              refno: refno,
                             )),
                     (route) => true,
                   );
@@ -387,69 +397,84 @@ class _RegisterPageState extends State<RegisterPage> {
     String? hint,
     String? Function(String?)? validator,
     TextInputType? keyboardType,
+    required bool status,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          hintText: hint ?? '',
-          prefixIcon: controller == birthDate
-              ? GestureDetector(
-                  onTap: () {
-                    _afterselectDate(context);
-                  },
-                  child: Icon(icon, color: Colors.grey))
-              : Icon(icon, color: Colors.grey),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide.none,
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: TextFormField(
+          readOnly: status,
+          controller: controller,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
+            hintText: hint ?? '',
+            prefixIcon: controller == birthDate
+                ? GestureDetector(
+                    onTap: () {
+                      _afterselectDate(context);
+                    },
+                    child: Icon(icon, color: Colors.grey))
+                : Icon(icon, color: Colors.grey),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide: BorderSide.none,
+            ),
+            errorStyle: TextStyle(
+              color: Color.fromARGB(255, 255, 0, 0),
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              shadows: [
+                Shadow(
+                  offset: Offset(0, 0),
+                  blurRadius: 20,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+                Shadow(
+                  offset: Offset(0, 0),
+                  blurRadius: 20,
+                  color: Color.fromARGB(149, 255, 255, 255),
+                ),
+              ],
+            ),
           ),
-        ),
-        keyboardType: keyboardType,
-        validator: validator,
-        inputFormatters: controller == idCard
-            ? [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(13),
-                IdCardFormatter(),
-              ]
-            : controller == birthDate
-                ? [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9/]')),
-                    LengthLimitingTextInputFormatter(10),
-                    DateFormatter(),
-                  ]
-                : controller == phone
-                    ? [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(10),
-                        PhoneNumberFormatter(),
-                      ]
-                    : [],
-      ),
-    );
+          keyboardType: keyboardType,
+          validator: validator,
+          inputFormatters: controller == idCard
+              ? [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(13),
+                  IdCardFormatter(),
+                ]
+              : controller == birthDate
+                  ? [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9/]')),
+                      LengthLimitingTextInputFormatter(10),
+                      DateFormatter(),
+                    ]
+                  : controller == phone
+                      ? [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(10),
+                          PhoneNumberFormatter(),
+                        ]
+                      : [],
+        ));
   }
 }
 
 class IdCardFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    // เอาตัวอักษรที่ไม่ใช่ตัวเลขออก
     String text = newValue.text.replaceAll(RegExp(r'\D'), '');
 
-    // จำกัดความยาวสูงสุด 13 ตัวอักษร
     if (text.length > 13) text = text.substring(0, 13);
 
-    // ฟอร์แมตให้อยู่ในรูปแบบ 1-0000-00001-99-9
     String formattedText = '';
     if (text.isNotEmpty) {
       final buffer = StringBuffer();
       for (int i = 0; i < text.length; i++) {
         buffer.write(text[i]);
-        // เพิ่ม '-' ตามตำแหน่งที่กำหนด
+
         if (i == 0 || i == 4 || i == 9 || i == 11) {
           if (i != text.length - 1) buffer.write('-');
         }
