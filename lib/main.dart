@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:tcbapp/SplashScreenPage.dart';
 import 'package:tcbapp/firebase_options.dart';
 import 'package:tcbapp/home/firstPage.dart';
 import 'package:tcbapp/home/homePage.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         locale: Locale('th', 'TH'),
-        home: Policypage(),
+        home: SplashScreenPage(),
       ),
     );
   }

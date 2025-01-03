@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_launcher_icons/xml_templates.dart';
@@ -6,6 +8,7 @@ import 'package:tcbapp/WidgetHub/dialog/loadingDialog.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/firstPage.dart';
 import 'package:tcbapp/pin/pinPage.dart';
+import 'package:tcbapp/register/registerPage.dart';
 import 'package:tcbapp/register/registerService.dart';
 
 class Otppage extends StatefulWidget {
@@ -36,6 +39,9 @@ class Otppage extends StatefulWidget {
 class _OtppageState extends State<Otppage> {
   final _formKey = GlobalKey<FormState>();
   final List<TextEditingController> _otpControllers = List.generate(6, (_) => TextEditingController());
+  late Timer _timer;
+  int _remainingSeconds = 120; // 10 นาที = 600 วินาที
+  bool check = false;
 
   void _validateAndSubmit() async {
     if (_formKey.currentState!.validate()) {
@@ -85,6 +91,60 @@ class _OtppageState extends State<Otppage> {
     }
   }
 
+  void startCountdown() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) async {
+      if (_remainingSeconds > 0) {
+        setState(() {
+          _remainingSeconds--;
+        });
+      } else {
+        _timer.cancel();
+        if (mounted) {
+          // setState(() {
+          //   _remainingSeconds = 120;
+          //   startCountdown();
+          // });
+          // try {
+          //   LoadingDialog.open(context);
+          //   final refno = await RegisterService.register(widget.fname, widget.lname, widget.cid, widget.date, widget.phone, widget.device_no);
+          //   widget.refno = refno;
+          //   // print(widget.refno);
+          //   // setState(() {});
+          //   // startCountdown();
+          //   LoadingDialog.close(context);
+          // } on Exception catch (e) {
+          //   if (!mounted) return;
+          //   LoadingDialog.close(context);
+          //   showDialog(
+          //     context: context,
+          //     builder: (context) => Dialogyes(
+          //       title: 'แจ้งเตือน',
+          //       description: '$e',
+          //       pressYes: () {
+          //         Navigator.pop(context);
+          //       },
+          //       bottomNameYes: 'ตกลง',
+          //     ),
+          //   );
+          // }
+        }
+      }
+    });
+  }
+
+  String formatTime(int seconds) {
+    int minutes = seconds ~/ 60;
+    int remainingSeconds = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    startCountdown();
+  }
+
   @override
   Widget build(BuildContext context) {
     double buttonSize = MediaQuery.of(context).size.width * 0.15;
@@ -108,7 +168,7 @@ class _OtppageState extends State<Otppage> {
             children: [
               SizedBox(height: size.height * 0.05),
               Text(
-                'Verification',
+                'กรอกรหัส OTP ',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -117,7 +177,7 @@ class _OtppageState extends State<Otppage> {
               ),
               SizedBox(height: 8),
               Text(
-                'รหัส OTP จะส่งไปที่เบอร์โทร ${formatPhoneNumber(widget.phone)}',
+                'โปรดกรอกรหัส 6 หลักที่ถูกส่งไปที่เบอร์มือถือ ${formatPhoneNumber(widget.phone)}',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.white,
@@ -125,12 +185,39 @@ class _OtppageState extends State<Otppage> {
                 textAlign: TextAlign.center,
               ),
               Text(
-                'Refno(${widget.refno})',
+                'Ref: (${widget.refno})',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.white,
                 ),
                 textAlign: TextAlign.center,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {},
+                    child: Text(
+                      'ขอรหัสผ่านใหม่',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    formatTime(_remainingSeconds),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: size.height * 0.1),
               Form(
@@ -202,93 +289,36 @@ class _OtppageState extends State<Otppage> {
         ),
         bottomNavigationBar: Container(
           margin: EdgeInsets.all(8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                height: size.height * 0.07,
-                width: size.width * 0.4,
-                child: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
+          child: SizedBox(
+            height: size.height * 0.07,
+            width: size.width * 0.4,
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
                   ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      side: BorderSide(color: textColor),
-                      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    onPressed: () async {
-                      try {
-                        LoadingDialog.open(context);
-                        final refno =
-                            await RegisterService.register(widget.fname, widget.lname, widget.cid, widget.date, widget.phone, widget.device_no);
-                        LoadingDialog.close(context);
-                      } on Exception catch (e) {
-                        if (!mounted) return;
-                        LoadingDialog.close(context);
-                        showDialog(
-                          context: context,
-                          builder: (context) => Dialogyes(
-                            title: 'แจ้งเตือน',
-                            description: '$e',
-                            pressYes: () {
-                              Navigator.pop(context);
-                            },
-                            bottomNameYes: 'ตกลง',
-                          ),
-                        );
-                      }
-                    },
-                    child: Text(
-                      'ส่งใหม่',
-                      style: TextStyle(color: kBackgroundColor),
-                    ),
+                ],
+              ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: kBackgroundColor,
+                  // side: BorderSide(color: textColor),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: size.height * 0.07,
-                width: size.width * 0.4,
-                child: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: kBackgroundColor,
-                      // side: BorderSide(color: textColor),
-                      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    onPressed: _validateAndSubmit,
-                    child: Text(
-                      'ตกลง',
-                      style: TextStyle(color: textColor),
-                    ),
-                  ),
+                onPressed: _validateAndSubmit,
+                child: Text(
+                  'ตกลง',
+                  style: TextStyle(color: textColor),
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ),

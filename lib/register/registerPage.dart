@@ -321,71 +321,149 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
         bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: kBackgroundColor,
-          ),
           margin: EdgeInsets.all(8),
-          width: double.infinity,
-          child: OutlinedButton(
-            onPressed: () async {
-              if (_formKey.currentState!.validate()) {
-                try {
-                  LoadingDialog.open(context);
-                  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-                  final SharedPreferences prefs = await _prefs;
-                  await prefs.setString('domain', publicUrl);
-                  await prefs.setString('cid', idCard.text);
-                  final refno = await RegisterService.register(name.text, surname.text, idCard.text, dateSentApi, phone.text, device_no);
-                  // print(refno['data']);
-                  if (!mounted) return;
-                  LoadingDialog.close(context);
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Otppage(
-                              fname: name.text,
-                              lname: surname.text,
-                              cid: idCard.text,
-                              date: dateSentApi,
-                              phone: phone.text,
-                              device_no: device_no,
-                              notify_token: notify_token,
-                              refno: refno,
-                            )),
-                    (route) => true,
-                  );
-                } on Exception catch (e) {
-                  if (!mounted) return;
-                  LoadingDialog.close(context);
-                  showDialog(
-                    context: context,
-                    builder: (context) => Dialogyes(
-                      title: 'แจ้งเตือน',
-                      description: '$e',
-                      pressYes: () {
-                        Navigator.pop(context);
-                      },
-                      bottomNameYes: 'ตกลง',
-                    ),
-                  );
-                }
-                // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Otppage()));
-              }
-            },
-            style: OutlinedButton.styleFrom(
-              side: BorderSide(color: Colors.white),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
+          child: SizedBox(
+            height: size.height * 0.07,
+            width: size.width * 0.4,
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ],
               ),
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-            ),
-            child: Text(
-              'ลงทะเบียน/รับรหัส OTP',
-              style: TextStyle(color: Colors.white, fontSize: 16.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: kBackgroundColor,
+                  // side: BorderSide(color: textColor),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    try {
+                      LoadingDialog.open(context);
+                      final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+                      final SharedPreferences prefs = await _prefs;
+                      await prefs.setString('domain', publicUrl);
+                      await prefs.setString('cid', idCard.text);
+                      final refno = await RegisterService.register(name.text, surname.text, idCard.text, dateSentApi, phone.text, device_no);
+                      // print(refno['data']);
+                      if (!mounted) return;
+                      LoadingDialog.close(context);
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Otppage(
+                                  fname: name.text,
+                                  lname: surname.text,
+                                  cid: idCard.text,
+                                  date: dateSentApi,
+                                  phone: phone.text,
+                                  device_no: device_no,
+                                  notify_token: notify_token,
+                                  refno: refno,
+                                )),
+                        (route) => true,
+                      );
+                    } on Exception catch (e) {
+                      if (!mounted) return;
+                      LoadingDialog.close(context);
+                      showDialog(
+                        context: context,
+                        builder: (context) => Dialogyes(
+                          title: 'แจ้งเตือน',
+                          description: '$e',
+                          pressYes: () {
+                            Navigator.pop(context);
+                          },
+                          bottomNameYes: 'ตกลง',
+                        ),
+                      );
+                    }
+                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Otppage()));
+                  }
+                },
+                child: Text(
+                  'ลงทะเบียน/รับรหัส OTP',
+                  style: TextStyle(color: textColor),
+                ),
+              ),
             ),
           ),
         ),
+        // bottomNavigationBar: Container(
+        //   decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(8),
+        //     color: kBackgroundColor,
+        //   ),
+        //   margin: EdgeInsets.all(8),
+        //   width: double.infinity,
+        //   child: OutlinedButton(
+        //     onPressed: () async {
+        //       if (_formKey.currentState!.validate()) {
+        //         try {
+        //           LoadingDialog.open(context);
+        //           final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+        //           final SharedPreferences prefs = await _prefs;
+        //           await prefs.setString('domain', publicUrl);
+        //           await prefs.setString('cid', idCard.text);
+        //           final refno = await RegisterService.register(name.text, surname.text, idCard.text, dateSentApi, phone.text, device_no);
+        //           // print(refno['data']);
+        //           if (!mounted) return;
+        //           LoadingDialog.close(context);
+        //           Navigator.pushAndRemoveUntil(
+        //             context,
+        //             MaterialPageRoute(
+        //                 builder: (context) => Otppage(
+        //                       fname: name.text,
+        //                       lname: surname.text,
+        //                       cid: idCard.text,
+        //                       date: dateSentApi,
+        //                       phone: phone.text,
+        //                       device_no: device_no,
+        //                       notify_token: notify_token,
+        //                       refno: refno,
+        //                     )),
+        //             (route) => true,
+        //           );
+        //         } on Exception catch (e) {
+        //           if (!mounted) return;
+        //           LoadingDialog.close(context);
+        //           showDialog(
+        //             context: context,
+        //             builder: (context) => Dialogyes(
+        //               title: 'แจ้งเตือน',
+        //               description: '$e',
+        //               pressYes: () {
+        //                 Navigator.pop(context);
+        //               },
+        //               bottomNameYes: 'ตกลง',
+        //             ),
+        //           );
+        //         }
+        //         // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Otppage()));
+        //       }
+        //     },
+        //     style: OutlinedButton.styleFrom(
+        //       side: BorderSide(color: Colors.white),
+        //       shape: RoundedRectangleBorder(
+        //         borderRadius: BorderRadius.circular(8.0),
+        //       ),
+        //       padding: EdgeInsets.symmetric(vertical: 16.0),
+        //     ),
+        //     child: Text(
+        //       'ลงทะเบียน/รับรหัส OTP',
+        //       style: TextStyle(color: Colors.white, fontSize: 16.0),
+        //     ),
+        //   ),
+        // ),
       ),
     );
   }

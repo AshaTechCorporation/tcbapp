@@ -30,7 +30,7 @@ class _SettingPageState extends State<SettingPage> {
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Image.asset(
-                  'assets/icons/logo MOPH.png',
+                  'assets/icons/Cancer_AnyWhere.png',
                   scale: 10,
                 ),
               ),
