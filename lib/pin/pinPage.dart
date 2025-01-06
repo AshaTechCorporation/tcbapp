@@ -7,12 +7,14 @@ import 'package:tcbapp/home/firstPage.dart';
 import 'package:tcbapp/pin/confirmpin.dart';
 
 class PinPage extends StatefulWidget {
-  PinPage({super.key, required this.check, this.cid});
+  PinPage({
+    super.key,
+    required this.check,
+  });
 
   @override
   State<PinPage> createState() => _PinPageState();
-  bool check = false;
-  String? cid;
+  bool check;
 }
 
 class _PinPageState extends State<PinPage> {
@@ -23,12 +25,10 @@ class _PinPageState extends State<PinPage> {
 
   // ฟังก์ชันตรวจสอบ PIN
   void _onSubmit() {
-    // print(_pinController.text);
     if (_pinController.text.length == 6) {
-      // ย้ายไปหน้า Confirm PIN
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => Confirmpin(pin: _pinController.text, cid: widget.cid),
+          builder: (context) => Confirmpin(pin: _pinController.text),
         ),
       );
     } else {
@@ -60,11 +60,11 @@ class _PinPageState extends State<PinPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // ข้อความบอกให้ผู้ใช้ตั้งรหัส Pin
-            const Text(
+            Text(
               "กรุณาตั้งรหัส Pin",
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
             // Pinput Widget
             Pinput(
@@ -92,7 +92,7 @@ class _PinPageState extends State<PinPage> {
               controller: _pinController,
               length: 6,
               showCursor: false,
-              readOnly: true, // ทำให้ Pinput ไม่สามารถพิมพ์ได้โดยตรง
+              readOnly: true,
               onChanged: (value) {
                 setState(() {
                   _pin = value;
@@ -215,14 +215,12 @@ class _PinPageState extends State<PinPage> {
 
   void _handleNumpadTap(String value) {
     if (value == "<") {
-      // ลบตัวเลขตัวสุดท้าย
       if (_pinController.text.isNotEmpty) {
         setState(() {
           _pinController.text = _pinController.text.substring(0, _pinController.text.length - 1);
         });
       }
     } else if (value.isNotEmpty) {
-      // เพิ่มตัวเลข
       if (_pinController.text.length < 6) {
         setState(() {
           _pinController.text += value;

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcbapp/WidgetHub/dialog/dialogyes.dart';
 import 'package:tcbapp/WidgetHub/dialog/loadingDialog.dart';
+import 'package:tcbapp/WidgetHub/waterMark.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/widgets/CardItem.dart';
 import 'package:tcbapp/notifications/notificationsPage.dart';
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
   String cid = '';
   getPrefs() async {
     final SharedPreferences prefs = await _prefs;
-    await prefs.setString('cid', '1-0000-00001-99-9');
+    // await prefs.setString('cid', '1-0000-00001-99-9');
     final cids = prefs.getString('cid');
     setState(() {
       cid = cids ?? '';
@@ -136,160 +137,172 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: Consumer<ProjectController>(
-        builder: (BuildContext context, controller, child) {
-          final medicalHistorys = controller.medicalHistorys;
-          final patientHistory = controller.patientHistory;
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: size.height * 0.12,
-                width: double.infinity,
-                color: kBackgroundColor,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 10),
-                          Row(
-                            children: [
-                              SizedBox(width: 15),
-                              Text(
-                                'ชื่อ : ',
-                                style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                patientHistory?.full_name ?? '-',
-                                style: TextStyle(color: textColor),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 4),
-                          Row(
-                            children: [
-                              SizedBox(width: 15),
-                              Text(
-                                'เพศ : ',
-                                style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                patientHistory?.sex_name ?? '-',
-                                style: TextStyle(color: textColor),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 4),
-                          Row(
-                            children: [
-                              SizedBox(width: 15),
-                              Text(
-                                'เลข ID : ',
-                                style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                formatNationalID(
-                                  patientHistory?.cid ?? '-',
+      body: Watermark(
+        backgroundImage: const AssetImage('assets/icons/logo MOPH.png'),
+        child: Consumer<ProjectController>(
+          builder: (BuildContext context, controller, child) {
+            final medicalHistorys = controller.medicalHistorys;
+            final patientHistory = controller.patientHistory;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: size.height * 0.12,
+                  width: double.infinity,
+                  color: kBackgroundColor,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                SizedBox(width: 15),
+                                Text(
+                                  'ชื่อ : ',
+                                  style:
+                                      TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.025),
                                 ),
-                                style: TextStyle(color: textColor),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                                Text(
+                                  // patientHistory?.full_name ?? '-',
+                                  '',
+                                  style:
+                                      TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.025),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 4),
+                            Row(
+                              children: [
+                                SizedBox(width: 15),
+                                Text(
+                                  'เพศ : ',
+                                  style:
+                                      TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.025),
+                                ),
+                                Text(
+                                  // patientHistory?.sex_name ?? '-',
+                                  '',
+                                  style:
+                                      TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.025),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 4),
+                            Row(
+                              children: [
+                                SizedBox(width: 15),
+                                Text(
+                                  'เลข ID : ',
+                                  style:
+                                      TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.025),
+                                ),
+                                Text(
+                                  // formatNationalID(
+                                  //   patientHistory?.cid ?? '-',
+                                  // ),
+                                  '',
+                                  style:
+                                      TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.025),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              //SizedBox(height: 10),
-              Container(
-                height: size.height * 0.07,
-                width: double.infinity,
-                color: kBackgroundColor2,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      SizedBox(width: 10),
-                      Text(
-                        'รายการนัดหมาย : ',
-                        style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'ไม่มี',
-                        style: TextStyle(color: textColor),
-                      ),
-                    ],
+                //SizedBox(height: 10),
+                Container(
+                  height: size.height * 0.07,
+                  width: double.infinity,
+                  color: kBackgroundColor2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        SizedBox(width: 10),
+                        Text(
+                          'รายการนัดหมาย : ',
+                          style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          'ไม่มี',
+                          style: TextStyle(color: textColor),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                height: size.height * 0.07,
-                width: double.infinity,
-                color: kBackgroundColor,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      SizedBox(width: 10),
-                      Text(
-                        'ประวัติการรักษา : ',
-                        style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
-                      ),
-                    ],
+                Container(
+                  height: size.height * 0.07,
+                  width: double.infinity,
+                  color: kBackgroundColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        SizedBox(width: 10),
+                        Text(
+                          'ประวัติการรักษา : ',
+                          style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: medicalHistorys?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    final item = medicalHistorys?[index];
+                Expanded(
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: medicalHistorys?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      final item = medicalHistorys?[index];
 
-                    // ตรวจสอบและแปลง diagnosis_date เป็นวันเดือนปีแบบ พ.ศ.
-                    String formattedDate = '-';
-                    String formattedLastEntranceDate = '';
-                    if (item?.diagnosis_date != null) {
-                      try {
-                        DateTime dateTime = DateTime.parse(item!.diagnosis_date!);
-                        int buddhistYear = dateTime.year + 543;
-                        formattedDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
-                      } catch (e) {
-                        formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
+                      // ตรวจสอบและแปลง diagnosis_date เป็นวันเดือนปีแบบ พ.ศ.
+                      String formattedDate = '-';
+                      String formattedLastEntranceDate = '';
+                      if (item?.diagnosis_date != null) {
+                        try {
+                          DateTime dateTime = DateTime.parse(item!.diagnosis_date!);
+                          int buddhistYear = dateTime.year + 543;
+                          formattedDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
+                        } catch (e) {
+                          formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
+                        }
                       }
-                    }
-                    if (item?.last_entrance_date != null) {
-                      try {
-                        DateTime dateTime = DateTime.parse(item!.last_entrance_date!);
-                        int buddhistYear = dateTime.year + 543;
-                        formattedLastEntranceDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
-                      } catch (e) {
-                        formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
+                      if (item?.last_entrance_date != null) {
+                        try {
+                          DateTime dateTime = DateTime.parse(item!.last_entrance_date!);
+                          int buddhistYear = dateTime.year + 543;
+                          formattedLastEntranceDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
+                        } catch (e) {
+                          formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
+                        }
                       }
-                    }
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                      child: CardItem(
-                        date: formattedDate, // ใช้วันที่ที่แปลงแล้ว
-                        hospital: item?.hospital_name ?? '',
-                        diagnosis: item?.icd10_text ?? '',
-                        size: size,
-                        medicalHistorys: item?.treatments, last_entrance_date: formattedLastEntranceDate ?? '',
-                      ),
-                    );
-                  },
-                ),
-              )
-            ],
-          );
-        },
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                        child: CardItem(
+                          date: formattedDate, // ใช้วันที่ที่แปลงแล้ว
+                          hospital: item?.hospital_name ?? '',
+                          diagnosis: item?.icd10_text ?? '',
+                          size: size,
+                          medicalHistorys: item?.treatments, last_entrance_date: formattedLastEntranceDate ?? '',
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            );
+          },
+        ),
       ),
     );
   }

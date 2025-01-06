@@ -6,10 +6,12 @@ import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:tcbapp/WidgetHub/dialog/dialogyes.dart';
 import 'package:tcbapp/WidgetHub/dialog/loadingDialog.dart';
 import 'package:tcbapp/constants.dart';
+import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/firstPage.dart';
 import 'package:tcbapp/pin/pinPage.dart';
 import 'package:tcbapp/register/registerPage.dart';
 import 'package:tcbapp/register/registerService.dart';
+import 'package:tcbapp/utils/apiException.dart';
 
 class Otppage extends StatefulWidget {
   Otppage({
@@ -42,6 +44,7 @@ class _OtppageState extends State<Otppage> {
   late Timer _timer;
   int _remainingSeconds = 120; // 10 นาที = 600 วินาที
   bool check = false;
+  bool showResendBotton = false;
 
   void _validateAndSubmit() async {
     if (_formKey.currentState!.validate()) {
@@ -50,6 +53,7 @@ class _OtppageState extends State<Otppage> {
         String otpCode = _otpControllers.map((controller) => controller.text).join();
         await RegisterService.verifyOTP(
             otpCode, widget.refno, widget.fname, widget.lname, widget.cid, widget.date, widget.phone, widget.device_no, widget.notify_token);
+        _timer.cancel();
         LoadingDialog.close(context);
         Navigator.pushReplacement(
           context,
@@ -57,19 +61,10 @@ class _OtppageState extends State<Otppage> {
             builder: (context) {
               return PinPage(
                 check: false,
-                cid: widget.cid,
               );
             },
           ),
         );
-        // Navigator.pushAndRemoveUntil(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) => PinPage(
-        //             check: false,
-        //           )),
-        //   (route) => true,
-        // );
       } on Exception catch (e) {
         if (!mounted) return;
         LoadingDialog.close(context);
@@ -100,34 +95,37 @@ class _OtppageState extends State<Otppage> {
       } else {
         _timer.cancel();
         if (mounted) {
-          // setState(() {
-          //   _remainingSeconds = 120;
-          //   startCountdown();
-          // });
-          // try {
-          //   LoadingDialog.open(context);
-          //   final refno = await RegisterService.register(widget.fname, widget.lname, widget.cid, widget.date, widget.phone, widget.device_no);
-          //   widget.refno = refno;
-          //   // print(widget.refno);
-          //   // setState(() {});
-          //   // startCountdown();
-          //   LoadingDialog.close(context);
-          // } on Exception catch (e) {
-          //   if (!mounted) return;
-          //   LoadingDialog.close(context);
-          //   showDialog(
-          //     context: context,
-          //     builder: (context) => Dialogyes(
-          //       title: 'แจ้งเตือน',
-          //       description: '$e',
-          //       pressYes: () {
-          //         Navigator.pop(context);
-          //       },
-          //       bottomNameYes: 'ตกลง',
-          //     ),
-          //   );
-          // }
+          setState(() {
+            showResendBotton = true;
+          });
         }
+        // setState(() {
+        //   _remainingSeconds = 120;
+        //   startCountdown();
+        // });
+        // try {
+        //   LoadingDialog.open(context);
+        //   final refno = await RegisterService.register(widget.fname, widget.lname, widget.cid, widget.date, widget.phone, widget.device_no);
+        //   widget.refno = refno;
+        //   // print(widget.refno);
+        //   // setState(() {});
+        //   // startCountdown();
+        //   LoadingDialog.close(context);
+        // } on Exception catch (e) {
+        //   if (!mounted) return;
+        //   LoadingDialog.close(context);
+        //   showDialog(
+        //     context: context,
+        //     builder: (context) => Dialogyes(
+        //       title: 'แจ้งเตือน',
+        //       description: '$e',
+        //       pressYes: () {
+        //         Navigator.pop(context);
+        //       },
+        //       bottomNameYes: 'ตกลง',
+        //     ),
+        //   );
+        // }
       }
     });
   }
@@ -140,7 +138,6 @@ class _OtppageState extends State<Otppage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     startCountdown();
   }
@@ -192,22 +189,79 @@ class _OtppageState extends State<Otppage> {
                 ),
                 textAlign: TextAlign.center,
               ),
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: Text(
-                      'ขอรหัสผ่านใหม่',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                  showResendBotton == true
+                      ? GestureDetector(
+                          onTap: () async {
+                            setState(() {
+                              showResendBotton = false;
+                              _remainingSeconds = 120;
+                              startCountdown();
+                            });
+                            try {
+                              LoadingDialog.open(context);
+                              final refno =
+                                  await RegisterService.register(widget.fname, widget.lname, widget.cid, widget.date, widget.phone, widget.device_no);
+                              widget.refno = refno;
+                              // print(widget.refno);
+                              // setState(() {});
+                              // startCountdown();
+                              LoadingDialog.close(context);
+                            } on ApiException catch (e) {
+                              if (!mounted) return;
+                              LoadingDialog.close(context);
+                              showDialog(
+                                context: context,
+                                builder: (context) => Dialogyes(
+                                  title: 'แจ้งเตือน',
+                                  description: '$e',
+                                  pressYes: () {
+                                    Navigator.pop(context);
+                                  },
+                                  bottomNameYes: 'ตกลง',
+                                ),
+                              );
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: kBackgroundColor,
+                              ),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  offset: Offset(0, 0),
+                                  blurRadius: 0.2,
+                                  spreadRadius: 0.2,
+                                  color: Colors.black26,
+                                ),
+                              ],
+                            ),
+                            height: size.height * 0.05,
+                            width: size.width * 0.32,
+                            child: Center(
+                              child: Text(
+                                'ขอรหัส otp ใหม่',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: kBackgroundColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        )
+                      : SizedBox.shrink(),
                   SizedBox(
-                    width: 10,
+                    width: 5,
                   ),
                   Text(
                     formatTime(_remainingSeconds),
@@ -219,6 +273,34 @@ class _OtppageState extends State<Otppage> {
                   ),
                 ],
               ),
+
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     GestureDetector(
+              //       onTap: () {},
+              //       child: Text(
+              //         'ขอรหัสotpใหม่',
+              //         style: TextStyle(
+              //           fontSize: 16,
+              //           color: Colors.white,
+              //         ),
+              //         textAlign: TextAlign.center,
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: 10,
+              //     ),
+              //     Text(
+              //       formatTime(_remainingSeconds),
+              //       style: TextStyle(
+              //         fontSize: 20,
+              //         fontWeight: FontWeight.bold,
+              //         color: Colors.white,
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(height: size.height * 0.1),
               Form(
                 key: _formKey,

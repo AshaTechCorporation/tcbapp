@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:tcbapp/WidgetHub/dialog/loadingDialog.dart';
+import 'package:tcbapp/WidgetHub/waterMark.dart';
 import 'package:tcbapp/constants.dart';
 
 class Detailnew extends StatefulWidget {
@@ -27,9 +28,12 @@ class _DetailnewState extends State<Detailnew> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: kBackgroundColor3,
         appBar: AppBar(
           backgroundColor: kBackgroundColor,
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -38,44 +42,63 @@ class _DetailnewState extends State<Detailnew> {
                 padding: const EdgeInsets.all(8.0),
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
-                  child: Icon(Icons.local_hospital, color: Color(0xFF00CFCF)),
+                  child: Image.asset(
+                    'assets/icons/Cancer_AnyWhere.png',
+                    scale: 10,
+                  ),
                 ),
               ),
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: [
-              Center(
-                child: SizedBox(
-                  height: size.height * 0.4,
-                  width: double.infinity,
-                  child: Padding(
+        body: Watermark(
+          backgroundImage: const AssetImage('assets/icons/logo MOPH.png'),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                Center(
+                  child: SizedBox(
+                    height: size.height * 0.4,
+                    width: double.infinity,
+                    child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Image.network(
-                        "${widget.image}",
-                        height: size.height * 0.12,
-                        width: size.width * 0.25,
-                        fit: BoxFit.cover,
+                      child:
+                          // Image.network(
+                          //   "${widget.image}",
+                          //   height: size.height * 0.12,
+                          //   width: size.width * 0.25,
+                          //   fit: BoxFit.cover,
+                          //   errorBuilder: (context, error, stackTrace) {
+                          //     return Image.asset(
+                          //         'assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'); // แสดงภาพสำรอง
+                          //   },
+                          // ),
+                          Image.asset(
+                        '${widget.image}',
                         errorBuilder: (context, error, stackTrace) {
                           return Image.asset(
-                              'assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'); // แสดงภาพสำรอง
+                            'assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg',
+                          );
                         },
-                      )),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Text('${widget.title}'),
-                    Text('${widget.detail}'),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        '${widget.title}',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      Text('${widget.detail}'),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         )
         // },

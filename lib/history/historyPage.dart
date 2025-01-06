@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcbapp/WidgetHub/dialog/loadingDialog.dart';
+import 'package:tcbapp/WidgetHub/waterMark.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/WidgetHub/dialog/dialogYesNo.dart';
 import 'package:tcbapp/WidgetHub/dialog/dialogyes.dart';
@@ -151,163 +152,166 @@ class _HistoryPageState extends State<HistoryPage> {
           ],
         ),
       ),
-      body: Consumer<ProjectController>(
-        builder: (context, controller, child) {
-          final medicalHistorys = controller.medicalHistorys;
-          final treatmenthistory = controller.treatmentHistorys;
-          return Column(
-            children: [
-              Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 28, top: 10, right: 20),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.06,
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          color: kBackgroundColor,
-                        ),
-                      ),
-                      // padding: EdgeInsets.all(8),
-                      child: DropdownSearch<VisitedHospitals>(
-                        selectedItem: selectedValue,
-                        items: treatmenthistory!,
-                        itemAsString: (item) => item.hospital_name ?? '',
-                        popupProps: PopupProps.menu(
-                          showSearchBox: true,
-                          constraints: BoxConstraints(maxHeight: 450),
-                          fit: FlexFit.loose,
-                          menuProps: MenuProps(
-                            backgroundColor: Colors.white,
+      body: Watermark(
+        backgroundImage: const AssetImage('assets/icons/logo MOPH.png'),
+        child: Consumer<ProjectController>(
+          builder: (context, controller, child) {
+            final medicalHistorys = controller.medicalHistorys;
+            final treatmenthistory = controller.treatmentHistorys;
+            return Column(
+              children: [
+                Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 28, top: 10, right: 20),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: kBackgroundColor,
                           ),
-                          itemBuilder: (context, item, isSelected) => Container(
-                            margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: isSelected ? Colors.blue : Colors.grey,
+                        ),
+                        // padding: EdgeInsets.all(8),
+                        child: DropdownSearch<VisitedHospitals>(
+                          selectedItem: selectedValue,
+                          items: treatmenthistory!,
+                          itemAsString: (item) => item.hospital_name ?? '',
+                          popupProps: PopupProps.menu(
+                            showSearchBox: true,
+                            constraints: BoxConstraints(maxHeight: 450),
+                            fit: FlexFit.loose,
+                            menuProps: MenuProps(
+                              backgroundColor: Colors.white,
+                            ),
+                            itemBuilder: (context, item, isSelected) => Container(
+                              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: isSelected ? Colors.blue : Colors.grey,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.hospital_name ?? '',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item.hospital_name ?? '',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                  ),
+                          ),
+                          onChanged: (VisitedHospitals? va) {
+                            setState(() {
+                              selectedValue = va;
+                            });
+                          },
+                          dropdownDecoratorProps: DropDownDecoratorProps(
+                            baseStyle: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                            textAlign: TextAlign.center,
+                            dropdownSearchDecoration: InputDecoration(
+                              hintText: 'เลือกผู้รับบุคลากรภายใน',
+                              hintStyle: TextStyle(
+                                color: Colors.black45,
+                              ),
+                              border: InputBorder.none,
+                              suffixIconColor: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          cardItems = cardItems.reversed.toList();
+                        });
+                      },
+                      child: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 3),
                                 ),
                               ],
                             ),
-                          ),
-                        ),
-                        onChanged: (VisitedHospitals? va) {
-                          setState(() {
-                            selectedValue = va;
-                          });
-                        },
-                        dropdownDecoratorProps: DropDownDecoratorProps(
-                          baseStyle: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                          textAlign: TextAlign.center,
-                          dropdownSearchDecoration: InputDecoration(
-                            hintText: 'เลือกผู้รับบุคลากรภายใน',
-                            hintStyle: TextStyle(
-                              color: Colors.black45,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(Icons.arrow_upward_rounded, size: size.height * 0.03, color: kBackgroundColor),
                             ),
-                            border: InputBorder.none,
-                            suffixIconColor: Colors.grey,
                           ),
-                        ),
+                        ],
                       ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        cardItems = cardItems.reversed.toList();
-                      });
-                    },
-                    child: Stack(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 1,
-                                blurRadius: 5,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(Icons.arrow_upward_rounded, size: size.height * 0.03, color: kBackgroundColor),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              Expanded(
-                child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: medicalHistorys?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    final item = medicalHistorys?[index];
-
-                    // ตรวจสอบและแปลง diagnosis_date เป็นวันเดือนปีแบบ พ.ศ.
-                    String formattedDate = '-';
-                    String formattedLastEntranceDate = '';
-                    if (item?.diagnosis_date != null) {
-                      try {
-                        DateTime dateTime = DateTime.parse(item!.diagnosis_date!);
-                        int buddhistYear = dateTime.year + 543;
-                        formattedDate = '${DateFormat("dd MMMM").format(dateTime)} $buddhistYear';
-                        print(formattedDate);
-                      } catch (e) {
-                        formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
-                      }
-                    }
-                    if (item?.last_entrance_date != null) {
-                      try {
-                        DateTime dateTime = DateTime.parse(item!.last_entrance_date!);
-                        int buddhistYear = dateTime.year + 543;
-                        formattedLastEntranceDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
-                      } catch (e) {
-                        formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
-                      }
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                      child: CardItem(
-                        date: formattedDate, // ใช้วันที่ที่แปลงแล้ว
-                        hospital: item?.hospital_name ?? '',
-                        diagnosis: item?.icd10_text ?? '',
-                        size: size,
-                        medicalHistorys: item?.treatments, last_entrance_date: formattedLastEntranceDate ?? '',
-                      ),
-                    );
-                  },
+                    )
+                  ],
                 ),
-              )
-            ],
-          );
-        },
+                Expanded(
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: medicalHistorys?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      final item = medicalHistorys?[index];
+
+                      // ตรวจสอบและแปลง diagnosis_date เป็นวันเดือนปีแบบ พ.ศ.
+                      String formattedDate = '-';
+                      String formattedLastEntranceDate = '';
+                      if (item?.diagnosis_date != null) {
+                        try {
+                          DateTime dateTime = DateTime.parse(item!.diagnosis_date!);
+                          int buddhistYear = dateTime.year + 543;
+                          formattedDate = '${DateFormat("dd MMMM").format(dateTime)} $buddhistYear';
+                          print(formattedDate);
+                        } catch (e) {
+                          formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
+                        }
+                      }
+                      if (item?.last_entrance_date != null) {
+                        try {
+                          DateTime dateTime = DateTime.parse(item!.last_entrance_date!);
+                          int buddhistYear = dateTime.year + 543;
+                          formattedLastEntranceDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
+                        } catch (e) {
+                          formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
+                        }
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                        child: CardItem(
+                          date: formattedDate, // ใช้วันที่ที่แปลงแล้ว
+                          hospital: item?.hospital_name ?? '',
+                          diagnosis: item?.icd10_text ?? '',
+                          size: size,
+                          medicalHistorys: item?.treatments, last_entrance_date: formattedLastEntranceDate ?? '',
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            );
+          },
+        ),
       ),
     );
   }

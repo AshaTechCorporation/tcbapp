@@ -15,6 +15,7 @@ import 'package:tcbapp/home/firstPage.dart';
 import "package:intl/intl.dart";
 import 'package:tcbapp/otp/OtpPage.dart';
 import 'package:tcbapp/register/registerService.dart';
+import 'package:tcbapp/utils/apiException.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -369,10 +370,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                   device_no: device_no,
                                   notify_token: notify_token,
                                   refno: refno,
+                                  // refno: '',
                                 )),
                         (route) => true,
                       );
-                    } on Exception catch (e) {
+                    } on ApiException catch (e) {
                       if (!mounted) return;
                       LoadingDialog.close(context);
                       showDialog(

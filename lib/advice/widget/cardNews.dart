@@ -46,7 +46,15 @@ class _CardnewsState extends State<Cardnews> {
                     SizedBox(
                       height: widget.size.height * 0.02,
                     ),
-                    Image.network(
+                    // Image.network(
+                    //   '${widget.image}',
+                    //   errorBuilder: (context, error, stackTrace) {
+                    //     return Image.asset(
+                    //       'assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg',
+                    //     );
+                    //   },
+                    // ),
+                    Image.asset(
                       '${widget.image}',
                       errorBuilder: (context, error, stackTrace) {
                         return Image.asset(

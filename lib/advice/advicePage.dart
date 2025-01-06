@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcbapp/WidgetHub/waterMark.dart';
 import 'package:tcbapp/advice/widget/cardNews.dart';
 import 'package:tcbapp/constants.dart';
 
@@ -35,32 +36,35 @@ class _AdvicePageState extends State<AdvicePage> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: size.height * 0.02,
-            ),
-            cardNews.isNotEmpty
-                ? SizedBox(
-                    height: size.height * 0.8,
-                    child: ListView.builder(
-                        // controller: _scrollController,
-                        itemCount: cardNews.length,
-                        itemBuilder: (context, index) {
-                          final items = cardNews[index];
-                          return Cardnews(
-                            size: size,
-                            image: '',
-                            detail: '${items['detail']}',
-                            title: '${items['title']}',
-                          );
-                        }),
-                  )
-                : Center(child: Text('ขนะนี้ไม่มีรายการคำแนะนำ'))
-          ],
+      body: Watermark(
+        backgroundImage: const AssetImage('assets/icons/logo MOPH.png'),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: size.height * 0.02,
+              ),
+              cardNews.isNotEmpty
+                  ? SizedBox(
+                      height: size.height * 0.8,
+                      child: ListView.builder(
+                          // controller: _scrollController,
+                          itemCount: cardNews.length,
+                          itemBuilder: (context, index) {
+                            final items = cardNews[index];
+                            return Cardnews(
+                              size: size,
+                              image: '${items['image']}',
+                              detail: '${items['detail']}',
+                              title: '${items['title']}',
+                            );
+                          }),
+                    )
+                  : Center(child: Text('ขนะนี้ไม่มีรายการคำแนะนำ'))
+            ],
+          ),
         ),
       ),
     );
