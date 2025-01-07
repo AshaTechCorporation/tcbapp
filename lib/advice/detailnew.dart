@@ -44,7 +44,7 @@ class _DetailnewState extends State<Detailnew> {
                   backgroundColor: Colors.white,
                   child: Image.asset(
                     'assets/icons/Cancer_AnyWhere.png',
-                    scale: 10,
+                    scale: 2,
                   ),
                 ),
               ),
@@ -59,7 +59,7 @@ class _DetailnewState extends State<Detailnew> {
               children: [
                 Center(
                   child: SizedBox(
-                    height: size.height * 0.4,
+                    height: size.height * 0.3,
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -87,14 +87,34 @@ class _DetailnewState extends State<Detailnew> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        '${widget.title}',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: textColor,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: textColor2.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            '${widget.title}',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '${widget.detail}',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                          ),
+                        ],
                       ),
-                      Text('${widget.detail}'),
-                    ],
+                    ),
                   ),
                 ),
               ],

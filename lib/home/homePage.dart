@@ -148,69 +148,92 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  height: size.height * 0.12,
+                  height: size.height * 0.14,
                   width: double.infinity,
                   color: kBackgroundColor,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
+                        SizedBox(height: 10),
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 10),
-                            Row(
-                              children: [
-                                SizedBox(width: 15),
-                                Text(
-                                  'ชื่อ : ',
-                                  style:
-                                      TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.025),
-                                ),
-                                Text(
-                                  // patientHistory?.full_name ?? '-',
-                                  '',
-                                  style:
-                                      TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.025),
-                                ),
-                              ],
+                            const SizedBox(width: 15),
+                            const Expanded(
+                              flex: 1, // กำหนดพื้นที่สำหรับ label
+                              child: Text(
+                                'ชื่อ',
+                                style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
                             ),
-                            SizedBox(height: 4),
-                            Row(
-                              children: [
-                                SizedBox(width: 15),
-                                Text(
-                                  'เพศ : ',
-                                  style:
-                                      TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.025),
-                                ),
-                                Text(
-                                  // patientHistory?.sex_name ?? '-',
-                                  '',
-                                  style:
-                                      TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.025),
-                                ),
-                              ],
+                            const Text(
+                              ':',
+                              style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 16),
                             ),
-                            SizedBox(height: 4),
-                            Row(
-                              children: [
-                                SizedBox(width: 15),
-                                Text(
-                                  'เลข ID : ',
-                                  style:
-                                      TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.025),
-                                ),
-                                Text(
-                                  // formatNationalID(
-                                  //   patientHistory?.cid ?? '-',
-                                  // ),
-                                  '',
-                                  style:
-                                      TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.025),
-                                ),
-                              ],
+                            const SizedBox(width: 10),
+                            Expanded(
+                              flex: 3, // พื้นที่สำหรับข้อมูล
+                              child: Text(
+                                patientHistory?.full_name ?? '-',
+                                style: TextStyle(color: textColor, fontSize: 16),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(width: 15),
+                            const Expanded(
+                              flex: 1,
+                              child: Text(
+                                'เพศ',
+                                style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                            ),
+                            const Text(
+                              ':',
+                              style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                patientHistory?.sex_name ?? '-',
+                                style: TextStyle(color: textColor, fontSize: 16),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(width: 15),
+                            const Expanded(
+                              flex: 1,
+                              child: Text(
+                                'เลข ID',
+                                style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                            ),
+                            const Text(
+                              ':',
+                              style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                formatNationalID(patientHistory?.cid ?? '-'),
+                                style: TextStyle(color: textColor, fontSize: 16),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         ),
@@ -218,6 +241,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+
                 //SizedBox(height: 10),
                 Container(
                   height: size.height * 0.07,

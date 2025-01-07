@@ -223,7 +223,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             ),
                             textAlign: TextAlign.center,
                             dropdownSearchDecoration: InputDecoration(
-                              hintText: 'เลือกผู้รับบุคลากรภายใน',
+                              hintText: 'โรงพยาบาล',
                               hintStyle: TextStyle(
                                 color: Colors.black45,
                               ),

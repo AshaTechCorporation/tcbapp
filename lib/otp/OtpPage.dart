@@ -65,7 +65,7 @@ class _OtppageState extends State<Otppage> {
             },
           ),
         );
-      } on Exception catch (e) {
+      } on ApiException catch (e) {
         if (!mounted) return;
         LoadingDialog.close(context);
         showDialog(
@@ -313,12 +313,12 @@ class _OtppageState extends State<Otppage> {
                         height: size.height * 0.1,
                         width: size.height * 0.05,
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
                           controller: _otpControllers[index],
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
-                          keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(1),

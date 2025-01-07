@@ -99,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
           final monthName = monthNames[monthDate.month - 1];
           return "$monthName พ.ศ. $buddhistYear";
         },
-        firstDate: DateTime(1959),
+        firstDate: DateTime(1900),
         lastDate: DateTime.now());
 
     final selectedDates = await showCalendarDatePicker2Dialog(
@@ -250,8 +250,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         return 'กรุณากรอกเบอร์โทร';
                       }
                     },
-                    keyboardType: TextInputType.phone,
                     status: false,
+                    keyboardType: TextInputType.number,
                   ),
                   // SizedBox(height: MediaQuery.of(context).size.height * 0.5),
                   // Container(

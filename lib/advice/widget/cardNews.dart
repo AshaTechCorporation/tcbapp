@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcbapp/advice/detailnew.dart';
+import 'package:tcbapp/constants.dart';
 
 class Cardnews extends StatefulWidget {
   final Size size;
@@ -26,10 +27,10 @@ class _CardnewsState extends State<Cardnews> {
           ),
           boxShadow: [
             BoxShadow(
-              offset: Offset(0, 0),
-              blurRadius: 0.2,
-              spreadRadius: 0.2,
-              color: Colors.black26,
+              color: textColor2.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 2),
             ),
           ],
         ),
@@ -91,7 +92,7 @@ class _CardnewsState extends State<Cardnews> {
                     child: Text(
                       '${widget.detail}',
                       style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                      maxLines: 4,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),

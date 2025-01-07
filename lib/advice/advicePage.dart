@@ -47,20 +47,23 @@ class _AdvicePageState extends State<AdvicePage> {
                 height: size.height * 0.02,
               ),
               cardNews.isNotEmpty
-                  ? SizedBox(
-                      height: size.height * 0.8,
-                      child: ListView.builder(
-                          // controller: _scrollController,
-                          itemCount: cardNews.length,
-                          itemBuilder: (context, index) {
-                            final items = cardNews[index];
-                            return Cardnews(
-                              size: size,
-                              image: '${items['image']}',
-                              detail: '${items['detail']}',
-                              title: '${items['title']}',
-                            );
-                          }),
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: size.height * 0.8,
+                        child: ListView.builder(
+                            // controller: _scrollController,
+                            itemCount: cardNews.length,
+                            itemBuilder: (context, index) {
+                              final items = cardNews[index];
+                              return Cardnews(
+                                size: size,
+                                image: '${items['image']}',
+                                detail: '${items['detail']}',
+                                title: '${items['title']}',
+                              );
+                            }),
+                      ),
                     )
                   : Center(child: Text('ขนะนี้ไม่มีรายการคำแนะนำ'))
             ],
