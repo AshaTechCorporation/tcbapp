@@ -160,12 +160,12 @@ class _HistoryPageState extends State<HistoryPage> {
             final treatmenthistory = controller.treatmentHistorys;
             return Column(
               children: [
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 28, top: 10, right: 20),
-                      child: Container(
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
                         height: MediaQuery.of(context).size.height * 0.06,
                         width: MediaQuery.of(context).size.width * 0.6,
                         decoration: BoxDecoration(
@@ -233,37 +233,37 @@ class _HistoryPageState extends State<HistoryPage> {
                           ),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          cardItems = cardItems.reversed.toList();
-                        });
-                      },
-                      child: Stack(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 1,
-                                  blurRadius: 5,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            cardItems = cardItems.reversed.toList();
+                          });
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(Icons.arrow_upward_rounded, size: size.height * 0.03, color: kBackgroundColor),
+                              ),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Icon(Icons.arrow_upward_rounded, size: size.height * 0.03, color: kBackgroundColor),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 Expanded(
                   child: ListView.builder(
@@ -289,21 +289,19 @@ class _HistoryPageState extends State<HistoryPage> {
                         try {
                           DateTime dateTime = DateTime.parse(item!.last_entrance_date!);
                           int buddhistYear = dateTime.year + 543;
-                          formattedLastEntranceDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
+                          formattedLastEntranceDate = '${DateFormat("dd MMMM").format(dateTime)} $buddhistYear';
                         } catch (e) {
                           formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
                         }
                       }
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                        child: CardItem(
-                          date: formattedDate, // ใช้วันที่ที่แปลงแล้ว
-                          hospital: item?.hospital_name ?? '',
-                          diagnosis: item?.icd10_text ?? '',
-                          size: size,
-                          medicalHistorys: item?.treatments, last_entrance_date: formattedLastEntranceDate ?? '',
-                        ),
+                      return CardItem(
+                        date: formattedDate,
+                        hospital: item?.hospital_name ?? '',
+                        diagnosis: item?.icd10_text ?? '',
+                        size: size,
+                        medicalHistorys: item?.treatments,
+                        last_entrance_date: formattedLastEntranceDate ?? '',
                       );
                     },
                   ),

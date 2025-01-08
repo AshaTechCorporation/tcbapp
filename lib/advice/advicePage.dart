@@ -43,26 +43,25 @@ class _AdvicePageState extends State<AdvicePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: size.height * 0.02,
-              ),
               cardNews.isNotEmpty
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
                         height: size.height * 0.8,
                         child: ListView.builder(
-                            // controller: _scrollController,
-                            itemCount: cardNews.length,
-                            itemBuilder: (context, index) {
-                              final items = cardNews[index];
-                              return Cardnews(
-                                size: size,
-                                image: '${items['image']}',
-                                detail: '${items['detail']}',
-                                title: '${items['title']}',
-                              );
-                            }),
+                          physics: NeverScrollableScrollPhysics(),
+                          // controller: _scrollController,
+                          itemCount: cardNews.length,
+                          itemBuilder: (context, index) {
+                            final items = cardNews[index];
+                            return Cardnews(
+                              size: size,
+                              image: '${items['image']}',
+                              detail: '${items['detail']}',
+                              title: '${items['title']}',
+                            );
+                          },
+                        ),
                       ),
                     )
                   : Center(child: Text('ขนะนี้ไม่มีรายการคำแนะนำ'))

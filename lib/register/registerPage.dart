@@ -154,318 +154,324 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
-      height: size.height * 1,
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [kBackgroundColor, Color(0xFF00E0D0)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus(); // ซ่อนคีย์บอร์ด
+      },
+      child: Container(
+        height: size.height * 1,
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [kBackgroundColor, Color(0xFF00E0D0)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
         ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-                  Text(
-                    'ลงทะเบียน',
-                    style: TextStyle(
-                      fontSize: 26.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: size.height * 0.02,
+                    ),
+                    Text(
+                      'ลงทะเบียน',
+                      style: TextStyle(
+                        fontSize: 26.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.01,
+                    ),
+                    Text(
+                      'กรุณาระบุข้อมูลเบื้องต้นเพื่อลงทะเบียนเข้าใช้ระบบ',
+                      style: TextStyle(color: Colors.white70),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.02,
+                    ),
+                    buildInputField(
+                      controller: name,
+                      icon: Icons.person,
+                      hint: 'ชื่อ (ไม่ต้องใส่คำนำหน้า เช่น นาย,นาง,นางสาว***)',
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'กรุณากรอกชื่อ';
+                        }
+                      },
+                      status: false,
+                    ),
+                    buildInputField(
+                      controller: surname,
+                      icon: Icons.person,
+                      hint: 'นามสกุล',
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'กรุณากรอกนามสกุล';
+                        }
+                      },
+                      status: false,
+                    ),
+                    buildInputField(
+                      controller: idCard,
+                      icon: Icons.credit_card,
+                      hint: 'เลขบัตรประชาชน 13 หลัก',
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'กรุณากรอกเลขบัตรประชาชน 13 หลัก';
+                        }
+                      },
+                      status: false,
+                    ),
+                    buildInputField(
+                      controller: birthDate,
+                      icon: Icons.calendar_today,
+                      hint: 'วว-ดด-ปปปป',
+                      keyboardType: TextInputType.none,
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'กรุณากรอกวันเดือนปี';
+                        }
+                        return null;
+                      },
+                      status: true,
+                    ),
+                    buildInputField(
+                      controller: phone,
+                      icon: Icons.phone,
+                      hint: 'เบอร์โทร',
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'กรุณากรอกเบอร์โทร';
+                        }
+                      },
+                      status: false,
+                      keyboardType: TextInputType.number,
+                    ),
+                    // SizedBox(height: MediaQuery.of(context).size.height * 0.5),
+                    // Container(
+                    //   color: kBackgroundColor,
+                    //   width: double.infinity,
+                    //   child: OutlinedButton(
+                    //     onPressed: () async {
+                    //       if (_formKey.currentState!.validate()) {
+                    //         try {
+                    //           LoadingDialog.open(context);
+                    //           final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+                    //           final SharedPreferences prefs = await _prefs;
+                    //           await prefs.setString('domain', publicUrl);
+                    //           await prefs.setString('cid', idCard.text);
+                    //           final refno = await RegisterService.register(name.text, surname.text, idCard.text, dateSentApi, phone.text, device_no);
+                    //           print(refno['data']);
+                    //           if (!mounted) return;
+                    //           LoadingDialog.close(context);
+                    //           Navigator.pushAndRemoveUntil(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (context) => Otppage(
+                    //                       fname: name.text,
+                    //                       lname: surname.text,
+                    //                       cid: idCard.text,
+                    //                       date: dateSentApi,
+                    //                       phone: phone.text,
+                    //                       device_no: device_no,
+                    //                       notify_token: notify_token,
+                    //                       refno: refno['data'],
+                    //                     )),
+                    //             (route) => true,
+                    //           );
+                    //         } on Exception catch (e) {
+                    //           if (!mounted) return;
+                    //           LoadingDialog.close(context);
+                    //           showDialog(
+                    //             context: context,
+                    //             builder: (context) => Dialogyes(
+                    //               title: 'แจ้งเตือน',
+                    //               description: '$e',
+                    //               pressYes: () {
+                    //                 Navigator.pop(context);
+                    //               },
+                    //               bottomNameYes: 'ตกลง',
+                    //             ),
+                    //           );
+                    //         }
+                    //         // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Otppage()));
+                    //       }
+                    //     },
+                    //     style: OutlinedButton.styleFrom(
+                    //       side: BorderSide(color: Colors.white),
+                    //       shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(8.0),
+                    //       ),
+                    //       padding: EdgeInsets.symmetric(vertical: 16.0),
+                    //     ),
+                    //     child: Text(
+                    //       'ลงทะเบียน/รับรหัส OTP',
+                    //       style: TextStyle(color: Colors.white, fontSize: 16.0),
+                    //     ),
+                    //   ),
+                    // ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          bottomNavigationBar: Container(
+            margin: EdgeInsets.all(8),
+            child: SizedBox(
+              height: size.height * 0.07,
+              width: size.width * 0.4,
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kBackgroundColor,
+                    // side: BorderSide(color: textColor),
+                    padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Text(
-                    'กรุณาระบุข้อมูลเบื้องต้นเพื่อลงทะเบียนเข้าใช้ระบบ',
-                    style: TextStyle(color: Colors.white70),
-                  ),
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-                  buildInputField(
-                    controller: name,
-                    icon: Icons.person,
-                    hint: 'ชื่อ (ไม่ต้องใส่คำนำหน้า เช่น นาย,นาง,นางสาว***)',
-                    validator: (value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'กรุณากรอกชื่อ';
-                      }
-                    },
-                    status: false,
-                  ),
-                  buildInputField(
-                    controller: surname,
-                    icon: Icons.person,
-                    hint: 'นามสกุล',
-                    validator: (value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'กรุณากรอกนามสกุล';
-                      }
-                    },
-                    status: false,
-                  ),
-                  buildInputField(
-                    controller: idCard,
-                    icon: Icons.credit_card,
-                    hint: 'เลขบัตรประชาชน 13 หลัก',
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'กรุณากรอกเลขบัตรประชาชน 13 หลัก';
-                      }
-                    },
-                    status: false,
-                  ),
-                  buildInputField(
-                    controller: birthDate,
-                    icon: Icons.calendar_today,
-                    hint: 'วว-ดด-ปปปป',
-                    keyboardType: TextInputType.none,
-                    validator: (value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'กรุณากรอกวันเดือนปี';
-                      }
-                      return null;
-                    },
-                    status: true,
-                  ),
-                  buildInputField(
-                    controller: phone,
-                    icon: Icons.phone,
-                    hint: 'เบอร์โทร',
-                    validator: (value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'กรุณากรอกเบอร์โทร';
-                      }
-                    },
-                    status: false,
-                    keyboardType: TextInputType.number,
-                  ),
-                  // SizedBox(height: MediaQuery.of(context).size.height * 0.5),
-                  // Container(
-                  //   color: kBackgroundColor,
-                  //   width: double.infinity,
-                  //   child: OutlinedButton(
-                  //     onPressed: () async {
-                  //       if (_formKey.currentState!.validate()) {
-                  //         try {
-                  //           LoadingDialog.open(context);
-                  //           final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-                  //           final SharedPreferences prefs = await _prefs;
-                  //           await prefs.setString('domain', publicUrl);
-                  //           await prefs.setString('cid', idCard.text);
-                  //           final refno = await RegisterService.register(name.text, surname.text, idCard.text, dateSentApi, phone.text, device_no);
-                  //           print(refno['data']);
-                  //           if (!mounted) return;
-                  //           LoadingDialog.close(context);
-                  //           Navigator.pushAndRemoveUntil(
-                  //             context,
-                  //             MaterialPageRoute(
-                  //                 builder: (context) => Otppage(
-                  //                       fname: name.text,
-                  //                       lname: surname.text,
-                  //                       cid: idCard.text,
-                  //                       date: dateSentApi,
-                  //                       phone: phone.text,
-                  //                       device_no: device_no,
-                  //                       notify_token: notify_token,
-                  //                       refno: refno['data'],
-                  //                     )),
-                  //             (route) => true,
-                  //           );
-                  //         } on Exception catch (e) {
-                  //           if (!mounted) return;
-                  //           LoadingDialog.close(context);
-                  //           showDialog(
-                  //             context: context,
-                  //             builder: (context) => Dialogyes(
-                  //               title: 'แจ้งเตือน',
-                  //               description: '$e',
-                  //               pressYes: () {
-                  //                 Navigator.pop(context);
-                  //               },
-                  //               bottomNameYes: 'ตกลง',
-                  //             ),
-                  //           );
-                  //         }
-                  //         // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Otppage()));
-                  //       }
-                  //     },
-                  //     style: OutlinedButton.styleFrom(
-                  //       side: BorderSide(color: Colors.white),
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(8.0),
-                  //       ),
-                  //       padding: EdgeInsets.symmetric(vertical: 16.0),
-                  //     ),
-                  //     child: Text(
-                  //       'ลงทะเบียน/รับรหัส OTP',
-                  //       style: TextStyle(color: Colors.white, fontSize: 16.0),
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        bottomNavigationBar: Container(
-          margin: EdgeInsets.all(8),
-          child: SizedBox(
-            height: size.height * 0.07,
-            width: size.width * 0.4,
-            child: Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: kBackgroundColor,
-                  // side: BorderSide(color: textColor),
-                  padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    try {
-                      LoadingDialog.open(context);
-                      final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-                      final SharedPreferences prefs = await _prefs;
-                      await prefs.setString('domain', publicUrl);
-                      await prefs.setString('cid', idCard.text);
-                      final refno = await RegisterService.register(name.text, surname.text, idCard.text, dateSentApi, phone.text, device_no);
-                      // print(refno['data']);
-                      if (!mounted) return;
-                      LoadingDialog.close(context);
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      try {
+                        LoadingDialog.open(context);
+                        final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+                        final SharedPreferences prefs = await _prefs;
+                        await prefs.setString('domain', publicUrl);
+                        await prefs.setString('cid', idCard.text);
+                        final refno = await RegisterService.register(name.text, surname.text, idCard.text, dateSentApi, phone.text, device_no);
+                        // print(refno['data']);
+                        if (!mounted) return;
+                        LoadingDialog.close(context);
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
                             builder: (context) => Otppage(
-                                  fname: name.text,
-                                  lname: surname.text,
-                                  cid: idCard.text,
-                                  date: dateSentApi,
-                                  phone: phone.text,
-                                  device_no: device_no,
-                                  notify_token: notify_token,
-                                  refno: refno,
-                                  // refno: '',
-                                )),
-                        (route) => true,
-                      );
-                    } on ApiException catch (e) {
-                      if (!mounted) return;
-                      LoadingDialog.close(context);
-                      showDialog(
-                        context: context,
-                        builder: (context) => Dialogyes(
-                          title: 'แจ้งเตือน',
-                          description: '$e',
-                          pressYes: () {
-                            Navigator.pop(context);
-                          },
-                          bottomNameYes: 'ตกลง',
-                        ),
-                      );
+                              fname: name.text,
+                              lname: surname.text,
+                              cid: idCard.text,
+                              date: dateSentApi,
+                              phone: phone.text,
+                              device_no: device_no,
+                              notify_token: notify_token,
+                              refno: refno,
+                              // refno: '',
+                            ),
+                          ),
+                          (route) => true,
+                        );
+                      } on ApiException catch (e) {
+                        if (!mounted) return;
+                        LoadingDialog.close(context);
+                        showDialog(
+                          context: context,
+                          builder: (context) => Dialogyes(
+                            title: 'แจ้งเตือน',
+                            description: '$e',
+                            pressYes: () {
+                              Navigator.pop(context);
+                            },
+                            bottomNameYes: 'ตกลง',
+                          ),
+                        );
+                      }
+                      // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Otppage()));
                     }
-                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Otppage()));
-                  }
-                },
-                child: Text(
-                  'ลงทะเบียน/รับรหัส OTP',
-                  style: TextStyle(color: textColor),
+                  },
+                  child: Text(
+                    'ลงทะเบียน/รับรหัส OTP',
+                    style: TextStyle(color: textColor),
+                  ),
                 ),
               ),
             ),
           ),
+          // bottomNavigationBar: Container(
+          //   decoration: BoxDecoration(
+          //     borderRadius: BorderRadius.circular(8),
+          //     color: kBackgroundColor,
+          //   ),
+          //   margin: EdgeInsets.all(8),
+          //   width: double.infinity,
+          //   child: OutlinedButton(
+          //     onPressed: () async {
+          //       if (_formKey.currentState!.validate()) {
+          //         try {
+          //           LoadingDialog.open(context);
+          //           final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+          //           final SharedPreferences prefs = await _prefs;
+          //           await prefs.setString('domain', publicUrl);
+          //           await prefs.setString('cid', idCard.text);
+          //           final refno = await RegisterService.register(name.text, surname.text, idCard.text, dateSentApi, phone.text, device_no);
+          //           // print(refno['data']);
+          //           if (!mounted) return;
+          //           LoadingDialog.close(context);
+          //           Navigator.pushAndRemoveUntil(
+          //             context,
+          //             MaterialPageRoute(
+          //                 builder: (context) => Otppage(
+          //                       fname: name.text,
+          //                       lname: surname.text,
+          //                       cid: idCard.text,
+          //                       date: dateSentApi,
+          //                       phone: phone.text,
+          //                       device_no: device_no,
+          //                       notify_token: notify_token,
+          //                       refno: refno,
+          //                     )),
+          //             (route) => true,
+          //           );
+          //         } on Exception catch (e) {
+          //           if (!mounted) return;
+          //           LoadingDialog.close(context);
+          //           showDialog(
+          //             context: context,
+          //             builder: (context) => Dialogyes(
+          //               title: 'แจ้งเตือน',
+          //               description: '$e',
+          //               pressYes: () {
+          //                 Navigator.pop(context);
+          //               },
+          //               bottomNameYes: 'ตกลง',
+          //             ),
+          //           );
+          //         }
+          //         // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Otppage()));
+          //       }
+          //     },
+          //     style: OutlinedButton.styleFrom(
+          //       side: BorderSide(color: Colors.white),
+          //       shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(8.0),
+          //       ),
+          //       padding: EdgeInsets.symmetric(vertical: 16.0),
+          //     ),
+          //     child: Text(
+          //       'ลงทะเบียน/รับรหัส OTP',
+          //       style: TextStyle(color: Colors.white, fontSize: 16.0),
+          //     ),
+          //   ),
+          // ),
         ),
-        // bottomNavigationBar: Container(
-        //   decoration: BoxDecoration(
-        //     borderRadius: BorderRadius.circular(8),
-        //     color: kBackgroundColor,
-        //   ),
-        //   margin: EdgeInsets.all(8),
-        //   width: double.infinity,
-        //   child: OutlinedButton(
-        //     onPressed: () async {
-        //       if (_formKey.currentState!.validate()) {
-        //         try {
-        //           LoadingDialog.open(context);
-        //           final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-        //           final SharedPreferences prefs = await _prefs;
-        //           await prefs.setString('domain', publicUrl);
-        //           await prefs.setString('cid', idCard.text);
-        //           final refno = await RegisterService.register(name.text, surname.text, idCard.text, dateSentApi, phone.text, device_no);
-        //           // print(refno['data']);
-        //           if (!mounted) return;
-        //           LoadingDialog.close(context);
-        //           Navigator.pushAndRemoveUntil(
-        //             context,
-        //             MaterialPageRoute(
-        //                 builder: (context) => Otppage(
-        //                       fname: name.text,
-        //                       lname: surname.text,
-        //                       cid: idCard.text,
-        //                       date: dateSentApi,
-        //                       phone: phone.text,
-        //                       device_no: device_no,
-        //                       notify_token: notify_token,
-        //                       refno: refno,
-        //                     )),
-        //             (route) => true,
-        //           );
-        //         } on Exception catch (e) {
-        //           if (!mounted) return;
-        //           LoadingDialog.close(context);
-        //           showDialog(
-        //             context: context,
-        //             builder: (context) => Dialogyes(
-        //               title: 'แจ้งเตือน',
-        //               description: '$e',
-        //               pressYes: () {
-        //                 Navigator.pop(context);
-        //               },
-        //               bottomNameYes: 'ตกลง',
-        //             ),
-        //           );
-        //         }
-        //         // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Otppage()));
-        //       }
-        //     },
-        //     style: OutlinedButton.styleFrom(
-        //       side: BorderSide(color: Colors.white),
-        //       shape: RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.circular(8.0),
-        //       ),
-        //       padding: EdgeInsets.symmetric(vertical: 16.0),
-        //     ),
-        //     child: Text(
-        //       'ลงทะเบียน/รับรหัส OTP',
-        //       style: TextStyle(color: Colors.white, fontSize: 16.0),
-        //     ),
-        //   ),
-        // ),
       ),
     );
   }

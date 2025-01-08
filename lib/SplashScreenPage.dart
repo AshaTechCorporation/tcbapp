@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:tcbapp/Policy/policyPage.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/firstPage.dart';
+import 'package:tcbapp/main.dart';
+import 'package:tcbapp/pin/confirmpin.dart';
 
 class SplashScreenPage extends StatefulWidget {
   const SplashScreenPage({super.key});
@@ -16,13 +18,29 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    Future.delayed(
+      Duration(seconds: 2),
+      () {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => pin == null || pin == ""
+                ? Policypage()
+                : Confirmpin(
+                    checklogin: false,
+                    pin: pin,
+                  ),
+          ),
+        );
+        // Navigator.of(context).pushReplacement(
+        //   MaterialPageRoute(
+        //     builder: (_) =>
+        //         // token == null ? LoginPage() :
 
-    Future.delayed(Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (_) =>
-              // token == null ? LoginPage() :
-              Policypage()));
-    });
+        //         Policypage(),
+        //   ),
+        // );
+      },
+    );
   }
 
   @override
@@ -53,6 +71,14 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                 borderRadius: BorderRadius.circular(16.0),
                 child: Image.asset('assets/icons/Cancer_AnyWhere.png'),
               ),
+            ),
+            Row(
+              children: [
+                Text(
+                  '1.0.0+3',
+                  style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ],
             )
           ],
         ),

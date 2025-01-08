@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pinput/pinput.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcbapp/WidgetHub/dialog/dialogYesNo.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/firstPage.dart';
@@ -19,17 +20,22 @@ class PinPage extends StatefulWidget {
 
 class _PinPageState extends State<PinPage> {
   final _pinController = TextEditingController();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   String _pin = "";
   List<String> enteredPin = [];
   double buttonSize = 0.0;
 
   // ฟังก์ชันตรวจสอบ PIN
-  void _onSubmit() {
+  Future<void> _onSubmit() async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString('pin', _pinController.text);
+
     if (_pinController.text.length == 6) {
-      Navigator.of(context).pushReplacement(
+      Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => Confirmpin(pin: _pinController.text),
+          builder: (context) => Confirmpin(pin: _pinController.text, checklogin: true),
         ),
+        (route) => false,
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

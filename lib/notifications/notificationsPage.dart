@@ -16,7 +16,9 @@ import 'package:tcbapp/service/ProjectController.dart';
 import 'package:tcbapp/utils/apiException.dart';
 
 class NotificationsPage extends StatefulWidget {
-  const NotificationsPage({super.key});
+  const NotificationsPage({
+    super.key,
+  });
 
   @override
   State<NotificationsPage> createState() => _NotificationsPageState();
@@ -41,6 +43,22 @@ class _NotificationsPageState extends State<NotificationsPage> {
     });
   }
 
+  List<Map<String, String>> nontificatione = [
+    {
+      'title': 'การนัดหมาย',
+      'detaile': '''เรียนคุณ [ชื่อผู้ป่วย],
+แพทย์ขอให้ท่านเข้ารับการตรวจติดตามด่วนเกี่ยวกับการรักษาโรคมะเร็งในวันที่ [วันที่] เวลา [เวลา]. หากมีข้อสงสัยหรือไม่สามารถมาตามนัด กรุณาติดต่อ [หมายเลขโทรศัพท์].
+ ''',
+      'time': '13-06-2567',
+    },
+    {
+      'title': 'การนัดหมาย',
+      'detaile':
+          '''แจ้งเตือน: ท่านมีนัดหมายกับแพทย์ผู้เชี่ยวชาญด้านโรคมะเร็งในอีก [จำนวนชั่วโมง/วัน] กรุณาเตรียมตัวและเดินทางล่วงหน้าเพื่อหลีกเลี่ยงความล่าช้า.
+ ''',
+      'time': '13-07-2568',
+    }
+  ];
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -70,41 +88,39 @@ class _NotificationsPageState extends State<NotificationsPage> {
         ),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: size.height * 0.05,
-            ),
-            nontificatione.isNotEmpty
-                ? Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: size.height * 0.5,
-                            width: size.width * 0.9,
-                            child: ListView.builder(
-                              itemCount: nontificatione.length ?? 0,
-                              itemBuilder: (context, index) {
-                                return Cardnonti(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              nontificatione.isNotEmpty
+                  ? Column(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.5,
+                          width: size.width * 0.9,
+                          child: ListView.builder(
+                            itemCount: nontificatione.length ?? 0,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Cardnonti(
                                   size: size,
                                   title: nontificatione[index]['title'],
                                   detail: nontificatione[index]['detaile'],
                                   nonti: nontificatione[index]['time'],
-                                );
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                : Text(
-                    'ไม่มีโรงพยาบาลที่เข้ารับการรักษา',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black45),
-                  )
-          ],
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      ],
+                    )
+                  : Text(
+                      'ไม่มีโรงพยาบาลที่เข้ารับการรักษา',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black45),
+                    )
+            ],
+          ),
         ),
       ),
     );

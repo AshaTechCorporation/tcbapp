@@ -8,12 +8,13 @@ import 'package:tcbapp/pin/confirmpin.dart';
 import 'package:tcbapp/pin/pinPage.dart';
 
 class Confirmpin extends StatefulWidget {
-  Confirmpin({super.key, required this.pin, this.cid});
+  Confirmpin({super.key, required this.pin, this.cid, this.checklogin});
 
   @override
   State<Confirmpin> createState() => _ConfirmpinState();
   String? pin;
   String? cid;
+  bool? checklogin;
 }
 
 class _ConfirmpinState extends State<Confirmpin> {
@@ -24,12 +25,13 @@ class _ConfirmpinState extends State<Confirmpin> {
   void _onSubmit() {
     if (_pinController.text.length == 6) {
       if (_pinController.text == widget.pin) {
-        Navigator.of(context).pushReplacement(
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => FirstPage(
               cid: widget.cid,
             ),
           ),
+          (route) => false,
         );
       } else {
         _pinController.clear();
@@ -63,10 +65,15 @@ class _ConfirmpinState extends State<Confirmpin> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "ยืนยันรหัส Pin อีกครั้ง",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-            ),
+            widget.checklogin == true
+                ? Text(
+                    "ยืนยันรหัส Pin อีกครั้ง",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                  )
+                : Text(
+                    'กรอกรหัส Pin',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
             SizedBox(height: 20),
 
             Pinput(

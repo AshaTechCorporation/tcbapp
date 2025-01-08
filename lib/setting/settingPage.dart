@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcbapp/WidgetHub/dialog/dialogYesNo.dart';
 import 'package:tcbapp/constants.dart';
 import 'package:tcbapp/home/firstPage.dart';
+import 'package:tcbapp/main.dart';
 import 'package:tcbapp/pin/pinPage.dart';
 import 'package:tcbapp/register/registerPage.dart';
 
@@ -45,7 +47,10 @@ class _SettingPageState extends State<SettingPage> {
               height: size.height * 0.02,
             ),
             ListTile(
-              title: Text('เปลี่ยนรหัส PIN'),
+              title: Text(
+                'เปลี่ยนรหัส PIN',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () async {
                 final ok = await showDialog(
@@ -78,7 +83,7 @@ class _SettingPageState extends State<SettingPage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12.0),
               child: Text(
-                'Version : 1.1.0 20230731',
+                'Version : 1.0.0+3',
                 style: TextStyle(color: Colors.grey),
               ),
             ),
@@ -107,6 +112,9 @@ class _SettingPageState extends State<SettingPage> {
                               bottomNameNo: 'ยกเลิก',
                             ));
                     if (ok == true) {
+                      prefs = await SharedPreferences.getInstance();
+                      await prefs.setString('cid', '');
+                      await prefs.setString('pin', '');
                       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RegisterPage()));
                     }
                   },

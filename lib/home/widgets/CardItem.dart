@@ -34,7 +34,7 @@ class _CardItemState extends State<CardItem> {
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       elevation: 2,
       child: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(15.0),
         child: SizedBox(
           width: widget.size.width * 0.90,
           child: Column(
@@ -46,9 +46,6 @@ class _CardItemState extends State<CardItem> {
                   Text(
                     'วันที่ให้บริการล่าสุด',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    width: 10,
                   ),
                   Text(
                     widget.last_entrance_date,
@@ -127,20 +124,17 @@ class _CardItemState extends State<CardItem> {
                 'วิธีการรักษา',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Column(
-                  children: List.generate(
-                    widget.medicalHistorys?.length ?? 0,
-                    (index) => Row(
-                      children: [
-                        Text('${widget.medicalHistorys?[index].icd10_code}'),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text('${widget.medicalHistorys?[index].treatment_code}'),
-                      ],
-                    ),
+              Column(
+                children: List.generate(
+                  widget.medicalHistorys?.length ?? 0,
+                  (index) => Row(
+                    children: [
+                      Text('${widget.medicalHistorys?[index].icd10_code}'),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('${widget.medicalHistorys?[index].treatment_code}'),
+                    ],
                   ),
                 ),
               )
