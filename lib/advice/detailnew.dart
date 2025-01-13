@@ -22,7 +22,6 @@ class Detailnew extends StatefulWidget {
 }
 
 class _DetailnewState extends State<Detailnew> {
-  @override
   Future getapi() async {
     try {
       LoadingDialog.open(context);

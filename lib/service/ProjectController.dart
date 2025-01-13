@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcbapp/model/advice.dart';
+import 'package:tcbapp/model/appointment.dart';
 import 'package:tcbapp/model/medicalHistory.dart';
 import 'package:tcbapp/model/patientHistory.dart';
 import 'package:tcbapp/model/visitedHospitals.dart';
@@ -19,6 +20,8 @@ class ProjectController extends ChangeNotifier {
 
   List<Advice>? advicdes = [];
   Advice? advice;
+
+  List<Appointment> appointments = [];
 
   getMedicalHistorys(String cid) async {
     medicalHistorys?.clear();
@@ -51,6 +54,13 @@ class ProjectController extends ChangeNotifier {
   getadvicebyid(int id) async {
     advice = null;
     advice = await ProjectService.getadvicebyid(id: id);
+
+    notifyListeners();
+  }
+
+  getAppointment(String cid) async {
+    appointments.clear();
+    appointments = await ProjectService.getAppointment(cid: cid);
 
     notifyListeners();
   }

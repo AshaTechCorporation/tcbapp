@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:tcbapp/constants.dart';
 
 class Cardnonti extends StatefulWidget {
   final Size size;
-  final String? title;
-  final String? detail;
-  final String? nonti;
+  final String? appoint_date;
+  final String? message;
 
   Cardnonti({
     super.key,
     required this.size,
-    required this.title,
-    required this.detail,
-    required this.nonti,
+    required this.appoint_date,
+    required this.message,
   });
 
   @override
@@ -45,22 +44,27 @@ class _CardnontiState extends State<Cardnonti> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${widget.title}',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  widget.appoint_date ?? '',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
                 ),
-                Text(
-                  '${widget.nonti}',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                )
+                // Text(
+                //   '${widget.nonti}',
+                //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                // )
               ],
             ),
             Row(
               children: [
                 Expanded(
-                    child: Text(
-                  '${widget.detail}',
-                  style: TextStyle(fontSize: 16),
-                ))
+                  child: Html(
+                    data: widget.message ?? '',
+                    // style: TextStyle(
+                    //   fontSize: 16,
+                    // ),
+                  ),
+                )
               ],
             ),
           ],

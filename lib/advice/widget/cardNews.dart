@@ -89,12 +89,14 @@ class _CardnewsState extends State<Cardnews> {
                   //     ],
                   //   ),
                   // ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Html(
-                      data: widget.detail!.length > 300 ? "${widget.detail!.substring(0, 300)} ..." : widget.detail,
-                    ),
-                  ),
+                  widget.detail != null
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Html(
+                            data: widget.detail!.length > 300 ? "${widget.detail!.substring(0, 300)} ..." : widget.detail,
+                          ),
+                        )
+                      : SizedBox.shrink(),
 
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -105,9 +107,9 @@ class _CardnewsState extends State<Cardnews> {
                           MaterialPageRoute(
                             builder: (context) => Detailnew(
                               size: widget.size,
-                              detail: widget.detail,
+                              detail: widget.detail ?? '',
                               title: widget.title,
-                              id: widget.id!,
+                              id: widget.id ?? 0,
                             ),
                           ),
                         );
