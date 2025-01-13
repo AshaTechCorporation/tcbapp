@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +34,7 @@ class _HistoryPageState extends State<HistoryPage> {
   final ScrollController _scrollController = ScrollController();
 
   String cid = '';
+  bool check = true;
 
   @override
   void dispose() {
@@ -236,7 +239,13 @@ class _HistoryPageState extends State<HistoryPage> {
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            cardItems = cardItems.reversed.toList();
+                            if (check == true) {
+                              check = false;
+                            } else {
+                              check = true;
+                            }
+
+                            controller.medicalHistorys = controller.medicalHistorys!.reversed.toList();
                           });
                         },
                         child: Stack(
@@ -255,9 +264,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                 ],
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Icon(Icons.arrow_upward_rounded, size: size.height * 0.03, color: kBackgroundColor),
-                              ),
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(check == true ? Icons.arrow_upward_rounded : Icons.arrow_downward,
+                                      size: size.height * 0.03, color: kBackgroundColor)),
                             ),
                           ],
                         ),

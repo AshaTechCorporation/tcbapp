@@ -139,7 +139,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                             child: ListView.builder(
                               itemCount: appointments.length ?? 0,
                               itemBuilder: (context, index) {
-                                String formattedLastEntranceDate = '';
+                                // String formattedLastEntranceDate = '';
                                 String formattedDate = '-';
                                 if (appointments[index].appoint_date != null) {
                                   try {
