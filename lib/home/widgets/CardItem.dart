@@ -129,7 +129,7 @@ class _CardItemState extends State<CardItem> {
                   widget.medicalHistorys?.length ?? 0,
                   (index) => Row(
                     children: [
-                      Text('${widget.medicalHistorys?[index].icd10_code}'),
+                      Text(widget.medicalHistorys?[index].icd10_code ?? ""),
                       SizedBox(
                         width: 10,
                       ),

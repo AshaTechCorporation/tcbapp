@@ -295,7 +295,7 @@ class _HomePageState extends State<HomePage> {
                         try {
                           DateTime dateTime = DateTime.parse(item!.diagnosis_date!);
                           int buddhistYear = dateTime.year + 543;
-                          formattedDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
+                          formattedDate = '${DateFormat("dd MMMM").format(dateTime)} $buddhistYear';
                         } catch (e) {
                           formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
                         }
@@ -304,7 +304,7 @@ class _HomePageState extends State<HomePage> {
                         try {
                           DateTime dateTime = DateTime.parse(item!.last_entrance_date!);
                           int buddhistYear = dateTime.year + 543;
-                          formattedLastEntranceDate = '${DateFormat("d MMMM").format(dateTime)} $buddhistYear';
+                          formattedLastEntranceDate = '${DateFormat("dd MMMM").format(dateTime)} $buddhistYear';
                         } catch (e) {
                           formattedDate = "รูปแบบวันที่ไม่ถูกต้อง";
                         }

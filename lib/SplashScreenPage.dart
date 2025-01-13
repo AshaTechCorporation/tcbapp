@@ -72,13 +72,16 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                 child: Image.asset('assets/icons/Cancer_AnyWhere.png'),
               ),
             ),
-            Row(
-              children: [
-                Text(
-                  '1.0.0+3',
-                  style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Text(
+                    '1.0.0+5',
+                    style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             )
           ],
         ),
