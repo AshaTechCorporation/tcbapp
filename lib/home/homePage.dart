@@ -112,6 +112,27 @@ class _HomePageState extends State<HomePage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Image.asset(
+                    'assets/icons/Cancer_AnyWhere.png',
+                    scale: 10,
+                  ),
+                ),
+                SizedBox(
+                  width: size.width * 0.02,
+                ),
+                CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Image.asset(
+                    'assets/icons/1Artboard 7@4x.png',
+                    scale: 10,
+                  ),
+                ),
+              ],
+            ),
             Text('ยินดีต้อนรับ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
             GestureDetector(
               onTap: () {
@@ -121,21 +142,25 @@ class _HomePageState extends State<HomePage> {
                 Icons.notifications,
                 color: Colors.white,
               ),
-            )
+            ),
           ],
         ),
         backgroundColor: kBackgroundColor,
         elevation: 5,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            child: Image.asset(
-              'assets/icons/Cancer_AnyWhere.png',
-              scale: 10,
-            ),
-          ),
-        ),
+        // leading: Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        //   child: Row(
+        //     children: [
+        //       CircleAvatar(
+        //         backgroundColor: Colors.white,
+        //         child: Image.asset(
+        //           'assets/icons/Cancer_AnyWhere.png',
+        //           scale: 10,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ),
       body: Watermark(
         backgroundImage: const AssetImage('assets/icons/logo MOPH.png'),

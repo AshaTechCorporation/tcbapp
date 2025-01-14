@@ -107,15 +107,26 @@ class _InformationPageState extends State<InformationPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('ข้อมูลของฉัน', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Image.asset(
-                  'assets/icons/Cancer_AnyWhere.png',
-                  scale: 10,
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Image.asset(
+                      'assets/icons/Cancer_AnyWhere.png',
+                      scale: 10,
+                    ),
+                  ),
                 ),
-              ),
+                CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Image.asset(
+                    'assets/icons/1Artboard 7@4x.png',
+                    scale: 10,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

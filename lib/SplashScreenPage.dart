@@ -76,10 +76,16 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
+                  //android
                   Text(
-                    '1.0.0+5',
+                    '1.0.0+6',
                     style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
                   ),
+                  //ios
+                  // Text(
+                  //   '1.0.1+2  ',
+                  //   style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+                  // ),
                 ],
               ),
             )
