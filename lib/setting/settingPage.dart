@@ -94,7 +94,7 @@ class _SettingPageState extends State<SettingPage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12.0),
               child: Text(
-                'Version : 1.0.0+5',
+                'Version : 1.0.0+6',
                 style: TextStyle(color: Colors.grey),
               ),
             ),

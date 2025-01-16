@@ -83,7 +83,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                   ),
                   //ios
                   // Text(
-                  //   '1.0.1+2  ',
+                  //   '1.0.2+1',
                   //   style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
                   // ),
                 ],
