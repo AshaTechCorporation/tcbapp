@@ -10,105 +10,10 @@ const kBackgroundColor4 = Color(0xff9E9E9E);
 // const kBackgroundColor5 = Color(0xff10497A);
 const String publicUrl = 'tcb.dev-asha9.com';
 // const String baseUrl = 'https://uat.bcc.ac.th:8443';
-
-// List<Map<String, String>> cardItems = [
-//   {
-//     'date': '18/10/2567',
-//     'hospital': 'สถาบันมะเร็งแห่งชาติ',
-//     'diagnosis':
-//         'C20: Malignant neoplasm of the rectum, which is a type of colorectal cancer characterized by the uncontrolled and abnormal proliferation of malignant epithelial cells in the rectal mucosa, often leading to invasive growth into adjacent tissues and potential metastasis to regional lymph nodes, the liver, lungs, or other distant organs through hematogenous or lymphatic spread.',
-//     'rectum':
-//         'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง (เร็คตัม) ซึ่งเป็นความผิดปกติของเซลล์ที่แบ่งตัวอย่างควบคุมไม่ได้ ทำให้เกิดก้อนเนื้อที่อาจแพร่กระจายไปยังอวัยวะข้างเคียงหรือส่วนอื่นของร่างกาย หากไม่ได้รับการรักษาอย่างทันท่วงที)',
-//   },
-//   {
-//     'date': '26/07/2567',
-//     'hospital': 'สถาบันมะเร็งแห่งชาติ',
-//     'diagnosis':
-//         'C20:  Malignant neoplasm of the rectum, which is a type of colorectal cancer characterized by the uncontrolled and abnormal proliferation of malignant epithelial cells in the rectal mucosa, often leading to invasive growth into adjacent tissues and potential metastasis to regional lymph nodes, the liver, lungs, or other distant organs through hematogenous or lymphatic spread',
-//     'rectum':
-//         'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง (เร็คตัม) ซึ่งเป็นความผิดปกติของเซลล์ที่แบ่งตัวอย่างควบคุมไม่ได้ ทำให้เกิดก้อนเนื้อที่อาจแพร่กระจายไปยังอวัยวะข้างเคียงหรือส่วนอื่นของร่างกาย หากไม่ได้รับการรักษาอย่างทันท่วงที)',
-//   },
-//   {
-//     'date': '09/07/2567',
-//     'hospital': 'สถาบันมะเร็งแห่งชาติ',
-//     'diagnosis': 'C20: Malignant neoplasm of rectum',
-//     'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
-//   },
-//   {
-//     'date': '09/07/2567',
-//     'hospital': 'สถาบันมะเร็งแห่งชาติ',
-//     'diagnosis': 'C20: Malignant neoplasm of rectum',
-//     'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
-//   },
-//   {
-//     'date': '09/07/2567',
-//     'hospital': 'สถาบันมะเร็งแห่งชาติ',
-//     'diagnosis': 'C20: Malignant neoplasm of rectum',
-//     'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
-//   },
-//   {
-//     'date': '09/07/2567',
-//     'hospital': 'สถาบันมะเร็งแห่งชาติ',
-//     'diagnosis': 'C20: Malignant neoplasm of rectum',
-//     'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
-//   },
-//   {
-//     'date': '09/07/2567',
-//     'hospital': 'สถาบันมะเร็งแห่งชาติ',
-//     'diagnosis': 'C20: Malignant neoplasm of rectum',
-//     'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
-//   },
-//   {
-//     'date': '09/07/2567',
-//     'hospital': 'สถาบันมะเร็งแห่งชาติ',
-//     'diagnosis': 'C20: Malignant neoplasm of rectum',
-//     'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
-//   },
-//   {
-//     'date': '09/07/2567',
-//     'hospital': 'สถาบันมะเร็งแห่งชาติ',
-//     'diagnosis': 'C20: Malignant neoplasm of rectum',
-//     'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
-//   },
-//   {
-//     'date': '09/07/2567',
-//     'hospital': 'สถาบันมะเร็งแห่งชาติ',
-//     'diagnosis': 'C20: Malignant neoplasm of rectum',
-//     'rectum': 'rectum (เนื้องอกร้ายที่ลำไส้ใหญ่ส่วนตรง(เร็คตัม))',
-//   },
-// ];
-final List<String> items = ['โรงพยาบาล', 'โรงพยาบาลมหาวิทยาลัยนวมินทราธิราช ศูนย์การแพทย์วิภาวดีรังสิต'];
-
-List<Map<String, String>> cardNews = [
-  {
-    'image': 'assets/images/doctor.jpeg',
-    'date': '18/10/2567',
-    'title': 'สถาบันมะเร็งแห่งชาติ',
-    'detail': ''' ปฏิบัติตามแผนการรักษา
-1.รับประทานยา ทำเคมีบำบัด หรือรังสีบำบัดตามที่แพทย์กำหนดอย่างเคร่งครัด
-รับประทานอาหารที่เหมาะสม
-2.เลือกอาหารย่อยง่าย เช่น ผัก ผลไม้ ธัญพืช และโปรตีนที่ย่อยง่าย
-หลีกเลี่ยงอาหารไขมันสูง หวานจัด หรือเค็มจัด
-3.พักผ่อนให้เพียงพอ
-นอนหลับวันละ 6-8 ชั่วโมง และจัดตารางชีวิตให้มีสมดุล
-ออกกำลังกายเบาๆ
-4.เลือกการออกกำลังกายที่เหมาะสม เช่น เดินเล่นหรือโยคะ เพื่อเพิ่มพลังงานและลดความเครียด
-จัดการความเครียด
-5.ทำสมาธิ ฟังเพลง หรือเข้ากลุ่มสนับสนุนผู้ป่วยมะเร็งเพื่อพูดคุยแลกเปลี่ยนกำลังใจ
-หลีกเลี่ยงสารกระตุ้น
-6.งดสูบบุหรี่ ดื่มแอลกอฮอล์ และหลีกเลี่ยงการสัมผัสสารเคมีอันตราย
-ตรวจสุขภาพสม่ำเสมอ
-เข้าพบแพทย์ตามนัดเพื่อติดตามผลและปรับเปลี่ยนแผนการรักษาตามความเหมาะสม
- '''
-  },
-  {
-    'image': 'assets/images/download.jpeg',
-    'date': '18/10/2567',
-    'title': 'สถาบันมะเร็งแห่งชาติ',
-    'detail':
-        'C20: Malignant neoplasm of the rectum, which is a type of colorectal cancer characterized by the uncontrolled and abnormal proliferation of malignant epithelial cells in the rectal mucosa, often leading to invasive growth into adjacent tissues and potential metastasis to regional lymph nodes, the liver, lungs, or other distant organs through hematogenous or lymphatic spread.',
-  },
-];
+// ios
+// const String version = '1.0.2+2';
+// android
+const String version = '1.0.2+1';
 
 // นโยบาย
 String message = '''
@@ -153,39 +58,6 @@ String message = '''
 
 
 ''';
-List<Map<String, String>> nontificatione = [
-  {
-    'title': 'การนัดหมาย',
-    'detaile': '''เรียนคุณ [ชื่อผู้ป่วย],
-แพทย์ขอให้ท่านเข้ารับการตรวจติดตามด่วนเกี่ยวกับการรักษาโรคมะเร็งในวันที่ [วันที่] เวลา [เวลา]. หากมีข้อสงสัยหรือไม่สามารถมาตามนัด กรุณาติดต่อ [หมายเลขโทรศัพท์].
- ''',
-    'time': '13-06-2567',
-  },
-  {
-    'title': 'การนัดหมาย',
-    'detaile':
-        '''แจ้งเตือน: ท่านมีนัดหมายกับแพทย์ผู้เชี่ยวชาญด้านโรคมะเร็งในอีก [จำนวนชั่วโมง/วัน] กรุณาเตรียมตัวและเดินทางล่วงหน้าเพื่อหลีกเลี่ยงความล่าช้า.
- ''',
-    'time': '13-07-2568',
-  }
-];
+
 double width(BuildContext context) => MediaQuery.of(context).size.width;
 double height(BuildContext context) => MediaQuery.of(context).size.height;
-
-// onTap: () async {
-//                 await showDialog(
-//                     context: context,
-//                     builder: (context) => Dialogyesno(
-//                           title: 'แจ้งเตือน',
-//                           description: 'Test',
-//                           pressYes: () {
-//                             Navigator.pop(context);
-//                           },
-//                           pressNo: () {
-//                             Navigator.pop(context);
-//                           },
-//                           bottomNameYes: 'ตกลง',
-//                           bottomNameNo: 'ยกเลิก',
-//                         ));
-//               },
-

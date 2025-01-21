@@ -131,7 +131,7 @@ class _AdvicePageState extends State<AdvicePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  cardNews.isNotEmpty
+                  advicdes!.isNotEmpty
                       ? Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(

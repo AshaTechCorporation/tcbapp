@@ -88,13 +88,13 @@ class _CardItemState extends State<CardItem> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'ICD-10',
-                    style: TextStyle(fontSize: 14, color: Colors.black54),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
+                  // Text(
+                  //   'ICD-10',
+                  //   style: TextStyle(fontSize: 14, color: Colors.black54),
+                  // ),
+                  // SizedBox(
+                  //   width: 10,
+                  // ),
                   Expanded(
                     child: Text(
                       widget.diagnosis,

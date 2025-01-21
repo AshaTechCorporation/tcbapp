@@ -78,7 +78,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                 children: [
                   //android
                   Text(
-                    '1.0.0+6',
+                    version,
                     style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                   //ios

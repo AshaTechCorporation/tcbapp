@@ -180,9 +180,10 @@ class _HistoryPageState extends State<HistoryPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        width: MediaQuery.of(context).size.width * 0.8,
                         decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
                           color: Colors.white,
                           border: Border.all(
                             color: kBackgroundColor,
@@ -194,22 +195,13 @@ class _HistoryPageState extends State<HistoryPage> {
                           items: treatmenthistory!,
                           itemAsString: (item) => item.hospital_name ?? '',
                           popupProps: PopupProps.menu(
-                            showSearchBox: true,
-                            constraints: BoxConstraints(maxHeight: 450),
-                            fit: FlexFit.loose,
                             menuProps: MenuProps(
                               backgroundColor: Colors.white,
                             ),
+                            fit: FlexFit.loose,
+                            constraints: BoxConstraints(),
                             itemBuilder: (context, item, isSelected) => Container(
                               margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: isSelected ? Colors.blue : Colors.grey,
-                                ),
-                              ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -217,13 +209,43 @@ class _HistoryPageState extends State<HistoryPage> {
                                     item.hospital_name ?? '',
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
                           ),
+                          // popupProps: PopupProps.menu(
+                          //   showSearchBox: true,
+                          //   constraints: BoxConstraints(maxHeight: 450),
+                          //   fit: FlexFit.loose,
+                          //   menuProps: MenuProps(
+                          //     backgroundColor: Colors.white,
+                          //   ),
+                          //   itemBuilder: (context, item, isSelected) => Container(
+                          //     margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                          //     padding: EdgeInsets.all(8),
+                          //     decoration: BoxDecoration(
+                          //       color: Colors.white,
+                          //       borderRadius: BorderRadius.circular(8),
+                          //       border: Border.all(
+                          //         color: isSelected ? Colors.blue : Colors.grey,
+                          //       ),
+                          //     ),
+                          //     child: Column(
+                          //       crossAxisAlignment: CrossAxisAlignment.start,
+                          //       children: [
+                          //         Text(
+                          //           item.hospital_name ?? '',
+                          //           style: TextStyle(
+                          //             color: Colors.black,
+                          //             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                           onChanged: (VisitedHospitals? va) {
                             setState(() {
                               selectedValue = va;
