@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:252002021046:android:19d48af417063c53458017",
+        "android_client_info": {
+          "package_name": "com.app.canceranywhere"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4B03bUbq41PThHydd81GK_bbMYatw1lo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:252002021046:android:6329c9e1272aae47458017",
         "android_client_info": {
           "package_name": "com.app.tcbapp"

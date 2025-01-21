@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.nci.tcbmobile</string>
+	<string>com.app.canceranywhere</string>
 	<key>PROJECT_ID</key>
 	<string>tcbapp-b4581</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:252002021046:ios:906b2668812c930f458017</string>
+	<string>1:252002021046:ios:7ccaad2e0203a422458017</string>
 </dict>
 </plist>

@@ -1,4 +1,4 @@
-package com.app.tcbapp
+package com.app.canceranywhere
 
 import io.flutter.embedding.android.FlutterActivity
 
