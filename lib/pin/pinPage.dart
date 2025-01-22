@@ -105,12 +105,14 @@ class _PinPageState extends State<PinPage> {
                 });
               },
               onCompleted: (pin) {
-                setState(() {
-                  _pin = pin;
-                  if (_pinController.text.length == 6) {
-                    _onSubmit();
-                  }
-                });
+                setState(
+                  () {
+                    _pin = pin;
+                    if (_pinController.text.length == 6) {
+                      _onSubmit();
+                    }
+                  },
+                );
               },
             ),
 
