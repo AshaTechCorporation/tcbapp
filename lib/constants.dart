@@ -9,11 +9,11 @@ const kBackgroundColor3 = Color(0xffF2FCFB);
 const kBackgroundColor4 = Color(0xff9E9E9E);
 // const kBackgroundColor5 = Color(0xff10497A);
 const String publicUrl = 'tcb.dev-asha9.com';
-// const String baseUrl = 'https://uat.bcc.ac.th:8443';
+
 // ios
-// const String version = '1.0.2+2';
+const String version = '1.0.3+1';
 // android
-const String version = '1.0.2+1';
+// const String version = '1.0.2+1';
 
 // นโยบาย
 String message = '''

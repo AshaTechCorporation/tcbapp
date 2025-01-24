@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tcbapp/CheckUpdatePage.dart';
 import 'package:tcbapp/SplashScreenPage.dart';
 import 'package:tcbapp/firebase_options.dart';
 import 'package:tcbapp/home/firstPage.dart';
@@ -58,7 +59,9 @@ class MyApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         locale: Locale('th', 'TH'),
-        home: SplashScreenPage(),
+        home:
+            // SplashScreenPage(),
+            CheckUpdatePage(),
       ),
     );
   }
